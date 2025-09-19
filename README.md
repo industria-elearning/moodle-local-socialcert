@@ -1,44 +1,44 @@
-# CertLink #
+# CertLink (local_certlinkedin)
 
-TO-DO Describe the plugin shortly here.
+MVP plugin that adds an **“Add to LinkedIn”** link to **Custom certificate** activities without modifying `mod_customcert`.
 
-TO-DO Provide more detailed description here.
+## Requirements
+- Moodle 4.5+  
+- `mod_customcert` (minimum version: 2024042212)
 
-## Installing via uploaded ZIP file ##
+## Installation
+1. Copy this plugin into `local/certlinkedin`.
+2. Visit **Site administration → Notifications** to complete the installation.
+3. Go to **Site administration → Plugins → Local plugins → CertLink** and configure:
+   - **LinkedIn organization ID** (`organizationid`).
 
-1. Log in to your Moodle site as an admin and go to _Site administration >
-   Plugins > Install plugins_.
-2. Upload the ZIP file with the plugin code. You should only be prompted to add
-   extra details if your plugin type is not automatically detected.
-3. Check the plugin validation report and finish the installation.
+> If `organizationid` is empty, the button will not be displayed.
 
-## Installing manually ##
+## How it works (MVP)
+- The plugin adds an action through the callback `local_certlinkedin_extend_settings_navigation()` (see `lib.php`).
+- The action appears **only** in **Custom certificate** activities when:
+  1. The user has an issued certificate (record in `customcert_issues`).
+  2. An `organizationid` is configured.
+- The link opens `https://www.linkedin.com/profile/add?...` with:
+  - `name` (certificate name),
+  - `organizationId` (from configuration),
+  - `issueYear` and `issueMonth` (from the issue’s `timecreated`),
+  - `certUrl` (public verification link `verify.php?code=...`),
+  - `certId` (the issue’s `code`).
 
-The plugin can be also installed by putting the contents of this directory to
+## Important notes
+- **Public verification**: make sure `mod/customcert/verify.php?code=...` is accessible without login so LinkedIn (and third parties) can validate the certificate.
+- **Privacy**: this plugin does not store any personal data (see `classes/privacy/provider.php`).
+- **Languages**: 
+  - English is required: `lang/en/local_certlinkedin.php`.
+  - Spanish optional: `lang/es/local_certlinkedin.php`.
 
-    {your/moodle/dirroot}/local/certlinkedin
+## Customization (future)
+- Add `expirationYear/Month` if your certificates include expiration dates.
+- Define a custom `capability` if you want finer control over who can see the button (beyond `mod_customcert`).
+- Support for **Moodle App** (mobile) with `db/mobile.php`.
+- Observers to log events when publishing to LinkedIn.
+- PHPUnit tests for `classes/helper.php`.
 
-Afterwards, log in to your Moodle site as an admin and go to _Site administration >
-Notifications_ to complete the installation.
-
-Alternatively, you can run
-
-    $ php admin/cli/upgrade.php
-
-to complete the installation from the command line.
-
-## License ##
-
-2025 Manuel Bojaca <manuel@buendata.com>
-
-This program is free software: you can redistribute it and/or modify it under
-the terms of the GNU General Public License as published by the Free Software
-Foundation, either version 3 of the License, or (at your option) any later
-version.
-
-This program is distributed in the hope that it will be useful, but WITHOUT ANY
-WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
-PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License along with
-this program.  If not, see <https://www.gnu.org/licenses/>.
+## License
+GPLv3. See `LICENSE.md`.

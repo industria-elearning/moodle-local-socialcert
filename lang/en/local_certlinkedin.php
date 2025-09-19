@@ -6,27 +6,23 @@
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Moodle is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+// See the GNU General Public License for more details: https://www.gnu.org/licenses/.
 
 /**
- * Plugin strings are defined here.
+ * English strings for local_certlinkedin.
  *
- * @package     local_certlinkedin
- * @category    string
- * @copyright   2025 Manuel Bojaca <manuel@buendata.com>
- * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   local_certlinkedin
+ * @category  string
+ * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['description'] = 'Permite al usuario compartir su certificado directamente en LinkedIn.';
-$string['linkbuttontext'] = 'Añadir este certificado a LinkedIn';
-$string['organizationid'] = 'ID de la organización en LinkedIn';
 $string['pluginname'] = 'CertLink';
-$string['pluginname'] = 'CertLink';
+$string['description'] = 'Allows the user to share their certificate directly on LinkedIn.';
+$string['linkbuttontext'] = 'Add this certificate to LinkedIn';
+
+// Settings.
+$string['organizationid'] = 'LinkedIn organization ID';
+$string['organizationid_desc'] = 'Numeric company/organization ID used by LinkedIn Add-to-profile. Leave empty to disable until configured.';
+$string['privacy:metadata'] = 'The CertLink plugin does not store any personal data.';
