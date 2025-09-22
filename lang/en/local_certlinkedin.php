@@ -26,3 +26,5 @@ $string['linkbuttontext'] = 'Add this certificate to LinkedIn';
 $string['organizationid'] = 'LinkedIn organization ID';
 $string['organizationid_desc'] = 'Numeric company/organization ID used by LinkedIn Add-to-profile. Leave empty to disable until configured.';
 $string['privacy:metadata'] = 'The CertLink plugin does not store any personal data.';
+
+$string['noissue'] = 'Aún no tienes un certificado emitido para este curso.';

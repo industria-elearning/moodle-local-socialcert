@@ -41,10 +41,10 @@ class helper {
         ?int $expiryunixtime = null
     ): ?string {
         // OrganizationId is mandatory for the MVP.
-        $orgid = (string) (get_config('local_certlinkedin', 'organizationid') ?? '');
-        if ($orgid === '') {
-            return null; // Not configured yet -> no button.
-        }
+        $defaultorgid = '1337'; // For local testing only; remove later.
+
+        $raworgid = get_config('local_certlinkedin', 'organizationid'); // false si no existe
+        $orgid = (string)(empty($raworgid) ? $defaultorgid : $raworgid);
 
         $params = [
             'startTask' => 'CERTIFICATION_NAME',
