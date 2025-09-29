@@ -16,7 +16,7 @@ $code = optional_param('code', '', PARAM_ALPHANUMEXT);
 // Page setup (system context).
 $context = context_system::instance();
 $PAGE->set_context($context);
-$PAGE->set_url(new moodle_url('/local/certlinkedin/sampleverify.php', ['code' => $code]));
+$PAGE->set_url(new moodle_url('/local/socialcert/sampleverify.php', ['code' => $code]));
 $PAGE->set_title('Certificate verification (demo)');
 $PAGE->set_heading('Certificate verification (demo)');
 

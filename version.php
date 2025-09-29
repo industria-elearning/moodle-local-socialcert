@@ -17,14 +17,14 @@
 /**
  * Plugin version and other meta-data are defined here.
  *
- * @package     local_certlinkedin
+ * @package     local_socialcert
  * @copyright   2025 Manuel Bojaca <manuel@buendata.com>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->component = 'local_certlinkedin';
+$plugin->component = 'local_socialcert';
 $plugin->release = '0.1.0';
 $plugin->version = 2025091900;
 $plugin->requires = 2022112800;

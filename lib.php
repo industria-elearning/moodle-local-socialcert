@@ -1,7 +1,7 @@
 <?php
 defined('MOODLE_INTERNAL') || die();
 
-function local_certlinkedin_extend_settings_navigation(settings_navigation $settingsnav, context $context): void {
+function local_socialcert_extend_settings_navigation(settings_navigation $settingsnav, context $context): void {
     global $DB, $USER;
 
     if (!($context instanceof context_module)) {
@@ -22,14 +22,14 @@ function local_certlinkedin_extend_settings_navigation(settings_navigation $sett
     }
 
     // URL INTERNA a la página que muestra el botón.
-    $content = new moodle_url('/local/certlinkedin/add.php', ['cmid' => $cm->id]);
+    $content = new moodle_url('/local/socialcert/add.php', ['cmid' => $cm->id]);
 
     $node = navigation_node::create(
-        get_string('linkbuttontext', 'local_certlinkedin'),
+        get_string('pluginname', 'local_socialcert'),
         $content,
         navigation_node::TYPE_SETTING,
         null,
-        'local_certlinkedin_addtolinkedin',
+        'local_socialcert_addtolinkedin',
         new pix_icon('i/export', '')
     );
 

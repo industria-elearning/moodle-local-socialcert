@@ -13,14 +13,14 @@ $course = $DB->get_record('course', ['id' => $cm->course], '*', MUST_EXIST);
 require_login($course, false, $cm);
 $context = context_module::instance($cm->id);
 
-$PAGE->set_url(new moodle_url('/local/certlinkedin/add.php', ['cmid' => $cmid]));
+$PAGE->set_url(new moodle_url('/local/socialcert/add.php', ['cmid' => $cmid]));
 $PAGE->set_cm($cm, $course);
 $PAGE->set_context($context);
-$PAGE->set_title(get_string('pluginname', 'local_certlinkedin'));
+$PAGE->set_title(get_string('pluginname', 'local_socialcert'));
 $PAGE->set_heading(format_string($course->fullname));
 
 // Cargar helper.
-require_once(__DIR__ . '/classes/helper.php');
+require_once(__DIR__ . '/classes/linkedinhelper.php');
 
 // Verificar módulo y issue del usuario (mínimo).
 if ($cm->modname !== 'customcert') {
@@ -36,14 +36,14 @@ echo $OUTPUT->header();
 
 if (!$issue) {
     // Si no hay certificado emitido, no mostramos nada más.
-    echo $OUTPUT->notification(get_string('noissue', 'local_certlinkedin'), 'notifymessage');
+    echo $OUTPUT->notification(get_string('noissue', 'local_socialcert'), 'notifymessage');
     echo $OUTPUT->footer();
     exit;
 }
 
 // Construir URL LinkedIn con tu helper.
 $customcert = $DB->get_record('customcert', ['id' => $cm->instance], '*', IGNORE_MISSING);
-$linkedinurl = null;
+$linkedinlinkurl = null;
 
 if ($customcert) {
     $certname  = format_string($customcert->name, true, ['context' => $context]);
@@ -51,7 +51,7 @@ if ($customcert) {
     $certid    = $issue->code;
     $verifyurl = (new moodle_url('/mod/customcert/verify.php', ['code' => $issue->code]))->out(false);
 
-    $linkedinurl = \local_certlinkedin\helper::build_linkedin_url(
+    $linkedinurl = \local_socialcert\linkedin_helper::build_linkedin_url(
         $certname,
         $issued,
         $verifyurl,
@@ -60,8 +60,12 @@ if ($customcert) {
     );
 }
 
+$linkbuttonlabel = get_string('linkcertbuttontext', 'local_socialcert');
+
 // Mostrar solo el botón (o aviso si falta config).
 
-echo \local_certlinkedin\helper::render_button($linkedinurl);
+echo $OUTPUT->heading(get_string('shareinstruction', 'local_socialcert'));
+
+echo \local_socialcert\linkedin_helper::render_button($linkedinurl, $linkbuttonlabel);
 
 echo $OUTPUT->footer();

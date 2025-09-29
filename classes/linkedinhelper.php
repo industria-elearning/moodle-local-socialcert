@@ -3,16 +3,16 @@
 //
 // See the GNU General Public License for more details: https://www.gnu.org/licenses/.
 
-namespace local_certlinkedin;
+namespace local_socialcert;
 
 defined('MOODLE_INTERNAL') || die();
 
 /**
  * Helpers for building the LinkedIn Add-to-profile URL and rendering the button.
  *
- * @package   local_certlinkedin
+ * @package   local_socialcert
  */
-class helper {
+class linkedin_helper {
 
     /**
      * Builds the LinkedIn "Add to profile" URL for a certificate.
@@ -41,9 +41,9 @@ class helper {
         ?int $expiryunixtime = null
     ): ?string {
         // OrganizationId is mandatory for the MVP.
-        $defaultorgid = '1337'; // For local testing only; remove later.
+        $defaultorgid = '1337'; // Replace with your default or test org ID.
 
-        $raworgid = get_config('local_certlinkedin', 'organizationid'); // false si no existe
+        $raworgid = get_config('local_socialcert', 'organizationid'); // false si no existe
         $orgid = (string)(empty($raworgid) ? $defaultorgid : $raworgid);
 
         $params = [
@@ -66,6 +66,65 @@ class helper {
         return 'https://www.linkedin.com/profile/add?' . $query;
     }
 
+     /**
+     * Builds the LinkedIn "Add to profile" URL for a certificate.
+     *
+     * Reference base: https://www.linkedin.com/profile/add
+     *
+     * Required params for our MVP:
+     * - name: Certificate name to display in LinkedIn.
+     * - organizationId: Admin-configured LinkedIn org/company ID (global setting).
+     * - issueYear & issueMonth: From the certificate issue time.
+     * - certUrl: Public verification URL (must be accessible without login).
+     * - certId: Unique certificate id/code.
+     *
+     * @param string   $certname        Display name of the certificate.
+     * @param int      $issueunixtime   Issued timestamp (UNIX).
+     * @param string   $certurl         Public verification URL (no auth).
+     * @param string   $certid          Unique certificate ID (e.g., issue code).
+     * @param int|null $expiryunixtime  Optional expiration timestamp.
+     * @return string|null              Fully built URL, or null if not enough config.
+     */
+    public static function build_linkedin_post_payload(
+        string $certname,
+        int $issueunixtime,
+        string $certurl,
+        string $certid,
+        ?int $expiryunixtime = null
+    ): ?array {
+        
+        return [
+            "endpoint" => 'https://api.linkedin.com/v2/ugcPosts',
+            "body" => [
+                "author" => "urn:li:person:me",
+                "lifecycleState" => "PUBLISHED",
+                "specificContent" => [
+                    "com.linkedin.ugc.ShareContent" => [
+                        "shareCommentary" => [
+                            "text" => "I just earned the $certname certificate! Check it out here: $certurl"
+                        ],
+                        "shareMediaCategory" => "ARTICLE",
+                        "media" => [
+                            [
+                                "status" => "READY",
+                                "description" => [
+                                    "text" => "Certificate ID: $certid"
+                                ],
+                                "originalUrl" => $certurl,
+                                "title" => [
+                                    "text" => $certname
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
+                "visibility" => [
+                    "com.linkedin.ugc.MemberNetworkVisibility" => "PUBLIC" //Podria ser modificable por el udsuario
+                ]
+            ]
+        ];
+    }
+
     /**
      * Returns the HTML for the "Add to LinkedIn" button (or empty string if not configured).
      *
@@ -73,12 +132,10 @@ class helper {
      * @param string|null $label   Optional label (uses lang string by default).
      * @return string
      */
-    public static function render_button(?string $linkedinurl, ?string $label = null): string {
+    public static function render_button(?string $linkedinurl, ?string $label = ''): string {
         if (empty($linkedinurl)) {
             return ''; // No configuration or not applicable.
         }
-
-        $label = $label ?? get_string('linkbuttontext', 'local_certlinkedin');
 
         // Use Moodle's html_writer to keep it simple and theme-friendly.
         return \html_writer::link($linkedinurl, $label, [
