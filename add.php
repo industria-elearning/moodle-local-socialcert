@@ -201,7 +201,6 @@ $PAGE->set_pagelayout('standard');
 // $PAGE->set_title(get_string('pluginname', 'local_socialcert'));
 $PAGE->set_heading(format_string($course->fullname));
 $PAGE->requires->css('/local/socialcert/styles.css');
-$PAGE->requires->js_call_amd('local_socialcert/aiview', 'init');
 $PAGE->requires->js_call_amd('local_socialcert/actions', 'init');
 
 echo $OUTPUT->header();
