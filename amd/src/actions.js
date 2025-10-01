@@ -162,6 +162,7 @@ export function init() {
   register('open-link', handleOpenLink);
   register('copy-html', handleCopyHtml);
   register('copy-image', handleCopyImage);
+  register('run-ai', runAiHandler);
 
   // Delegación única para todos los clicks con data-action
   on(root, '[data-action]', 'click', (ev, el) => {
@@ -175,3 +176,136 @@ export function init() {
   // ⬇️ Calcula visibilidad inicial según data-network del root
   updateVisibility(root);
 }
+
+// --- STREAM MOCK + TYPEWRITER -----------------------------------------------
+
+/**
+ * Inserta y devuelve un cursor visual (caret) al final del elemento destino.
+ * Se usa para simular escritura en vivo.
+ *
+ * @param {HTMLElement} el - Contenedor donde se añadirá el caret.
+ * @returns {HTMLSpanElement} caret - El nodo <span> insertado con la clase "lsc-caret".
+ */
+function addCaret(el) {
+  const caret = document.createElement('span');
+  caret.className = 'lsc-caret';
+  caret.textContent = ' ';
+  el.appendChild(caret);
+  return caret;
+}
+
+/**
+ * Elimina, si existe, el cursor visual (caret) dentro del elemento destino.
+ *
+ * @param {HTMLElement} el - Contenedor desde el que se eliminará el caret.
+ * @returns {void}
+ */
+function removeCaret(el) {
+  const caret = el.querySelector('.lsc-caret');
+  if (caret) { caret.remove(); }
+}
+
+// Control de streams por destino (para detener si se pulsa de nuevo)
+const streams = new WeakMap();
+
+/**
+ * Escribe texto en unidades (char|word) con un intervalo.
+ * @param {HTMLElement} el
+ * @param {string} text
+ * @param {'char'|'word'} mode
+ * @param {number} speedMs
+ * @returns {{stop:Function, done:Promise<void>}}
+ */
+export function typewriter(el, text, mode, speedMs) {
+  const caret = addCaret(el);
+  const units = mode === 'char' ? text.split('') : text.split(/\s+/);
+  let i = 0;
+  let stopped = false;
+  el.innerHTML = '';
+  el.appendChild(caret);
+
+  const done = new Promise((resolve) => {
+    const timer = setInterval(() => {
+      if (stopped) {
+        clearInterval(timer);
+        removeCaret(el);
+        resolve();
+        return;
+      }
+      if (i >= units.length) {
+        clearInterval(timer);
+        removeCaret(el);
+        resolve();
+        return;
+      }
+      const chunk = units[i++];
+      caret.insertAdjacentText('beforebegin', mode === 'word' ? (chunk + ' ') : chunk);
+    }, Math.max(10, speedMs || 30));
+    streams.set(el, { stop: () => { stopped = true; } });
+  });
+
+  return { stop() { const s = streams.get(el); if (s) { s.stop(); streams.delete(el); } }, done };
+}
+
+/** MOCK: sustituye luego por tu fetch real */
+function fetchAiMock() {
+  const demo = "¡Hola! Esta es una respuesta de ejemplo generada por IA. " +
+               "Se muestra poco a poco para simular streaming y que la " +
+               "experiencia se sienta más natural 🙂.";
+  return Promise.resolve(demo);
+}
+
+/**
+ * Ejecuta/Detiene la “IA” (streaming).
+ * Lee data-target, data-mode ("char"|"word"), data-speed (ms).
+ * @param {MouseEvent} ev
+ * @param {HTMLElement} btn
+ */
+export function runAiHandler(ev, btn) {
+  ev.preventDefault();
+
+  // Localiza el destino
+  const sel = btn.dataset.target;
+  let target = null;
+  if (sel) {
+    target = document.querySelector(sel);
+  } else {
+    const wrap = btn.closest('.lsc-response-wrap');
+    target = wrap ? wrap.querySelector('.lsc-response') : null;
+  }
+  if (!target) { return; }
+
+  // Si ya hay stream en ese destino: detener y restaurar
+  if (streams.has(target)) {
+    const s = streams.get(target);
+    if (s && s.stop) { s.stop(); }
+    btn.disabled = false;
+    btn.textContent = 'Activar IA';
+    return;
+  }
+
+  // Preparar UI
+  const mode = (btn.dataset.mode === 'char') ? 'char' : 'word';
+  const speed = parseInt(btn.dataset.speed || '40', 10);
+  const original = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = 'Generando…';
+  target.setAttribute('aria-busy', 'true');
+  target.setAttribute('role', 'status');
+
+  // Mock de respuesta (sustituye luego por tu fetch real)
+  fetchAiMock().then((fulltext) => {
+    const stream = typewriter(target, fulltext, mode, speed);
+    stream.done.then(() => {
+      btn.disabled = false;
+      btn.textContent = original;
+      target.removeAttribute('aria-busy');
+      streams.delete(target);
+    });
+  }).catch(() => {
+    btn.disabled = false;
+    btn.textContent = original;
+    target.removeAttribute('aria-busy');
+  });
+}
+
