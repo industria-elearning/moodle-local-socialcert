@@ -36,3 +36,10 @@ $string['copyarticlebuttontext'] = 'Copy LinkedIn article';
 
 $string['shareinstruction'] = 'Celebrate your achievement! Click below to showcase your certificate on LinkedIn and let your network know about your success:';
 
+$string['copyconfirmation'] = 'Copied ✔';
+
+$string['airesponsebtn'] = 'Activate AI';
+
+$string['generating'] = 'Generating…';
+
+$string['certificateimage'] = 'certificate.png';

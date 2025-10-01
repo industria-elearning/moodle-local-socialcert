@@ -1,4 +1,5 @@
 // amd/src/actions.js
+import {get_string as getString} from 'core/str';
 
 /**
  * Mapa de acciones: nombre -> handler(ev, el)
@@ -17,11 +18,12 @@ const registry = new Map();
  */
 function on(root, selector, type, handler) {
   root.addEventListener(type, (ev) => {
-    const target = ev.target.closest(selector);
+    const origin = /** @type {Element} */(ev.target instanceof Element ? ev.target : root);
+    const target = origin.closest(selector);
     if (!target || !root.contains(target)) {
       return;
     }
-    handler(ev, target);
+    handler(ev, /** @type {HTMLElement} */(target));
   });
 }
 
@@ -110,7 +112,7 @@ function handleOpenLink(ev, el) {
  * @param {HTMLElement} el
  * @returns {void}
  */
-function handleCopyHtml(_ev, el) {
+async function handleCopyHtml(_ev, el) {
   const sel = el.dataset.target || '';
   const node = sel ? document.querySelector(sel) : null;
   if (!node) {
@@ -266,7 +268,7 @@ export function runAiHandler(ev, btn) {
     const s = streams.get(target);
     if (s && s.stop) { s.stop(); }
     btn.disabled = false;
-    btn.textContent = 'Activar IA';
+    btn.textContent = getString('airesponsebtn', 'local_socialcert');
     return;
   }
 
@@ -275,7 +277,7 @@ export function runAiHandler(ev, btn) {
   const speed = parseInt(btn.dataset.speed || '40', 10);
   const original = btn.textContent;
   btn.disabled = true;
-  btn.textContent = 'Generando…';
+  btn.textContent = 'Generating';
   target.setAttribute('aria-busy', 'true');
   target.setAttribute('role', 'status');
 
@@ -304,27 +306,27 @@ export function runAiHandler(ev, btn) {
  * @param {HTMLElement} el
  */
 export function handleCopyText(ev, el) {
-  // Soporta activar con Enter/Espacio si llega por teclado
+  // Soporta acticonst con Enter/Espacio si llega por teclado
   if (ev.type === 'keydown') {
-    var code = ev.key || ev.code;
+    const code = ev.key || ev.code;
     if (code !== 'Enter' && code !== ' ' && code !== 'Spacebar') { return; }
     ev.preventDefault();
   }
 
-  var value = el.getAttribute('data-copy-value');
+  let value = el.getAttribute('data-copy-value');
   if (!value) {
     // Toma el texto visible; ignora el icono de copiar
-    var clone = el.cloneNode(true);
-    var btn = clone.querySelector('.lsc-copybtn');
+    const clone = el.cloneNode(true);
+    const btn = clone.querySelector('.lsc-copybtn');
     if (btn) { btn.remove(); }
     value = clone.innerText || clone.textContent || '';
   }
 
   navigator.clipboard.writeText(value).then(function () {
     // Feedback: swap temporal en el chip si está
-    var badge = el.querySelector('.lsc-copybtn');
+    let badge = el.querySelector('.lsc-copybtn');
     if (!badge) { return; }
-    var original = badge.textContent;
+    const original = badge.textContent;
     badge.textContent = '✔';
     setTimeout(function () { badge.textContent = original; }, 900);
   }).catch(function () {
@@ -348,18 +350,18 @@ export function register(name, fn) { registry.set(name, fn); }
  */
 function handleDownloadImage(_ev, el) {
   // 1) Resolver URL
-  var url = el.getAttribute('data-url') || '';
+  let url = el.getAttribute('data-url') || '';
 
   if (!url) {
-    var sel = el.getAttribute('data-target') || '';
-    var img = sel ? document.querySelector(sel) : null;
+    const sel = el.getAttribute('data-target') || '';
+    const img = sel ? document.querySelector(sel) : null;
     if (img) { url = img.getAttribute('src') || ''; }
   }
   if (!url) { return; }
 
   // 2) Si es pluginfile.php, añade forcedownload=1
   try {
-    var u = new URL(url, window.location.origin);
+    const u = new URL(url, window.location.origin);
     if (u.pathname.indexOf('/pluginfile.php') !== -1 && !u.searchParams.has('forcedownload')) {
       u.searchParams.set('forcedownload', '1');
       url = u.toString();
@@ -367,10 +369,10 @@ function handleDownloadImage(_ev, el) {
   } catch (_e) { /* usa url tal cual */ }
 
   // 3) Nombre de archivo
-  var filename = el.getAttribute('data-filename') || (function () {
+  const filename = el.getAttribute('data-filename') || (function () {
     try {
-      var u2 = new URL(url, window.location.origin);
-      var base = u2.pathname.split('/').pop() || 'certificado';
+      const u2 = new URL(url, window.location.origin);
+      const base = u2.pathname.split('/').pop() || 'certificado';
       return base.indexOf('.') === -1 ? (base + '.png') : base;
     } catch (_e) { return 'certificado.png'; }
   })();
@@ -382,8 +384,8 @@ function handleDownloadImage(_ev, el) {
       return res.blob();
     })
     .then(function (blob) {
-      var blobUrl = URL.createObjectURL(blob);
-      var a = document.createElement('a');
+      const blobUrl = URL.createObjectURL(blob);
+      const a = document.createElement('a');
       a.href = blobUrl;
       a.download = filename;           // fuerza descarga con nombre
       document.body.appendChild(a);
@@ -393,7 +395,7 @@ function handleDownloadImage(_ev, el) {
     })
     .catch(function () {
       // 5) Fallback: abrir en nueva pestaña (usuario guarda manualmente)
-      var a = document.createElement('a');
+      const a = document.createElement('a');
       a.href = url;
       a.target = '_blank';
       a.rel = 'noopener';

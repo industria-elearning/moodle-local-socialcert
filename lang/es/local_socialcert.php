@@ -21,3 +21,10 @@ $string['postcertbuttontext'] = 'Publicar en LinkedIn';
 
 $string['shareinstruction'] = '¡Celebra tu logro! Haz clic a continuación para mostrar tu certificado en LinkedIn y contarle a tu red sobre tu éxito:';
 
+$string['copyconfirmation'] = 'Copiado ✔';
+
+$string['airesponsebtn'] = 'Activar IA';
+
+$string['generating'] = 'Generando…';
+
+$string['certificateimage'] = 'certificado.png';
