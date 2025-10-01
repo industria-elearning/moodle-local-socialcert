@@ -1,0 +1,26 @@
+
+.local-socialcert { max-width: 780px; margin: 2rem auto; }
+.lsc-actions { display: flex; gap: .5rem; margin: .75rem 0; }
+
+.lsc-response-wrap { position: relative; }
+.lsc-response {
+  border: 1px solid #ddd; border-radius: 6px;
+  padding: .75rem; background: #fff;
+  min-height: 90px; line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.lsc-copy-btn {
+  position: absolute; right: .5rem; top: .5rem;
+  border: 0; background: transparent; cursor: pointer;
+  font-size: 1.1rem;
+}
+
+.lsc-figure { margin: 1rem 0; text-align: center; }
+.lsc-img-fixedh {
+  height: 220px;          /* alto fijo */
+  width: auto;            /* cambia de ancho */
+  max-width: 100%;        /* no desbordar */
+  object-fit: contain;    /* mantener proporciones */
+  display: inline-block;  /* centrar con text-align:center del figure */
+}

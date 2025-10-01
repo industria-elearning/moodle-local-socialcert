@@ -1,0 +1,36 @@
+<div class="local-socialcert">
+  <h3 class="lsc-title">{{intro}}</h3>
+
+  <div class="lsc-actions">
+    <a id="{{buttonid}}"
+       class="btn btn-secondary"
+       href="{{shareurl}}"
+       target="_blank"
+       rel="noopener"
+       data-action="open-link">
+      {{buttonlabel}}
+    </a>
+    <button id="{{aibuttonid}}" class="btn btn-primary" data-action="run-ai">{{aibuttonlabel}}</button>
+  </div>
+
+  <div class="lsc-response-wrap">
+    <div id="{{responseid}}" class="lsc-response" aria-live="polite"></div>
+
+    <button class="lsc-copy-btn" title="{{copytextlabel}}"
+            data-action="copy-html" data-target="#{{responseid}}">
+      📋
+    </button>
+  </div>
+
+  <figure class="lsc-figure">
+    <img id="{{imageid}}" src="{{imageurl}}" alt="{{imagealt}}"
+         class="lsc-img-fixedh">
+  </figure>
+
+  <div class="lsc-actions">
+    <button class="btn btn-outline-secondary"
+            data-action="copy-image" data-target="#{{imageid}}">
+      {{copyimagelabel}}
+    </button>
+  </div>
+</div>

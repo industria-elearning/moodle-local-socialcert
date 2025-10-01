@@ -66,82 +66,78 @@ class linkedin_helper {
         return 'https://www.linkedin.com/profile/add?' . $query;
     }
 
-     /**
-     * Builds the LinkedIn "Add to profile" URL for a certificate.
-     *
-     * Reference base: https://www.linkedin.com/profile/add
-     *
-     * Required params for our MVP:
-     * - name: Certificate name to display in LinkedIn.
-     * - organizationId: Admin-configured LinkedIn org/company ID (global setting).
-     * - issueYear & issueMonth: From the certificate issue time.
-     * - certUrl: Public verification URL (must be accessible without login).
-     * - certId: Unique certificate id/code.
-     *
-     * @param string   $certname        Display name of the certificate.
-     * @param int      $issueunixtime   Issued timestamp (UNIX).
-     * @param string   $certurl         Public verification URL (no auth).
-     * @param string   $certid          Unique certificate ID (e.g., issue code).
-     * @param int|null $expiryunixtime  Optional expiration timestamp.
-     * @return string|null              Fully built URL, or null if not enough config.
-     */
-    public static function build_linkedin_post_payload(
+     public static function build_linkedin_article_html(
         string $certname,
         int $issueunixtime,
         string $certurl,
         string $certid,
         ?int $expiryunixtime = null
-    ): ?array {
-        
-        return [
-            "endpoint" => 'https://api.linkedin.com/v2/ugcPosts',
-            "body" => [
-                "author" => "urn:li:person:me",
-                "lifecycleState" => "PUBLISHED",
-                "specificContent" => [
-                    "com.linkedin.ugc.ShareContent" => [
-                        "shareCommentary" => [
-                            "text" => "I just earned the $certname certificate! Check it out here: $certurl"
-                        ],
-                        "shareMediaCategory" => "ARTICLE",
-                        "media" => [
-                            [
-                                "status" => "READY",
-                                "description" => [
-                                    "text" => "Certificate ID: $certid"
-                                ],
-                                "originalUrl" => $certurl,
-                                "title" => [
-                                    "text" => $certname
-                                ]
-                            ]
-                        ]
-                    ]
-                ],
-                "visibility" => [
-                    "com.linkedin.ugc.MemberNetworkVisibility" => "PUBLIC" //Podria ser modificable por el udsuario
-                ]
-            ]
-        ];
+    ): string {
+
+        // Use NOWDOC to avoid interpolation. The closing label must be at column 0.
+        $bodyhtml = <<<'HTML'
+            <h1>Compelling Title of the Article</h1>
+            <p>Short intro paragraph that states the problem and the value readers will get.</p>
+
+            <h2>Key Takeaways</h2>
+            <ul>
+            <li>Takeaway one.</li>
+            <li>Takeaway two.</li>
+            <li>Takeaway three.</li>
+            </ul>
+
+            <h2>Background</h2>
+            <p>Explain the context with clear sentences and short paragraphs.</p>
+
+            <blockquote>Memorable pull quote or key insight to highlight.</blockquote>
+
+            <h2>How-To / Steps</h2>
+            <ol>
+            <li><strong>Step 1:</strong> What to do and why it matters.</li>
+            <li><strong>Step 2:</strong> Keep steps concise.</li>
+            <li><strong>Step 3:</strong> Link to sources <a href="https://example.com">like this</a>.</li>
+            </ol>
+
+            <figure>
+            <img src="https://example.com/your-image.jpg" alt="Descriptive alt text">
+            <figcaption>Short caption for accessibility and context.</figcaption>
+            </figure>
+
+            <h2>Conclusion</h2>
+            <p>Wrap up with a call to action or question for readers.</p>
+        HTML;
+
+        $article = sprintf(
+            "<h1>%s</h1>\n<p>Issued on %s</p>\n%s",
+            htmlspecialchars($certname, ENT_QUOTES),
+            userdate($issueunixtime),
+            $bodyhtml
+        );
+
+        return $article;
     }
 
     /**
-     * Returns the HTML for the "Add to LinkedIn" button (or empty string if not configured).
-     *
-     * @param string $linkedinurl  URL built with build_linkedin_url().
-     * @param string|null $label   Optional label (uses lang string by default).
-     * @return string
+     * @param string|null $linkedinurl URL for real LinkedIn action (or null/# when using JS).
+     * @param string $label Button text.
+     * @param array $attrs Extra HTML attributes (data-action, data-target, class, etc.).
+     * @return string HTML for a button or link.
      */
-    public static function render_button(?string $linkedinurl, ?string $label = ''): string {
-        if (empty($linkedinurl)) {
-            return ''; // No configuration or not applicable.
+    public static function render_button(?string $linkedinurl, string $label = '', array $attrs = []): string {
+        // Base classes; allow caller to override/extend.
+        $attrs = array_merge(['class' => 'btn btn-primary'], $attrs);
+
+        // If it has a JS action, render a real <button>.
+        if (!empty($attrs['data-action'])) {
+            return \html_writer::tag('button', $label, $attrs);
         }
 
-        // Use Moodle's html_writer to keep it simple and theme-friendly.
-        return \html_writer::link($linkedinurl, $label, [
-            'class' => 'btn btn-primary',
-            'target' => '_blank',
-            'rel' => 'noopener',
-        ]);
+        // Otherwise render a normal link (LinkedIn share, etc.).
+        if (empty($linkedinurl)) {
+            return ''; // Nothing to render.
+        }
+
+        $linkattrs = array_merge($attrs, ['target' => '_blank', 'rel' => 'noopener']);
+        return \html_writer::link($linkedinurl, $label, $linkattrs);
     }
 }

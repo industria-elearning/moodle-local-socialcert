@@ -32,7 +32,7 @@ $string['privacy:metadata'] = 'The SocialCert plugin does not store any personal
 $string['noissue'] = 'Aún no tienes un certificado emitido para este curso.';
 
 $string['linkcertbuttontext'] = 'Share on LinkedIn';
-$string['postcertbuttontext'] = 'Post on LinkedIn';
+$string['copyarticlebuttontext'] = 'Copy LinkedIn article';
 
 $string['shareinstruction'] = 'Celebrate your achievement! Click below to showcase your certificate on LinkedIn and let your network know about your success:';
 
