@@ -341,6 +341,71 @@ export function handleCopyText(ev, el) {
 export function register(name, fn) { registry.set(name, fn); }
 
 /**
+ * Descarga la imagen indicada por data-url o por el src de data-target.
+ * Añade forcedownload=1 para pluginfile.php (Moodle) para forzar la descarga.
+ * @param {MouseEvent} _ev
+ * @param {HTMLElement} el
+ */
+function handleDownloadImage(_ev, el) {
+  // 1) Resolver URL
+  var url = el.getAttribute('data-url') || '';
+
+  if (!url) {
+    var sel = el.getAttribute('data-target') || '';
+    var img = sel ? document.querySelector(sel) : null;
+    if (img) { url = img.getAttribute('src') || ''; }
+  }
+  if (!url) { return; }
+
+  // 2) Si es pluginfile.php, añade forcedownload=1
+  try {
+    var u = new URL(url, window.location.origin);
+    if (u.pathname.indexOf('/pluginfile.php') !== -1 && !u.searchParams.has('forcedownload')) {
+      u.searchParams.set('forcedownload', '1');
+      url = u.toString();
+    }
+  } catch (_e) { /* usa url tal cual */ }
+
+  // 3) Nombre de archivo
+  var filename = el.getAttribute('data-filename') || (function () {
+    try {
+      var u2 = new URL(url, window.location.origin);
+      var base = u2.pathname.split('/').pop() || 'certificado';
+      return base.indexOf('.') === -1 ? (base + '.png') : base;
+    } catch (_e) { return 'certificado.png'; }
+  })();
+
+  // 4) Intento principal: descargar como blob (mejor UX)
+  fetch(url, { credentials: 'same-origin' })
+    .then(function (res) {
+      if (!res.ok) { throw new Error('HTTP ' + res.status); }
+      return res.blob();
+    })
+    .then(function (blob) {
+      var blobUrl = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = blobUrl;
+      a.download = filename;           // fuerza descarga con nombre
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(function () { URL.revokeObjectURL(blobUrl); }, 500);
+    })
+    .catch(function () {
+      // 5) Fallback: abrir en nueva pestaña (usuario guarda manualmente)
+      var a = document.createElement('a');
+      a.href = url;
+      a.target = '_blank';
+      a.rel = 'noopener';
+      // Si es misma-origen, download también podría funcionar sin blob:
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    });
+}
+
+/**
  * Punto de entrada: registra handlers base y activa la delegación de clicks.
  * @returns {void}
  */
@@ -360,6 +425,7 @@ export function init() {
   register('copy-image', handleCopyImage);
   register('run-ai', runAiHandler);
   register('copy-text', handleCopyText);
+  register('download-image', handleDownloadImage);
 
   // Delegación única para todos los clicks con data-action
   on(root, '[data-action]', 'click', (ev, el) => {
@@ -375,4 +441,3 @@ export function init() {
   // ⬇️ Calcula visibilidad inicial según data-network del root
   updateVisibility(root);
 }
-

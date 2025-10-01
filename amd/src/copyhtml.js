@@ -90,11 +90,8 @@ export const init = (selector = '[data-action="copy-as-html"]') => {
         if (ok) {
             Notification.addNotification({message: 'Copiado como texto visible.', type: 'success'});
             // Debug opcional:
-            // console.log('[socialcert] Texto copiado:', node.innerText ?? node.textContent);
         } else {
             Notification.exception({message: 'No se pudo copiar. Verifica permisos/HTTPS.'});
         }
     });
 };
-
-export const printpls = () => console.log('copyhtml.js cargado');

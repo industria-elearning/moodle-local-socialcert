@@ -184,7 +184,7 @@ if ($customcert) {
 $imageurl = \local_socialcert\linkedin_helper::local_socialcert_get_first_customcert_image_url($context);
 
 if (empty($imageurl)) {
-    $imageurl = $OUTPUT->image_url('cert', 'local_socialcert')->out(false);
+    $imageurl = $OUTPUT->image_url('cert0', 'local_socialcert')->out(false);
 }
 
 $response = ['status' => 'ok', 'msg' => 'Certificado enviado'];

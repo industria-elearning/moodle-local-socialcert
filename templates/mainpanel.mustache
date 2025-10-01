@@ -85,13 +85,13 @@
   <!-- Imagen (full width) -->
   <div class="lsc-copycard lsc-copycard--full"
       role="button" tabindex="0"
-      title="Copiar URL de imagen"
-      data-action="copy-text"
+      title="Download image"
+      data-action="download-image"
       data-copy-value="{{imageurl}}">
-    <div class="lsc-copybtn" aria-hidden="true">📋</div>
+    <div class="lsc-copybtn" aria-hidden="true">⬇️</div>
     <div class="lsc-k">Imagen</div>
     <div class="lsc-v">
-      <img src="{{imageurl}}" alt="Miniatura del certificado" class="lsc-thumb lsc-thumb--wide">
+      <img id="{{imageid}}" src="{{imageurl}}" alt="Miniatura del certificado" class="lsc-thumb lsc-thumb--wide">
     </div>
   </div>
 </div>
