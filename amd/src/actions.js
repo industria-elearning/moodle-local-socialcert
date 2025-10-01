@@ -101,7 +101,11 @@ function handleOpenLink(ev, el) {
 }
 
 /**
- * Copia el HTML interno del selector dado en data-target.
+ * Copia el contenido del cuadro de respuesta al portapapeles.
+ * - data-target: selector del contenedor (ej. "#ai-response")
+ * - data-copy: "text" (por defecto) o "html"
+ *   - En ambos modos se eliminan spans .lsc-caret antes de copiar.
+ *
  * @param {MouseEvent} _ev
  * @param {HTMLElement} el
  * @returns {void}
@@ -112,9 +116,27 @@ function handleCopyHtml(_ev, el) {
   if (!node) {
     return;
   }
-  // Copia HTML
-  const html = node.innerHTML;
-  navigator.clipboard.writeText(html).catch(() => { /* fallback opcional */ });
+
+  // Clonamos para poder limpiar elementos auxiliares (caret, etc.)
+  const clone = node.cloneNode(true);
+  const carets = clone.querySelectorAll('.lsc-caret');
+  carets.forEach(c => c.remove());
+
+  const mode = (el.dataset.copy === 'html') ? 'html' : 'text';
+  const content = (mode === 'html')
+    ? clone.innerHTML
+    : (clone.innerText || clone.textContent || '');
+
+  navigator.clipboard.writeText(content)
+    .then(() => {
+      // feedback opcional: cambiar el texto del botón brevemente
+      const original = el.textContent;
+      el.textContent = 'Copiado ✔';
+      setTimeout(() => { el.textContent = original; }, 1200);
+    })
+    .catch(() => {
+      // fallback opcional (silencioso)
+    });
 }
 
 /**
@@ -249,9 +271,13 @@ export function typewriter(el, text, mode, speedMs) {
 
 /** MOCK: sustituye luego por tu fetch real */
 function fetchAiMock() {
-  const demo = "¡Hola! Esta es una respuesta de ejemplo generada por IA. " +
-               "Se muestra poco a poco para simular streaming y que la " +
-               "experiencia se sienta más natural 🙂.";
+  const demo = "Lorem ipsum dolor sit amet consectetur adipiscing elit vel curae id, mauris vivamus vulputate " +
+  "condimentum erat arcu ligula tristique tincidunt iaculis, ac tempor tortor suspendisse torquent nisl " +
+  "commodo eget mus. Nulla penatibus nostra inceptos tortor congue quam mollis ornare class, dui nunc " +
+  "iaculis bibendum nascetur himenaeos facilisi rhoncus, morbi nibh arcu ullamcorper faucibus dictumst " +
+  "facilisis tristique. Taciti lacus maecenas vulputate vel nostra ante interdum vivamus enim, est " +
+  "malesuada volutpat semper quisque etiam rhoncus lectus proin, quis sem vitae leo consequat euismod " +
+  "vestibulum facilisi. 🙂.";
   return Promise.resolve(demo);
 }
 
