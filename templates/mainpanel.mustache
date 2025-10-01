@@ -47,14 +47,51 @@
     <div id="{{responseid}}" class="lsc-response" aria-live="polite"></div>
   </div>
 
-  <figure class="lsc-figure">
-    <img id="{{imageid}}" src="{{imageurl}}" alt="{{imagealt}}" class="lsc-img-fixedh">
-  </figure>
+ <!-- Datos del certificado -->
+<div class="lsc-certdata">
+  <!-- Nombre -->
+  <div class="lsc-copycard"
+       role="button" tabindex="0"
+       title="Copiar nombre"
+       data-action="copy-text"
+       data-copy-value="{{certname}}">
+    <div class="lsc-copybtn" aria-hidden="true">📋</div>
+    <div class="lsc-k">Nombre</div>
+    <div class="lsc-v">{{certname}}</div>
+  </div>
 
-  <div class="lsc-actions">
-    <button class="btn btn-outline-secondary"
-            data-action="copy-image" data-target="#{{imageid}}">
-      {{copyimagelabel}}
-    </button>
+  <!-- URL de verificación -->
+  <div class="lsc-copycard"
+       role="button" tabindex="0"
+       title="Copiar URL de verificación"
+       data-action="copy-text"
+       data-copy-value="{{verifyurl}}">
+    <div class="lsc-copybtn" aria-hidden="true">📋</div>
+    <div class="lsc-k">URL</div>
+    <div class="lsc-v text-truncate">{{verifyurl}}</div>
+  </div>
+  
+  <!-- Certificate ID -->
+  <div class="lsc-copycard"
+       role="button" tabindex="0"
+       title="Copiar ID de certificado"
+       data-action="copy-text"
+       data-copy-value="{{certid}}">
+    <div class="lsc-copybtn" aria-hidden="true">📋</div>
+    <div class="lsc-k">ID</div>
+    <div class="lsc-v text-truncate">{{certid}}</div>
+  </div>
+
+  <!-- Imagen (full width) -->
+  <div class="lsc-copycard lsc-copycard--full"
+      role="button" tabindex="0"
+      title="Copiar URL de imagen"
+      data-action="copy-text"
+      data-copy-value="{{imageurl}}">
+    <div class="lsc-copybtn" aria-hidden="true">📋</div>
+    <div class="lsc-k">Imagen</div>
+    <div class="lsc-v">
+      <img src="{{imageurl}}" alt="Miniatura del certificado" class="lsc-thumb lsc-thumb--wide">
+    </div>
   </div>
 </div>

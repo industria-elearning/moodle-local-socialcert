@@ -158,46 +158,6 @@ function handleCopyImage(_ev, el) {
   }
 }
 
-/**
- * Registra una acción para usar con data-action="name".
- * @param {string} name
- * @param {(ev:Event, el:HTMLElement)=>void} fn
- * @returns {void}
- */
-export function register(name, fn) { registry.set(name, fn); }
-
-/**
- * Punto de entrada: registra handlers base y activa la delegación de clicks.
- * @returns {void}
- */
-export function init() {
-  const root = document.querySelector('.local-socialcert');
-  if (!root) {
-    return;
-  }
-
-  // ⬇️ FALTABA registrar el selector de red
-  register('select-network', handleSelectNetwork);
-  updateVisibility(root);
-
-  // Registra acciones base
-  register('open-link', handleOpenLink);
-  register('copy-html', handleCopyHtml);
-  register('copy-image', handleCopyImage);
-  register('run-ai', runAiHandler);
-
-  // Delegación única para todos los clicks con data-action
-  on(root, '[data-action]', 'click', (ev, el) => {
-    const action = el.dataset.action;
-    const fn = registry.get(action);
-    if (fn) {
-      fn(ev, el);
-    }
-  });
-
-  // ⬇️ Calcula visibilidad inicial según data-network del root
-  updateVisibility(root);
-}
 
 // --- STREAM MOCK + TYPEWRITER -----------------------------------------------
 
@@ -333,5 +293,86 @@ export function runAiHandler(ev, btn) {
     btn.textContent = original;
     target.removeAttribute('aria-busy');
   });
+}
+
+/**
+ * Copia al portapapeles:
+ *  - el valor explícito en data-copy-value, o
+ *  - si no está, el texto visible del elemento.
+ * Muestra feedback breve en el chip de copiar si existe.
+ * @param {MouseEvent|KeyboardEvent} ev
+ * @param {HTMLElement} el
+ */
+export function handleCopyText(ev, el) {
+  // Soporta activar con Enter/Espacio si llega por teclado
+  if (ev.type === 'keydown') {
+    var code = ev.key || ev.code;
+    if (code !== 'Enter' && code !== ' ' && code !== 'Spacebar') { return; }
+    ev.preventDefault();
+  }
+
+  var value = el.getAttribute('data-copy-value');
+  if (!value) {
+    // Toma el texto visible; ignora el icono de copiar
+    var clone = el.cloneNode(true);
+    var btn = clone.querySelector('.lsc-copybtn');
+    if (btn) { btn.remove(); }
+    value = clone.innerText || clone.textContent || '';
+  }
+
+  navigator.clipboard.writeText(value).then(function () {
+    // Feedback: swap temporal en el chip si está
+    var badge = el.querySelector('.lsc-copybtn');
+    if (!badge) { return; }
+    var original = badge.textContent;
+    badge.textContent = '✔';
+    setTimeout(function () { badge.textContent = original; }, 900);
+  }).catch(function () {
+    // Silencioso; podrías mostrar \core\notification desde PHP si lo prefieres
+  });
+}
+
+/**
+ * Registra una acción para usar con data-action="name".
+ * @param {string} name
+ * @param {(ev:Event, el:HTMLElement)=>void} fn
+ * @returns {void}
+ */
+export function register(name, fn) { registry.set(name, fn); }
+
+/**
+ * Punto de entrada: registra handlers base y activa la delegación de clicks.
+ * @returns {void}
+ */
+export function init() {
+  const root = document.querySelector('.local-socialcert');
+  if (!root) {
+    return;
+  }
+
+  // ⬇️ FALTABA registrar el selector de red
+  register('select-network', handleSelectNetwork);
+  updateVisibility(root);
+
+  // Registra acciones base
+  register('open-link', handleOpenLink);
+  register('copy-html', handleCopyHtml);
+  register('copy-image', handleCopyImage);
+  register('run-ai', runAiHandler);
+  register('copy-text', handleCopyText);
+
+  // Delegación única para todos los clicks con data-action
+  on(root, '[data-action]', 'click', (ev, el) => {
+    const action = el.dataset.action;
+    const fn = registry.get(action);
+    if (fn) {
+      fn(ev, el);
+    }
+  });
+
+  on(root, '[data-action="copy-text"]', 'keydown', (ev, el) => handleCopyText(ev, el));
+
+  // ⬇️ Calcula visibilidad inicial según data-network del root
+  updateVisibility(root);
 }
 

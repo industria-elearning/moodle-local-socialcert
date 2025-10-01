@@ -1,15 +1,12 @@
 <?php
-require('../../config.php');
 
-require_once(__DIR__ . '/classes/linkedinhelper.php');
+// require('../../config.php');
+
+// require_once(__DIR__ . '/classes/linkedinhelper.php');
 
 // use aiprovider_datacurso\httpclient\ai_services_api;
 
-$cmid = required_param('cmid', PARAM_INT);
-$cm     = get_coursemodule_from_id('', $cmid, 0, false, MUST_EXIST);
-$course = $DB->get_record('course', ['id' => $cm->course], '*', MUST_EXIST);
 
-require_login($course, false, $cm);
 
 
 // $cmid = required_param('cmid', PARAM_INT);
@@ -128,8 +125,15 @@ require_login($course, false, $cm);
 // echo $OUTPUT->footer();
 
 
+require('../../config.php');
 
+require_once(__DIR__ . '/classes/linkedinhelper.php');
 
+$cmid = required_param('cmid', PARAM_INT);
+$cm     = get_coursemodule_from_id('', $cmid, 0, false, MUST_EXIST);
+$course = $DB->get_record('course', ['id' => $cm->course], '*', MUST_EXIST);
+
+require_login($course, false, $cm);
 
 $context = context_module::instance($cm->id);
 
@@ -158,6 +162,10 @@ if (!$issue) {
 
 $customcert = $DB->get_record('customcert', ['id' => $cm->instance], '*', IGNORE_MISSING);
 $linkedinurl = null;
+$certname = '';
+$issued = 0;
+$verifyurl = '';
+$certid = '';
 
 if ($customcert) {
     $certname  = format_string($customcert->name, true, ['context' => $context]);
@@ -173,13 +181,19 @@ if ($customcert) {
     );
 }
 
+$imageurl = \local_socialcert\linkedin_helper::local_socialcert_get_first_customcert_image_url($context);
+
+if (empty($imageurl)) {
+    $imageurl = $OUTPUT->image_url('cert', 'local_socialcert')->out(false);
+}
+
 $response = ['status' => 'ok', 'msg' => 'Certificado enviado'];
 
 $json = json_encode($response, JSON_UNESCAPED_UNICODE);
 
 $customcert = $DB->get_record('customcert', ['id' => $cm->instance], '*', IGNORE_MISSING);
 
-$context = [
+$contextdata = [
     'intro'          => get_string('shareinstruction', 'local_socialcert'),
     'shareurl'       => $linkedinurl,    
     'buttonid'       => 'btn-normal',
@@ -189,9 +203,12 @@ $context = [
     'responseid'     => 'ai-response',
     'copytextlabel'  => 'Copiar respuesta',
     'imageid'        => 'ai-image',
-    'imageurl'       => $imageurl ?? (new moodle_url('/pix/i/calc.svg'))->out(false),
+    'imageurl'       => $imageurl,
     'imagealt'       => 'Resultado IA',
-    'copyimagelabel' => 'Copiar imagen'
+    'copyimagelabel' => 'Copiar imagen',
+    'certname'       => $certname,
+    'verifyurl'      => $verifyurl,
+    'certid'         => $certid
 ];
 
 $PAGE->set_url(new moodle_url('/local/socialcert/add.php', ['cmid' => $cmid]));
@@ -205,6 +222,6 @@ $PAGE->requires->js_call_amd('local_socialcert/actions', 'init');
 
 echo $OUTPUT->header();
 
-echo $OUTPUT->render_from_template('local_socialcert/mainpanel', $context);
+echo $OUTPUT->render_from_template('local_socialcert/mainpanel', $contextdata);
 
 echo $OUTPUT->footer();

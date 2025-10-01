@@ -68,3 +68,84 @@
 
 /* si quieres compactar más los botones de la toolbar */
 .lsc-toolbar .btn { padding: .15rem .5rem; }
+
+.lsc-certdata {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: .75rem;
+  margin-top: 1rem;
+}
+
+.lsc-copycard {
+  position: relative;
+  border: 1px solid #e5e7eb; /* gris claro */
+  border-radius: .5rem;
+  padding: .75rem .75rem;
+  background: #fff;
+  cursor: pointer;
+  transition: box-shadow .15s ease, border-color .15s ease;
+}
+.lsc-copycard:hover {
+  box-shadow: 0 2px 10px rgba(0,0,0,.06);
+  border-color: #d1d5db;
+}
+
+.lsc-copybtn {
+  position: absolute;
+  top: .4rem;
+  right: .45rem;
+  opacity: 0;
+  transition: opacity .12s ease;
+  font-size: .95rem;
+}
+.lsc-copycard:hover .lsc-copybtn { opacity: 1; }
+
+.lsc-k {
+  font-size: .8rem;
+  color: #6b7280; /* gray-500 */
+  margin-bottom: .25rem;
+  text-transform: uppercase;
+  letter-spacing: .02em;
+}
+.lsc-v {
+  font-weight: 600;
+  line-height: 1.35;
+  word-break: break-word;
+}
+
+.lsc-thumb {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: .35rem;
+}
+
+/* Por si el tema no trae .text-truncate */
+.text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Fallback .d-none, por si acaso */
+.d-none { display: none !important; }
+
+.lsc-copycard--full { grid-column: 1 / -1; }
+
+/* La grilla ya la tienes; agregamos una variante "full width" */
+.lsc-copycard--full .lsc-v {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: .25rem;
+}
+
+/* (opcional) que la miniatura se adapte al ancho disponible */
+.lsc-thumb--wide {
+  display: block;         /* permite margin auto si lo usas */
+  max-width: 100%;        /* no excede el ancho disponible */
+  width: auto;            /* evita estirar horizontalmente */
+  height: auto;           /* alto proporcional (default) */
+  max-height: 50vh;       /* limita la altura en pantallas altas (ajusta a gusto) */
+  object-fit: contain;    /* mantiene proporción dentro del área disponible */
+}

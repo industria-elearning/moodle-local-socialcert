@@ -140,4 +140,41 @@ class linkedin_helper {
         $linkattrs = array_merge($attrs, ['target' => '_blank', 'rel' => 'noopener']);
         return \html_writer::link($linkedinurl, $label, $linkattrs);
     }
+
+    /**
+     * Devuelve la URL pluginfile de la primera imagen asociada al certificado
+     * en fileareas comunes de mod_customcert, o null si no hay.
+     *
+     * @param context_module $context
+     * @return string|null
+     */
+    public static function local_socialcert_get_first_customcert_image_url(\context_module $context): ?string {
+        $fs = get_file_storage();
+
+        // Fileareas donde suelen vivir las imágenes de customcert
+        // (elementos tipo "image" y fondos de página/plantilla).
+        $fileareas = ['image', 'background', 'pagebackground', 'element'];
+
+        foreach ($fileareas as $filearea) {
+            // itemid = 0 devuelve todos los itemid de ese filearea en el contexto.
+            $files = $fs->get_area_files(
+                $context->id, 'mod_customcert', $filearea,
+                0, 'itemid, filepath, filename', false // sin directorios
+            );
+
+            foreach ($files as $f) {
+                if (strpos($f->get_mimetype(), 'image/') === 0) {
+                    return \moodle_url::make_pluginfile_url(
+                        $f->get_contextid(),
+                        $f->get_component(),
+                        $f->get_filearea(),
+                        $f->get_itemid(),
+                        $f->get_filepath(),
+                        $f->get_filename()
+                    )->out(false);
+                }
+            }
+        }
+        return null;
+    }
 }
