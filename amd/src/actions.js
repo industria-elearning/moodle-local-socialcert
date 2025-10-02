@@ -1,5 +1,7 @@
 // amd/src/actions.js
 import {get_string as getString} from 'core/str';
+import Ajax from 'core/ajax';
+import Notification from 'core/notification';
 
 /**
  * Mapa de acciones: nombre -> handler(ev, el)
@@ -232,16 +234,45 @@ export function typewriter(el, text, mode, speedMs) {
 }
 
 /** MOCK: sustituye luego por tu fetch real */
-function fetchAiMock() {
-  const demo = "Lorem ipsum dolor sit amet consectetur adipiscing elit vel curae id, mauris vivamus vulputate " +
-  "condimentum erat arcu ligula tristique tincidunt iaculis, ac tempor tortor suspendisse torquent nisl " +
-  "commodo eget mus. Nulla penatibus nostra inceptos tortor congue quam mollis ornare class, dui nunc " +
-  "iaculis bibendum nascetur himenaeos facilisi rhoncus, morbi nibh arcu ullamcorper faucibus dictumst " +
-  "facilisis tristique. Taciti lacus maecenas vulputate vel nostra ante interdum vivamus enim, est " +
-  "malesuada volutpat semper quisque etiam rhoncus lectus proin, quis sem vitae leo consequat euismod " +
-  "vestibulum facilisi. 🙂.";
-  return Promise.resolve(demo);
+// function fetchAiMock() {
+//   const demo = "Lorem ipsum dolor sit amet consectetur adipiscing elit vel curae id, mauris vivamus vulputate " +
+//   "condimentum erat arcu ligula tristique tincidunt iaculis, ac tempor tortor suspendisse torquent nisl " +
+//   "commodo eget mus. Nulla penatibus nostra inceptos tortor congue quam mollis ornare class, dui nunc " +
+//   "iaculis bibendum nascetur himenaeos facilisi rhoncus, morbi nibh arcu ullamcorper faucibus dictumst " +
+//   "facilisis tristique. Taciti lacus maecenas vulputate vel nostra ante interdum vivamus enim, est " +
+//   "malesuada volutpat semper quisque etiam rhoncus lectus proin, quis sem vitae leo consequat euismod " +
+//   "vestibulum facilisi. 🙂.";
+//   return Promise.resolve(demo);
+// }
+
+function ai_response () {
+  return new Promise((resolve, reject) => {
+    Ajax.call([{
+      methodname: 'local_socialcert_get_ai_response',
+      args: {
+        body: {
+          cert5name: 'Fundamentos de Python',
+          coudrse: 'Curso de Python',
+          ordg: 'Google',
+          socialdmedia: 'LinkedIn'
+        }
+      },
+    }])[0].then((response) => {
+      try {
+        const parsed = JSON.parse(response.json);
+        alert('OK: ' + JSON.stringify(parsed).slice(0, 300));
+        return resolve(parsed);
+      } catch (e) {
+        alert('Respuesta no JSON: ' + response.json.slice(0, 300));
+        reject(e);
+      }
+    }).catch((err) => {
+      Notification.exception(err);
+      reject(err);
+    });
+  });
 }
+
 
 /**
  * Ejecuta/Detiene la “IA” (streaming).
@@ -282,7 +313,7 @@ export function runAiHandler(ev, btn) {
   target.setAttribute('role', 'status');
 
   // Mock de respuesta (sustituye luego por tu fetch real)
-  fetchAiMock().then((fulltext) => {
+  ai_response().then((fulltext) => {
     const stream = typewriter(target, fulltext, mode, speed);
     stream.done.then(() => {
       btn.disabled = false;

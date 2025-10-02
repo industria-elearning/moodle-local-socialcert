@@ -83,7 +83,8 @@ $contextdata = [
     'copyimagelabel' => 'Copiar imagen',
     'certname'       => $certname,
     'verifyurl'      => $verifyurl,
-    'certid'         => $certid
+    'certid'         => $certid,
+    'cmid'           => $cm->id
 ];
 
 $PAGE->set_url(new moodle_url('/local/socialcert/add.php', ['cmid' => $cmid]));
