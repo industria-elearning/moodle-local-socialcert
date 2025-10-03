@@ -59,14 +59,16 @@ if ($customcert) {
 $imageurl = \local_socialcert\linkedin_helper::local_socialcert_get_first_customcert_image_url($context);
 
 if (empty($imageurl)) {
-    $imageurl = $OUTPUT->image_url('cert0', 'local_socialcert')->out(false);
+    $imageurl = 'https://marketplace.canva.com/EAGH2_8N5Q8/1/0/1600w/canva-certificado-de-participaci%C3%B3n-elegante-dorado-5gpsNPggz7w.jpg';
 }
 
 $response = ['status' => 'ok', 'msg' => 'Certificado enviado'];
 
 $json = json_encode($response, JSON_UNESCAPED_UNICODE);
 
-$customcert = $DB->get_record('customcert', ['id' => $cm->instance], '*', IGNORE_MISSING);
+$orgname = get_config('local_socialcert', 'organizationname');
+
+$course = format_string($course->fullname, true, ['context' => context_course::instance($course->id)]);
 
 $contextdata = [
     'intro'          => get_string('shareinstruction', 'local_socialcert'),
@@ -84,7 +86,10 @@ $contextdata = [
     'certname'       => $certname,
     'verifyurl'      => $verifyurl,
     'certid'         => $certid,
-    'cmid'           => $cm->id
+    'cmid'           => $cm->id,
+    'course'         => $course,
+    'org'            => $orgname,
+    'socialmedia'    => $socialmedia || 'LinkedIn'
 ];
 
 $PAGE->set_url(new moodle_url('/local/socialcert/add.php', ['cmid' => $cmid]));

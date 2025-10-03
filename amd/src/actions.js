@@ -245,8 +245,38 @@ export function typewriter(el, text, mode, speedMs) {
 //   return Promise.resolve(demo);
 // }
 
-function ai_response () {
+
+/**
+ * Obtiene una respuesta generada por IA para un certificado/curso y red social dada,
+ * utilizando la llamada AJAX `local_socialcert_get_ai_response`.
+ *
+ * La función envía un payload con `certname`, el curso fijo "Curso de Python",
+ * la organización y la red social, y resuelve con el texto de la respuesta (`reply`)
+ * devuelta por el backend.
+ *
+ * @function ai_response
+ * @async
+ * @param {string} certname - Nombre del certificado (o del estudiante) a incluir en el prompt.
+ * @param {string} course - Nombre del certificado (o del estudiante) a incluir en el prompt.
+ * @param {string} org - Nombre de la organización o institución emisora.
+ * @param {string|string[]} socialmedia - Red social objetivo (p. ej., "LinkedIn") o lista de redes.
+ * @returns {Promise<string>} Promesa que se resuelve con el contenido textual de la respuesta de IA.
+ * @throws {SyntaxError} Si el JSON devuelto por el backend no es válido.
+ * @throws {Error} Si la llamada AJAX falla por cualquier motivo (se notificará con `Notification.exception`).
+ *
+ * @example
+ * ai_response("Certificado de Analítica", "BUEN DATA", "LinkedIn")
+ *   .then((reply) => {
+ *     console.log("Respuesta IA:", reply);
+ *   })
+ *   .catch((err) => {
+ *     console.error("Error obteniendo la respuesta de IA:", err);
+ *   });
+ */
+function ai_response (certname, course, org, socialmedia) {
   return new Promise((resolve, reject) => {
+    // eslint-disable-next-line no-console
+    console.log(certname, course, org, socialmedia);
     Ajax.call([{
       methodname: 'local_socialcert_get_ai_response',
       args: {
@@ -304,6 +334,10 @@ export function runAiHandler(ev, btn) {
   // Preparar UI
   const mode = (btn.dataset.mode === 'char') ? 'char' : 'word';
   const speed = parseInt(btn.dataset.speed || '40', 10);
+  const certname = btn.dataset.certname || '';
+  const course = btn.dataset.course || '';
+  const org = btn.dataset.org || '';
+  const socialmedia = btn.dataset.socialmedia || '';
   const original = btn.textContent;
   btn.disabled = true;
   btn.textContent = 'Generating';
@@ -311,7 +345,7 @@ export function runAiHandler(ev, btn) {
   target.setAttribute('role', 'status');
 
   // Mock de respuesta (sustituye luego por tu fetch real)
-  ai_response().then((fulltext) => {
+  ai_response(certname, course, org, socialmedia).then((fulltext) => {
     const stream = typewriter(target, fulltext, mode, speed);
     stream.done.then(() => {
       btn.disabled = false;
@@ -381,6 +415,9 @@ function handleDownloadImage(_ev, el) {
   // 1) Resolver URL
   let url = el.getAttribute('data-url') || '';
 
+  // eslint-disable-next-line no-console
+  console.log('URL1:', url);
+
   if (!url) {
     const sel = el.getAttribute('data-target') || '';
     const img = sel ? document.querySelector(sel) : null;
@@ -394,6 +431,8 @@ function handleDownloadImage(_ev, el) {
     if (u.pathname.indexOf('/pluginfile.php') !== -1 && !u.searchParams.has('forcedownload')) {
       u.searchParams.set('forcedownload', '1');
       url = u.toString();
+      // eslint-disable-next-line no-console
+      console.log('URL: ', url);
     }
   } catch (_e) { /* usa url tal cual */ }
 
