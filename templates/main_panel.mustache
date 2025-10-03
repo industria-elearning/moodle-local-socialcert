@@ -2,7 +2,7 @@
   <h4 class="lsc-title">{{intro}}</h4>
 
   <div class="lsc-social-tabs btn-group btn-group-sm my-2" role="tablist" aria-label="Share network">
-    <button type="button" class="btn btn-light active"
+    <button type="button" class="btn btn-light btn-linkedin active"
       data-action="select-network" data-network="linkedin"
       role="tab" aria-selected="true" title="LinkedIn">
       <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5zM0 8h5V24H0V8zm7.5 0h4.8v2.2h.07c.67-1.2 2.32-2.46 4.78-2.46 5.11 0 6.05 3.36 6.05 7.73V24h-5V16.2c0-1.86-.03-4.24-2.58-4.24-2.58 0-2.97 2.02-2.97 4.11V24h-5V8z"/></svg>
@@ -18,7 +18,7 @@
   </div>
 
   <!-- Acciones superiores: SOLO el share (oculto cuando no sea linkedin) -->
-  <div class="lsc-actions d-flex gap-2 my-2" data-visible-on="linkedin">
+  <div class="lsc-actions btn-linkedin d-flex gap-2 my-2" data-visible-on="linkedin">
     <a id="{{buttonid}}" class="btn btn-secondary"
        href="{{shareurl}}" target="_blank" rel="noopener"
        data-action="open-link">

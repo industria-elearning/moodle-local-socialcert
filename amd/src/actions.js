@@ -281,10 +281,10 @@ function ai_response (certname, course, org, socialmedia) {
       methodname: 'local_socialcert_get_ai_response',
       args: {
         body: {
-          certname: 'Fundamentos de Python',
-          course: 'Curso de Python',
-          org: 'Google',
-          socialmedia: 'LinkedIn'
+          certname: certname,
+          course: course,
+          org: org,
+          socialmedia: socialmedia
         }
       },
     }])[0].then((response) => {

@@ -21,13 +21,6 @@ $issue = $DB->get_record('customcert_issues', [
     'userid'       => $USER->id
 ], '*', IGNORE_MISSING);
 
-$body  = [
-    'certname'    => 'Fundamentos de Python',
-    'course'      => 'Curso de Python',
-    'org'         => 'Google',
-    'socialmedia' => 'LinkedIn'
-];
-
 if (!$issue) {
     // Si no hay certificado emitido, no mostramos nada más.
     echo $OUTPUT->notification(get_string('noissue', 'local_socialcert'), 'notifymessage');
@@ -76,7 +69,7 @@ $contextdata = [
     'buttonid'       => 'btn-normal',
     'buttonlabel'    => get_string('linkcertbuttontext', 'local_socialcert'),
     'aibuttonid'     => 'btn-ai',
-    'aibuttonlabel'  => 'Activar IA',
+    'aibuttonlabel'  => 'Activate AI',
     'responseid'     => 'ai-response',
     'copytextlabel'  => 'Copiar respuesta',
     'imageid'        => 'ai-image',

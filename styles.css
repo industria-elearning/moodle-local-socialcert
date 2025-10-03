@@ -149,3 +149,15 @@
   max-height: 50vh;       /* limita la altura en pantallas altas (ajusta a gusto) */
   object-fit: contain;    /* mantiene proporción dentro del área disponible */
 }
+
+.btn-linkedin {
+  background-color: #0A66C2;
+  border-color: #0A66C2;
+  color: #fff;
+}
+.btn-linkedin:hover,
+.btn-linkedin:focus {
+  filter: brightness(0.95);
+  color: #fff;
+}
+.lsc-social-tabs .btn svg { fill: currentColor; }
