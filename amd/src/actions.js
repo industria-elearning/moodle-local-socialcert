@@ -251,19 +251,17 @@ function ai_response () {
       methodname: 'local_socialcert_get_ai_response',
       args: {
         body: {
-          cert5name: 'Fundamentos de Python',
-          coudrse: 'Curso de Python',
-          ordg: 'Google',
-          socialdmedia: 'LinkedIn'
+          certname: 'Fundamentos de Python',
+          course: 'Curso de Python',
+          org: 'Google',
+          socialmedia: 'LinkedIn'
         }
       },
     }])[0].then((response) => {
       try {
         const parsed = JSON.parse(response.json);
-        alert('OK: ' + JSON.stringify(parsed).slice(0, 300));
-        return resolve(parsed);
+        return resolve(parsed.reply);
       } catch (e) {
-        alert('Respuesta no JSON: ' + response.json.slice(0, 300));
         reject(e);
       }
     }).catch((err) => {
