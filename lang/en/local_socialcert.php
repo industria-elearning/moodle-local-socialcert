@@ -43,3 +43,17 @@ $string['airesponsebtn'] = 'Activate AI';
 $string['generating'] = 'Generating…';
 
 $string['certificateimage'] = 'certificate.png';
+
+// SocialCert – Share hero (Step 1)
+$string['sharetitle']        = 'Share your achievement on LinkedIn';
+$string['sharesubtitle']     = 'We’ll post a verifiable link to your certificate.';
+$string['buttonlabelshare']  = 'Share on LinkedIn';
+$string['whatsharelabel']    = 'What do we share?';
+
+// Feedback/status (optional but recommended)
+$string['popupblocked']      = 'Enable pop-ups to continue.';
+$string['sharecompleted']    = 'LinkedIn share completed.';
+
+$string['ai_field_heading']  = 'Post text';
+
+$string['certificate_url']   = 'Link';

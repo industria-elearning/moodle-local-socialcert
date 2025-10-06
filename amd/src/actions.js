@@ -275,8 +275,6 @@ export function typewriter(el, text, mode, speedMs) {
  */
 function ai_response (certname, course, org, socialmedia) {
   return new Promise((resolve, reject) => {
-    // eslint-disable-next-line no-console
-    console.log(certname, course, org, socialmedia);
     Ajax.call([{
       methodname: 'local_socialcert_get_ai_response',
       args: {
@@ -338,6 +336,7 @@ export function runAiHandler(ev, btn) {
   const course = btn.dataset.course || '';
   const org = btn.dataset.org || '';
   const socialmedia = btn.dataset.socialmedia || '';
+  const certurl = btn.dataset.cerurl || '';
   const original = btn.textContent;
   btn.disabled = true;
   btn.textContent = 'Generating';
@@ -346,7 +345,8 @@ export function runAiHandler(ev, btn) {
 
   // Mock de respuesta (sustituye luego por tu fetch real)
   ai_response(certname, course, org, socialmedia).then((fulltext) => {
-    const stream = typewriter(target, fulltext, mode, speed);
+    const certurltext =  " " + getString('local_socialcert', 'certificate_url') + ': ' + certurl;
+    const stream = typewriter(target, fulltext + certurltext , mode, speed);
     stream.done.then(() => {
       btn.disabled = false;
       btn.textContent = original;

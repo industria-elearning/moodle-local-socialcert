@@ -1,3 +1,4 @@
+@layer tokens, themes;
 /* ===== Capa de tokens base ===== */
 @layer tokens {
   /* Valores por defecto (por si no hay red) */
@@ -26,47 +27,82 @@
     --social-active-border:#0956a1;
     --social-focus-rgb:10,102,194;
   }
-
-  /* Facebook */
-  /*
-  .social-scope[data-network="facebook"]{
-    --social-bg:#1877F2;
-    --social-fg:#fff;
-    --social-border:#1877F2;
-    --social-hover-bg:#166fe5;
-    --social-hover-border:#1463d0;
-    --social-active-bg:#166fe5;
-    --social-active-border:#1463d0;
-    --social-focus-rgb:24,119,242;
-  }
-
-  /* X (Twitter) */
-  /*
-  .social-scope[data-network="x"]{
-    --social-bg:#000000;
-    --social-fg:#ffffff;
-    --social-border:#000000;
-    --social-hover-bg:#111111;
-    --social-hover-border:#0d0d0d;
-    --social-active-bg:#111111;
-    --social-active-border:#0d0d0d;
-    --social-focus-rgb:0,0,0;
-  }
-
-  /* Instagram (color sólido del gradiente) *//*
-  .social-scope[data-network="instagram"]{
-    --social-bg:#E4405F;
-    --social-fg:#fff;
-    --social-border:#E4405F;
-    --social-hover-bg:#d93a57;
-    --social-hover-border:#c83550;
-    --social-active-bg:#d93a57;
-    --social-active-border:#c83550;
-    --social-focus-rgb:228,64,95;
-  }*/
 }
 
-.btn.btn-social{
+/* Wrapper del plugin */
+.local-socialcert{
+  --lsc-maxw:  clamp(720px, 92vw, 920px);
+  --lsc-gap:   12px;
+  --lsc-radius: var(--bs-border-radius-lg, .5rem);
+
+  /* Colores: toma del tema si existen, si no, fallback neutro */
+  --lsc-fg:        var(--bs-body-color, currentColor);
+  --lsc-fg-muted:  var(--bs-secondary-color, rgba(0,0,0,.62));
+  /* Anillo de foco usa la red activa si existe; si no, el primario del tema o un azul accesible */
+  --lsc-ring: color-mix(in srgb,
+                  var(--social-bg, var(--bs-primary, #0d6efd)),
+                  #fff 35%);
+
+  max-width: var(--lsc-maxw);
+  margin-inline: auto;
+  padding-inline: 12px;
+  color: var(--lsc-fg);
+}
+
+/* Paso 1 – Héroe */
+.local-socialcert .lsc-hero{
+  display: grid;
+  gap: 10px;
+  margin-block: 8px 18px;
+}
+.local-socialcert .lsc-hero__title{
+  margin: 0;
+  font-size: clamp(1.1rem, 1.2vw + 1rem, 1.5rem);
+  line-height: 1.25;
+  color: var(--lsc-fg);
+}
+.local-socialcert .lsc-hero__support{
+  margin: 0;
+  color: var(--lsc-fg-muted);
+  max-width: 70ch;
+}
+
+/* Acciones (solo CTA) */
+.local-socialcert .lsc-hero__actions{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+/* CTA: layout/ergonomía; colores vienen de los tokens .social-scope del MISMO wrapper */
+.local-socialcert .lsc-cta{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding-inline: 14px;
+  border-radius: var(--lsc-radius);
+  font-weight: 600;
+}
+.local-socialcert .lsc-cta__icon{ display: inline-flex; }
+.local-socialcert .lsc-cta svg{ fill: currentColor; }
+
+/* Focus visible (solo en el plugin) */
+.local-socialcert .lsc-cta:focus-visible{
+  outline: 3px solid var(--lsc-ring);
+  outline-offset: 2px;
+  border-radius: var(--lsc-radius);
+}
+
+/* Región aria-live del plugin */
+.local-socialcert .lsc-live{
+  position: relative;
+  min-height: 0;
+}
+
+/* Botón social: limitar al plugin y heredar tokens del wrapper .social-scope */
+.local-socialcert .btn.btn-social{
   --bs-btn-bg: var(--social-bg);
   --bs-btn-border-color: var(--social-border);
   --bs-btn-color: var(--social-fg);
@@ -76,71 +112,253 @@
   --bs-btn-active-border-color: var(--social-active-border);
   --bs-btn-focus-shadow-rgb: var(--social-focus-rgb);
 
-  /* Fallback por si un build antiguo no aplica las vars de BS */
   background-color: var(--bs-btn-bg);
   border-color: var(--bs-btn-border-color);
   color: var(--bs-btn-color);
 }
-.btn.btn-social:hover,
-.btn.btn-social:focus,
-.btn.btn-social.active{
+.local-socialcert .btn.btn-social:hover,
+.local-socialcert .btn.btn-social:focus,
+.local-socialcert .btn.btn-social.active{
   background-color: var(--bs-btn-hover-bg);
   border-color: var(--bs-btn-hover-border-color);
   color: var(--bs-btn-color);
 }
+.local-socialcert .btn.btn-social svg,
+.local-socialcert .btn.btn-social svg *{
+  fill: currentColor;
+}
 
-.d-none { display: none !important; }
+/*  */
 
-.btn.btn-social svg { fill: currentColor; }
-.btn.btn-social svg * { fill: currentColor; }
+.local-socialcert .btn.btn-social svg { fill: currentColor; }
+.local-socialcert .btn.btn-social svg * { fill: currentColor; }
 
 /* 2.2 Variante outline (transparente) reutilizable */
-.btn-social-outline{
+.local-socialcert .btn-social-outline{
   background: transparent !important;
   color: var(--social-bg) !important;
   border-color: var(--social-bg) !important;
 }
-.btn-social-outline:hover,
-.btn-social-outline:focus{
+.local-socialcert .btn-social-outline:hover,
+.local-socialcert .btn-social-outline:focus{
   color: var(--social-fg) !important;
   background: var(--social-bg) !important;
   border-color: var(--social-border) !important;
 }
 
-/* 2.3 Badges/píldoras */
-.badge-social{
-  display:inline-block;
-  padding:.25rem .5rem;
-  border-radius:.5rem;
-  background: var(--social-bg);
-  color: var(--social-fg);
-  border: 1px solid var(--social-border);
+/* =============== THEME TOKENS =============== */
+.bd-post{
+  --bd-font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+  --bd-radius-xl: 16px;
+  --bd-radius-2xl: 24px;
+  --bd-space-1: .25rem;
+  --bd-space-2: .5rem;
+  --bd-space-3: .75rem;
+  --bd-space-4: 1rem;
+  --bd-space-5: 1.25rem;
+  --bd-space-6: 1.5rem;
+  --bd-space-8: 2rem;
+
+  --bd-c-bg: #ffffff;
+  --bd-c-surface: #f4f6f8;
+  --bd-c-text: #1f2328;
+  --bd-c-muted: #6b7280;
+  --bd-c-border: #e5e7eb;
+  --bd-c-action: #111827;
+  --bd-c-action-contrast: #ffffff;
+
+  --bd-media-h-lg: 30rem;
+  --bd-media-h: 22rem;      /* desktop media height */
+  --bd-media-h-sm: 12rem;   /* mobile media height */
+
+  --bd-message-fs: 1.125rem; /* mismo tamaño que .bd-message__text */
+  --bd-lh: 1.6;
+
+  --bd-avatar-size: 48px;
 }
 
-/* 2.4 Utilidades atómicas para cualquier elemento */
-.u-social-bg { background: var(--social-bg) !important; color: var(--social-fg) !important; }
-.u-social-border { border-color: var(--social-border) !important; }
-.u-social-text { color: var(--social-bg) !important; }         /* texto con color de marca */
-.u-social-icon { color: var(--social-fg) !important; }         /* icono sobre fondo social */
-.u-social-icon svg, .u-social-icon path { fill: currentColor; }
-
-/* 2.5 Link con color de red y hover más oscuro */
-.link-social{
-  color: var(--social-bg);
-  text-decoration-color: color-mix(in srgb, var(--social-bg), #fff 40%);
-}
-.link-social:hover{
-  color: var(--social-hover-border);
-  text-decoration-color: currentColor;
+/* =============== LAYOUT =============== */
+.bd-post{
+  font-family: var(--bd-font-sans);
+  background: var(--bd-c-bg);
+  color: var(--bd-c-text);
+  border-radius: var(--bd-radius-2xl);
+  box-shadow: 0 6px 28px rgba(0,0,0,.14);
+  border: 1px solid var(--bd-c-border);
+  max-width: 744px;
+  margin: 0 auto;
 }
 
-/* 2.6 Tarjetas con borde/encabezado social */
-.card-social{
-  border:1px solid var(--social-border);
-  border-radius:.5rem;
+.bd-post__header{
+  display: flex;
+  align-items: center;
+  gap: var(--bd-space-3);
+  padding: var(--bd-space-4) var(--bd-space-6) var(--bd-space-4);
 }
-.card-social > .card-header{
-  background: color-mix(in srgb, var(--social-bg), #fff 85%);
-  color: var(--social-bg);
-  border-bottom:1px solid var(--social-border);
+
+.bd-avatar{
+  inline-size: var(--bd-avatar-size);
+  block-size: var(--bd-avatar-size);
+  flex: 0 0 var(--bd-avatar-size);    /* prevents stretching in flex layouts */
+  border-radius: 50%;
+  overflow: hidden;
 }
+
+.bd-author__name{
+  font-size: 1rem;
+  line-height: 1.25;
+}
+
+.bd-post__main{
+  padding: 0 var(--bd-space-6) var(--bd-space-6);
+  display: grid;
+  gap: var(--bd-space-5);
+}
+
+/* =============== MESSAGE =============== */
+.bd-message{
+  position: relative;
+  /*padding-right: 2.25rem; /* space for copy button */
+  min-block-size: calc(var(--bd-message-fs) * var(--bd-lh) * 2 + 0.25rem);
+}
+
+.bd-message__text{
+  font-size: var(--bd-message-fs);
+  line-height: var(--bd-lh);
+  color: var(--bd-c-text);
+  margin: 0;
+}
+
+.bd-message__copy{
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--bd-c-border);
+  border-radius: 999px;
+  background: var(--bd-c-bg);
+  color: var(--bd-c-text);
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity .2s ease, transform .2s ease, background-color .2s ease;
+  cursor: pointer;
+}
+
+.bd-message:hover .bd-message__copy,
+.bd-message:focus-within .bd-message__copy{
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.bd-message__copy:hover,
+.bd-message__copy:focus-visible{
+  background: var(--bd-c-surface);
+  outline: 2px solid transparent;
+  box-shadow: 0 0 0 3px rgba(59,130,246,.25);
+}
+
+/* icons */
+.bd-icon{
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+.bd-icon--inverse{ fill: var(--bd-c-action-contrast); }
+
+/* =============== MEDIA =============== */
+/* Dedicated area that never collapses: image adapts using object-fit: contain */
+.bd-media{
+  position: relative;
+  overflow: hidden;
+  height: var(--bd-media-h-lg);
+}
+
+section.bd-media__actions {
+  position: relative;
+  height: 45px;
+}
+
+.bd-media__img{
+  width: 100%;
+  height: 100%;
+  object-fit: contain;   /* fits either height or width while preserving aspect ratio */
+  display: block;
+}
+
+/* Single black circular button in same corner */
+.bd-media__action{
+  position: absolute;
+  top: var(--bd-space-4);
+  right: var(--bd-space-4);
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: var(--bd-c-action);
+  color: var(--bd-c-action-contrast);
+  border: none;
+  cursor: pointer;
+  transition: transform .15s ease, opacity .15s ease, background-color .2s ease;
+}
+
+.bd-media__action:hover{ transform: scale(1.03); }
+.bd-media__action:focus-visible{
+  outline: 2px solid transparent;
+  box-shadow: 0 0 0 3px rgba(59,130,246,.4);
+}
+
+/* =============== FOOTER (empty) =============== */
+.bd-post__footer{ padding: var(--bd-space-4) var(--bd-space-6); }
+
+/* =============== ACCESSIBILITY HELPERS =============== */
+.bd-visually-hidden{
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0);
+  white-space: nowrap; border: 0;
+}
+
+@media (max-width: 480px){
+  .bd-post{ --bd-avatar-size: 40px; }
+}
+
+/* =============== RESPONSIVE =============== */
+@media (max-width: 640px){
+  .bd-post{
+    --bd-media-h: var(--bd-media-h-sm);
+  }
+  .bd-post__main{
+    min-block-size: calc(
+      var(--bd-media-h)
+      + var(--bd-space-6)
+      + (var(--bd-message-fs) * var(--bd-lh) * 2)
+    );
+  }
+}
+
+.bd-avatar__img{
+  inline-size: 100%;
+  block-size: 100%;
+  display: block;
+  border-radius: 50%;
+}
+
+/* SVG placeholder version */
+.bd-avatar__svg{
+  inline-size: 100%;
+  block-size: 100%;
+  border-radius: 50%;
+  display: block;
+  --bd-avatar-bg: #e9e5de;
+  --bd-avatar-head: #7c8fa2;
+  --bd-avatar-bust: #a6bed0;
+}
+.bd-avatar__bg{   fill: var(--bd-avatar-bg); }
+.bd-avatar__head{ fill: var(--bd-avatar-head); }
+.bd-avatar__bust{ fill: var(--bd-avatar-bust); }
+

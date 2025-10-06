@@ -62,27 +62,35 @@ $json = json_encode($response, JSON_UNESCAPED_UNICODE);
 $orgname = get_config('local_socialcert', 'organizationname');
 
 $course = format_string($course->fullname, true, ['context' => context_course::instance($course->id)]);
+$displayname = format_string(fullname($USER), true, ['context' => $context]);
 
 $contextdata = [
-    'intro'          => get_string('shareinstruction', 'local_socialcert'),
-    'shareurl'       => $linkedinurl,    
-    'buttonid'       => 'btn-normal',
-    'buttonlabel'    => get_string('linkcertbuttontext', 'local_socialcert'),
-    'aibuttonid'     => 'btn-ai',
-    'aibuttonlabel'  => 'Activate AI',
-    'responseid'     => 'ai-response',
-    'copytextlabel'  => 'Copiar respuesta',
-    'imageid'        => 'ai-image',
-    'imageurl'       => $imageurl,
-    'imagealt'       => 'Resultado IA',
-    'copyimagelabel' => 'Copiar imagen',
-    'certname'       => $certname,
-    'verifyurl'      => $verifyurl,
-    'certid'         => $certid,
-    'cmid'           => $cm->id,
-    'course'         => $course,
-    'org'            => $orgname,
-    'socialmedia'    => $socialmedia || 'LinkedIn'
+    'intro'             => get_string('shareinstruction', 'local_socialcert'),
+    'shareurl'          => $linkedinurl,    
+    'buttonid'          => 'btn-normal',
+    'buttonlabel'       => get_string('linkcertbuttontext', 'local_socialcert'),
+    'aibuttonid'        => 'btn-ai',
+    'aibuttonlabel'     => 'Activate AI',
+    'responseid'        => 'ai-response',
+    'copytextlabel'     => 'Copiar respuesta',
+    'imageid'           => 'ai-image',
+    'imageurl'          => $imageurl,
+    'imagealt'          => 'Resultado IA',
+    'copyimagelabel'    => 'Copiar imagen',
+    'certname'          => $certname,
+    'verifyurl'         => $verifyurl,
+    'certid'            => $certid,
+    'cmid'              => $cm->id,
+    'course'            => $course,
+    'org'               => $orgname,
+    'socialmedia'       => $socialmedia || 'LinkedIn',
+    'sharetitle'        => get_string('sharetitle', 'local_socialcert'),
+    'sharesubtitle'     => get_string('sharesubtitle', 'local_socialcert'),
+    'buttonlabelshare'  => get_string('buttonlabelshare', 'local_socialcert'),
+    'whatsharelabel'    => get_string('whatsharelabel', 'local_socialcert'),
+    'popupblocked'      => get_string('popupblocked', 'local_socialcert'),
+    'sharecompleted'    => get_string('sharecompleted', 'local_socialcert'),
+    'author_name'        => $displayname
 ];
 
 $PAGE->set_url(new moodle_url('/local/socialcert/add.php', ['cmid' => $cmid]));
