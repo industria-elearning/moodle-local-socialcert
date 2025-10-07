@@ -123,10 +123,6 @@
   border-color: var(--bs-btn-hover-border-color);
   color: var(--bs-btn-color);
 }
-.local-socialcert .btn.btn-social svg,
-.local-socialcert .btn.btn-social svg *{
-  fill: currentColor;
-}
 
 /*  */
 
@@ -188,6 +184,28 @@
   max-width: 744px;
   margin: 0 auto;
 }
+
+.bd-post__content{
+  height: 0;
+  overflow: hidden;
+  transition: height 0.5s ease;
+}
+
+/* .ai-actionbutton {
+  display: block;
+  margin-left: auto;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 0.5em 1em;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  font-size: 1em;
+} */
+
+
+
+
 
 .bd-post__header{
   display: flex;

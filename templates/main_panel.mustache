@@ -25,23 +25,9 @@
       <div class="lsc-live" aria-live="polite" aria-atomic="true"></div>
     </section>
 
-   
-
     <div class="lsc-response-wrap">
       <div class="lsc-toolbar">
-        <button class="btn btn-sm btn-primary"
-          id="{{aibuttonid}}"
-          data-action="run-ai"
-          data-target="#{{responseid}}"
-          data-mode="word"
-          data-speed="40"
-          data-certname="{{certname}}"
-          data-course="{{course}}"
-          data-org="{{org}}"
-          data-certurl="{{shareurl}}"
-          data-socialmedia="{{network}}">
-          {{aibuttonlabel}}
-        </button>
+        
         <button class="btn btn-sm btn-outline-secondary"
           title="{{copytextlabel}}"
           data-action="copy-html"
@@ -49,62 +35,76 @@
           📋
         </button>
       </div>
-
-      <!--<div id="{{responseid}}" class="lsc-response" aria-live="polite"></div>-->
-
-      <article class="bd-post">
-        <header class="bd-post__header" role="banner" aria-label="Composer header">
-          <div class="bd-avatar" aria-label="{{author_name}} avatar" role="img">
-            {{#author_avatar_url}}
-              <img class="bd-avatar__img" src="{{author_avatar_url}}" alt="" width="48" height="48" loading="lazy">
-            {{/author_avatar_url}}
-            {{^author_avatar_url}}
-              <!-- SVG placeholder when there is no avatar URL -->
-              <svg class="bd-avatar__svg" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
-                <circle cx="32" cy="32" r="30" class="bd-avatar__bg"/>
-                <circle cx="32" cy="24" r="12" class="bd-avatar__head"/>
-                <path class="bd-avatar__bust" d="M10 52c2.6-10.4 11.6-16 22-16s19.4 5.6 22 16v2H10z"/>
-              </svg>
-            {{/author_avatar_url}}
+      <div class="bd-post">
+        <div>
+          <div class="ai_actioncall">
+            <h3>{{ai_actioncall}}</h3>
           </div>
-          <div class="bd-author">
-            <strong class="bd-author__name">{{author_name}}</strong>
-            <!-- Intentionally no chevron and no “audience” line -->
+          <div >
+            <button class="ai-actionbutton"
+              id="{{aibuttonid}}"
+              data-action="run-ai"
+              data-target="#{{responseid}}"
+              data-mode="word"
+              data-speed="40"
+              data-certname="{{certname}}"
+              data-course="{{course}}"
+              data-org="{{org}}"
+              data-certurl="{{shareurl}}"
+              data-socialmedia="{{network}}">
+              {{aibuttonlabel}}
+            </button>
+            {{! <label for="toggle" class="ai-actionbutton"></label> }}
           </div>
-        </header>
+        </div>
+        <div class="bd-post__content">
+          <header class="bd-post__header" role="banner" aria-label="Composer header">
+            <div class="bd-avatar" aria-label="{{author_name}} avatar" role="img">
+              {{#author_avatar_url}}
+                <img class="bd-avatar__img" src="{{author_avatar_url}}" alt="" width="48" height="48" loading="lazy">
+              {{/author_avatar_url}}
+              {{^author_avatar_url}}
+                <!-- SVG placeholder when there is no avatar URL -->
+                <svg class="bd-avatar__svg" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+                  <circle cx="32" cy="32" r="30" class="bd-avatar__bg"/>
+                  <circle cx="32" cy="24" r="12" class="bd-avatar__head"/>
+                  <path class="bd-avatar__bust" d="M10 52c2.6-10.4 11.6-16 22-16s19.4 5.6 22 16v2H10z"/>
+                </svg>
+              {{/author_avatar_url}}
+            </div>
+            <div class="bd-author">
+              <strong class="bd-author__name">{{author_name}}</strong>
+              <!-- Intentionally no chevron and no “audience” line -->
+            </div>
+          </header>
 
-        <main class="bd-post__main" role="main">
-          <section class="bd-message" aria-labelledby="bd-message-title">
-            <p class="bd-message__text">{{{message}}}</p>
-            <div id="{{responseid}}" class="bd-message__text" aria-live="polite"></div>
-            <button type="button" data-action="copy-html" data-target="#{{responseid}}" class="bd-message__copy" aria-label="Copy message" title="Copy message">
-              <!-- copy icon (monochrome, accessible) -->
-              <svg class="bd-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                <path d="M16 1H4a2 2 0 0 0-2 2v12h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/>
-              </svg>
-            </button>
-          </section>
+          <main class="bd-post__main" role="main">
+            <section class="bd-message" aria-labelledby="bd-message-title">
+              <p class="bd-message__text">{{{message}}}</p>
+              <div id="{{responseid}}" class="bd-message__text" aria-live="polite"></div>
+              <button type="button" data-action="copy-html" data-target="#{{responseid}}" class="bd-message__copy" aria-label="Copy message" title="Copy message">
+                <!-- copy icon (monochrome, accessible) -->
+                <svg class="bd-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M16 1H4a2 2 0 0 0-2 2v12h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/>
+                </svg>
+              </button>
+            </section>
 
-          <section class="bd-media__actions">
-            <button type="button" class="bd-media__action" aria-label="Download image" title="Download image">
-              <svg class="bd-icon bd-icon--inverse bd-icon--boldstroke" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                <path d="M12 3v10.17l3.59-3.58L17 11l-5 5-5-5 1.41-1.41L11 13.17V3h1zM5 19h14v2H5z"/>
-              </svg>
-            </button>
-          </section>
+            <section class="bd-media__actions">
+              <button type="button" class="bd-media__action" aria-label="Download image" title="Download image">
+                <svg class="bd-icon bd-icon--inverse bd-icon--boldstroke" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M12 3v10.17l3.59-3.58L17 11l-5 5-5-5 1.41-1.41L11 13.17V3h1zM5 19h14v2H5z"/>
+                </svg>
+              </button>
+            </section>
 
-          <figure class="bd-media" aria-label="Attached image">
-            <img class="bd-media__img" src="{{imageurl}}" alt="{{image_alt}}" loading="lazy" width="{{image_width}}" height="{{image_height}}">
-            <figcaption class="bd-visually-hidden">{{image_caption}}</figcaption>
-
-            <!-- Single black round action in the same position, now a download button -->
-            
-          </figure>
-        </main>
-
-        <!-- Footer intentionally empty: no emoji button, no blue publish button -->
-        <footer class="bd-post__footer" role="contentinfo" aria-hidden="true"></footer>
-      </article>
+            <figure class="bd-media" aria-label="Attached image">
+              <img class="bd-media__img" src="{{imageurl}}" alt="{{image_alt}}" loading="lazy" width="{{image_width}}" height="{{image_height}}">
+              <figcaption class="bd-visually-hidden">{{image_caption}}</figcaption>   
+            </figure>
+          </main>
+        </div>
+      </div>
   
       <!--<div class=" lsc-copycard--full"
           role="button" tabindex="0"
@@ -119,8 +119,29 @@
       </div>-->
     </div>
   </div>
-
-  <!-- Mustache fragment -->
- 
-
 </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const toggleButton = document.querySelector('[data-action="run-ai"]');
+  const panel = toggleButton.closest(".bd-post");
+  const content = panel.querySelector(".bd-post__content");
+
+  let hasRun = false;
+
+  toggleButton.addEventListener("click", () => {
+    if (hasRun) return; // Ignora clics futuros
+
+    // Desplegar contenido con animación
+    content.style.height = content.scrollHeight + "px";
+    content.addEventListener("transitionend", () => {
+      content.style.height = "auto";
+    }, { once: true });
+
+    hasRun = true;
+
+    // Aquí puedes lanzar alguna función
+    // runAi(); // <== Si quieres ejecutar algo más
+  });
+});
+</script>
