@@ -1,147 +1,138 @@
 <div class="local-socialcert my-4 social-scope" data-network="linkedin" data-cmid="{{cmid}}">
 
-    <!-- Paso 1 – Héroe de Share -->
-    <section class="lsc-hero" aria-labelledby="lsc-hero-title">
-      <h2 id="lsc-hero-title" class="lsc-hero__title">{{sharetitle}}</h2>
-      <p class="lsc-hero__support">{{sharesubtitle}}</p>
+  <!-- Hero -->
+  <section class="lsc-hero" aria-labelledby="lsc-hero-title">
+    <h2 id="lsc-hero-title" class="lsc-hero__title">{{sharetitle}}</h2>
+    <p class="lsc-hero__support">{{sharesubtitle}}</p>
 
-      <div class="lsc-hero__actions">
-        <a id="{{buttonid}}"
-          class="btn btn-social lsc-cta"
-          href="{{shareurl}}"
-          target="_blank"
-          rel="noopener"
-          data-action="open-link">
-          <span class="lsc-cta__icon" aria-hidden="true">
-            <!-- Ícono LinkedIn (SVG accesible por color actual) -->
-            <svg width="18" height="18" viewBox="0 0 24 24" focusable="false" aria-hidden="true">
-              <path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5zM0 8h5v16H0V8zm7.5 0h4.8v2.2h.07c.67-1.2 2.32-2.46 4.78-2.46 5.11 0 6.05 3.36 6.05 7.73V24h-5V16.2c0-1.86-.03-4.24-2.58-4.24-2.58 0-2.97 2.02-2.97 4.11V24h-5V8z"/>
-            </svg>
-          </span>
-          <span class="lsc-cta__label">{{buttonlabel}}</span>
-        </a>
-      </div>
-      <!-- Región silenciosa para avisos (toasts no intrusivos) -->
-      <div class="lsc-live" aria-live="polite" aria-atomic="true"></div>
-    </section>
-
-    <div class="lsc-response-wrap">
-      <div class="lsc-toolbar">
-        
-        <button class="btn btn-sm btn-outline-secondary"
-          title="{{copytextlabel}}"
-          data-action="copy-html"
-          data-target="#{{responseid}}">
-          📋
-        </button>
-      </div>
-      <div class="bd-post">
-        <div>
-          <div class="ai_actioncall">
-            <h3>{{ai_actioncall}}</h3>
-          </div>
-          <div >
-            <button class="ai-actionbutton"
-              id="{{aibuttonid}}"
-              data-action="run-ai"
-              data-target="#{{responseid}}"
-              data-mode="word"
-              data-speed="40"
-              data-certname="{{certname}}"
-              data-course="{{course}}"
-              data-org="{{org}}"
-              data-certurl="{{shareurl}}"
-              data-socialmedia="{{network}}">
-              {{aibuttonlabel}}
-            </button>
-            {{! <label for="toggle" class="ai-actionbutton"></label> }}
-          </div>
-        </div>
-        <div class="bd-post__content">
-          <header class="bd-post__header" role="banner" aria-label="Composer header">
-            <div class="bd-avatar" aria-label="{{author_name}} avatar" role="img">
-              {{#author_avatar_url}}
-                <img class="bd-avatar__img" src="{{author_avatar_url}}" alt="" width="48" height="48" loading="lazy">
-              {{/author_avatar_url}}
-              {{^author_avatar_url}}
-                <!-- SVG placeholder when there is no avatar URL -->
-                <svg class="bd-avatar__svg" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
-                  <circle cx="32" cy="32" r="30" class="bd-avatar__bg"/>
-                  <circle cx="32" cy="24" r="12" class="bd-avatar__head"/>
-                  <path class="bd-avatar__bust" d="M10 52c2.6-10.4 11.6-16 22-16s19.4 5.6 22 16v2H10z"/>
-                </svg>
-              {{/author_avatar_url}}
-            </div>
-            <div class="bd-author">
-              <strong class="bd-author__name">{{author_name}}</strong>
-              <!-- Intentionally no chevron and no “audience” line -->
-            </div>
-          </header>
-
-          <main class="bd-post__main" role="main">
-            <section class="bd-message" aria-labelledby="bd-message-title">
-              <p class="bd-message__text">{{{message}}}</p>
-              <div id="{{responseid}}" class="bd-message__text" aria-live="polite"></div>
-              <button type="button" data-action="copy-html" data-target="#{{responseid}}" class="bd-message__copy" aria-label="Copy message" title="Copy message">
-                <!-- copy icon (monochrome, accessible) -->
-                <svg class="bd-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                  <path d="M16 1H4a2 2 0 0 0-2 2v12h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/>
-                </svg>
-              </button>
-            </section>
-
-            <section class="bd-media__actions">
-              <button type="button" class="bd-media__action" aria-label="Download image" title="Download image">
-                <svg class="bd-icon bd-icon--inverse bd-icon--boldstroke" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                  <path d="M12 3v10.17l3.59-3.58L17 11l-5 5-5-5 1.41-1.41L11 13.17V3h1zM5 19h14v2H5z"/>
-                </svg>
-              </button>
-            </section>
-
-            <figure class="bd-media" aria-label="Attached image">
-              <img class="bd-media__img" src="{{imageurl}}" alt="{{image_alt}}" loading="lazy" width="{{image_width}}" height="{{image_height}}">
-              <figcaption class="bd-visually-hidden">{{image_caption}}</figcaption>   
-            </figure>
-          </main>
-        </div>
-      </div>
-  
-      <!--<div class=" lsc-copycard--full"
-          role="button" tabindex="0"
-          title="Download image"
-          data-action="download-image"
-          data-url="{{imageurl}}">
-        <div class="lsc-copybtn" aria-hidden="true">⬇️</div>
-        <div class="lsc-k">Download the Certificate Image</div>
-        <div class="lsc-v">
-          <img id="{{imageid}}" src="{{imageurl}}" alt="Miniatura del certificado" class="lsc-thumb lsc-thumb--wide">
-        </div>
-      </div>-->
+    <div class="lsc-hero__actions">
+      <a id="{{buttonid}}"
+         class="btn btn-social lsc-cta"
+         href="{{shareurl}}"
+         target="_blank"
+         rel="noopener"
+         data-action="open-link">
+        <span class="lsc-cta__icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+            <path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5zM0 8h5v16H0V8zm7.5 0h4.8v2.2h.07c.67-1.2 2.32-2.46 4.78-2.46 5.11 0 6.05 3.36 6.05 7.73V24h-5V16.2c0-1.86-.03-4.24-2.58-4.24-2.58 0-2.97 2.02-2.97 4.11V24h-5V8z"/>
+          </svg>
+        </span>
+        <span class="lsc-cta__label">{{buttonlabel}}</span>
+      </a>
     </div>
+    <div class="lsc-live" aria-live="polite" aria-atomic="true"></div>
+  </section>
+
+  <div class="lsc-response-wrap">
+
+    <div class="bd-post" data-ai-composer>
+      <!-- Barra IA (visible siempre) -->
+      <div class="ai-bar" role="region" aria-label="Asistente de IA para redactar tu post">
+        <p class="ai-bar__text" id="ai-bar-text-{{cmid}}">{{ai_actioncall}}</p>
+        <button
+          type="button"
+          class="ai-bar__button"
+          aria-describedby="ai-bar-text-{{cmid}}"
+          id="{{aibuttonid}}"
+          data-action="run-ai"
+          data-target="#{{responseid}}"
+          data-mode="word"
+          data-speed="40"
+          data-certname="{{certname}}"
+          data-course="{{course}}"
+          data-org="{{org}}"
+          data-certurl="{{shareurl}}"
+          data-socialmedia="{{network}}">
+          {{aibuttonlabel}}
+        </button>
+
+        <!-- Contenido (oculto hasta abrir) -->
+        <div class="ai-bar__panel" aria-hidden="true">
+          <div class="bd-post__content" aria-hidden="true">
+            <header class="bd-post__header" role="banner" aria-label="Composer header">
+              <div class="bd-avatar" aria-label="{{author_name}} avatar" role="img">
+                {{#author_avatar_url}}
+                  <img class="bd-avatar__img" src="{{author_avatar_url}}" alt="" width="48" height="48" loading="lazy">
+                {{/author_avatar_url}}
+                {{^author_avatar_url}}
+                  <svg class="bd-avatar__svg" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+                    <circle cx="32" cy="32" r="30" class="bd-avatar__bg"/>
+                    <circle cx="32" cy="24" r="12" class="bd-avatar__head"/>
+                    <path class="bd-avatar__bust" d="M10 52c2.6-10.4 11.6-16 22-16s19.4 5.6 22 16v2H10z"/>
+                  </svg>
+                {{/author_avatar_url}}
+              </div>
+              <div class="bd-author">
+                <strong class="bd-author__name">{{author_name}}</strong>
+              </div>
+            </header>
+
+            <main class="bd-post__main" role="main">
+              <section class="bd-message" aria-labelledby="bd-message-title">
+                <p class="bd-message__text">{{{message}}}</p>
+                <div id="{{responseid}}" class="bd-message__text" aria-live="polite"></div>
+                <button type="button"
+                        class="bd-message__copy"
+                        aria-label="{{copytextlabel}}"
+                        title="{{copytextlabel}}"
+                        data-action="copy-html"
+                        data-target="#{{responseid}}">
+                  <svg class="bd-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M16 1H4a2 2 0 0 0-2 2v12h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/>
+                  </svg>
+                </button>
+              </section>
+
+              <section class="bd-media__actions">
+                <button type="button" class="bd-media__action" aria-label="Download image" title="Download image">
+                  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"
+                      fill="currentColor"
+                      stroke="currentColor" stroke-width="1.5"
+                      stroke-linejoin="round" paint-order="stroke fill">
+                    <path d="M12 3v10.17l3.59-3.58L17 11l-5 5-5-5 1.41-1.41L11 13.17V3h1zM5 19h14v2H5z"/>
+                  </svg>
+                </button>
+              </section>
+
+              <figure class="bd-media" aria-label="Attached image">
+                <img class="bd-media__img" src="{{imageurl}}" alt="{{image_alt}}"
+                    loading="lazy" width="{{image_width}}" height="{{image_height}}">
+                <figcaption class="bd-visually-hidden">{{image_caption}}</figcaption>
+              </figure>
+            </main>
+          </div>
+        </div>
+      </div>
+
+      
+    </div> <!-- /bd-post -->
+
   </div>
 </div>
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-  const toggleButton = document.querySelector('[data-action="run-ai"]');
-  const panel = toggleButton.closest(".bd-post");
-  const content = panel.querySelector(".bd-post__content");
+  document.querySelectorAll(".local-socialcert").forEach(scope => {
+    const bar   = scope.querySelector(".ai-bar");
+    const runBtn= scope.querySelector('.ai-bar [data-action="run-ai"]');
+    const panel = scope.querySelector(".ai-bar__panel");
+    if (!bar || !runBtn || !panel) return;
 
-  let hasRun = false;
+    let opened = false;
+    runBtn.addEventListener("click", () => {
+      if (opened) return;               // no toggle: solo abre
+      opened = true;
 
-  toggleButton.addEventListener("click", () => {
-    if (hasRun) return; // Ignora clics futuros
+      bar.classList.add("is-open");     // agrega el margen superior del panel
+      panel.style.height = panel.scrollHeight + "px";
+      panel.addEventListener("transitionend", () => {
+        panel.style.height = "auto";
+        panel.removeAttribute("aria-hidden");
+      }, { once: true });
 
-    // Desplegar contenido con animación
-    content.style.height = content.scrollHeight + "px";
-    content.addEventListener("transitionend", () => {
-      content.style.height = "auto";
-    }, { once: true });
-
-    hasRun = true;
-
-    // Aquí puedes lanzar alguna función
-    // runAi(); // <== Si quieres ejecutar algo más
+      // (opcional) scroll suave a la barra
+      bar.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
   });
 });
 </script>

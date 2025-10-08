@@ -90,6 +90,7 @@ $contextdata = [
     'whatsharelabel'    => get_string('whatsharelabel', 'local_socialcert'),
     'popupblocked'      => get_string('popupblocked', 'local_socialcert'),
     'sharecompleted'    => get_string('sharecompleted', 'local_socialcert'),
+    'ai_actioncall'     => get_string('ai_actioncall', 'local_socialcert'),
     'author_name'        => $displayname
 ];
 

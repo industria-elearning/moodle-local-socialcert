@@ -42,3 +42,5 @@ $string['sharecompleted']    = 'Compartido en LinkedIn correctamente.';
 $string['ai_field_heading'] = 'Texto del Post';
 
 $string['certificate_url']   = 'Enlace';
+
+$string['ai_actioncall']   = '✨ Create a professional message for your LinkedIn post in one click';
