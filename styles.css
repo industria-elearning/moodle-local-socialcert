@@ -120,7 +120,7 @@
   gap: var(--ai-gap);
   padding: var(--ai-pad-y) var(--ai-pad-x);
   margin: 16px auto 0;
-  background: var(--ai-bg);
+  background-color: var(--ai-bg);
   backdrop-filter: blur(18px) saturate(140%);
   -webkit-backdrop-filter: blur(18px) saturate(140%);
   color: var(--ai-text);
@@ -195,6 +195,13 @@
   max-width: 744px;
   margin-left: auto;
   margin-right: auto;
+}
+
+.local-socialcert .ai-bar__panel{
+  background-color: var(--ai-bg);
+}
+
+.local-socialcert .bd-post__content{
   background-color: var(--bd-c-bg);
 }
 

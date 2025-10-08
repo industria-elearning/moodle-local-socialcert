@@ -127,6 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let opened = false;
     runBtn.addEventListener("click", () => {
+      console.log('OPEN?', opened)
       if (opened) return;               // no toggle: solo abre
       opened = true;
 
