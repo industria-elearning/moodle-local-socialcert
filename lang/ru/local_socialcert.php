@@ -58,4 +58,4 @@ $string['ai_field_heading']  = 'Текст публикации';
 
 $string['certificate_url']   = 'Ссылка';
 
-$string['ai_actioncall']   = '✨ Создайте профессиональный текст для публикации в LinkedIn одним кликом';
+$string['ai_actioncall']   = 'Создайте профессиональный текст для публикации в LinkedIn одним кликом';

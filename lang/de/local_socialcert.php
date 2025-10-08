@@ -58,4 +58,4 @@ $string['ai_field_heading']  = 'Beitragstext';
 
 $string['certificate_url']   = 'Link';
 
-$string['ai_actioncall']   = '✨ Erstelle mit einem Klick einen professionellen Text für deinen LinkedIn-Beitrag';
+$string['ai_actioncall']   = 'Erstelle mit einem Klick einen professionellen Text für deinen LinkedIn-Beitrag';

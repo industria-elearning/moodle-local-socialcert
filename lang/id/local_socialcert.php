@@ -58,4 +58,4 @@ $string['ai_field_heading']  = 'Teks unggahan';
 
 $string['certificate_url']   = 'Tautan';
 
-$string['ai_actioncall']   = '✨ Buat pesan profesional untuk unggahan LinkedIn Anda hanya dengan satu klik';
+$string['ai_actioncall']   = 'Buat pesan profesional untuk unggahan LinkedIn Anda hanya dengan satu klik';

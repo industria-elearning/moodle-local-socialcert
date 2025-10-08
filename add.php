@@ -49,11 +49,11 @@ if ($customcert) {
     );
 }
 
-$imageurl = \local_socialcert\linkedin_helper::local_socialcert_get_first_customcert_image_url($context);
+// $imageurl = \local_socialcert\linkedin_helper::local_socialcert_get_first_customcert_image_url($context);
 
-if (empty($imageurl)) {
-    $imageurl = 'https://marketplace.canva.com/EAGH2_8N5Q8/1/0/1600w/canva-certificado-de-participaci%C3%B3n-elegante-dorado-5gpsNPggz7w.jpg';
-}
+// if (empty($imageurl)) {
+//     $imageurl = 'https://marketplace.canva.com/EAGH2_8N5Q8/1/0/1600w/canva-certificado-de-participaci%C3%B3n-elegante-dorado-5gpsNPggz7w.jpg';
+// }
 
 $response = ['status' => 'ok', 'msg' => 'Certificado enviado'];
 
@@ -63,6 +63,9 @@ $orgname = get_config('local_socialcert', 'organizationname');
 
 $course = format_string($course->fullname, true, ['context' => context_course::instance($course->id)]);
 $displayname = format_string(fullname($USER), true, ['context' => $context]);
+
+$img = new moodle_url('/local/socialcert/assets/logo_title.png');
+$imgurl = $img->out(false);
 
 $contextdata = [
     'intro'             => get_string('shareinstruction', 'local_socialcert'),
@@ -74,7 +77,7 @@ $contextdata = [
     'responseid'        => 'ai-response',
     'copytextlabel'     => 'Copiar respuesta',
     'imageid'           => 'ai-image',
-    'imageurl'          => $imageurl,
+    'imageurl'          => $imgurl,
     'imagealt'          => 'Resultado IA',
     'copyimagelabel'    => 'Copiar imagen',
     'certname'          => $certname,
@@ -91,7 +94,8 @@ $contextdata = [
     'popupblocked'      => get_string('popupblocked', 'local_socialcert'),
     'sharecompleted'    => get_string('sharecompleted', 'local_socialcert'),
     'ai_actioncall'     => get_string('ai_actioncall', 'local_socialcert'),
-    'author_name'        => $displayname
+    'author_name'        => $displayname,
+    'linktext'          => get_string('linktext', 'local_socialcert')
 ];
 
 $PAGE->set_url(new moodle_url('/local/socialcert/add.php', ['cmid' => $cmid]));

@@ -28,6 +28,10 @@
     <div class="bd-post" data-ai-composer>
       <!-- Barra IA (visible siempre) -->
       <div class="ai-bar" role="region" aria-label="Asistente de IA para redactar tu post">
+        <img 
+        src="{{imageurl}}" 
+        alt="Logo Data Curso" 
+        class="logo-datacurso">
         <p class="ai-bar__text" id="ai-bar-text-{{cmid}}">{{ai_actioncall}}</p>
         <button
           type="button"
@@ -42,9 +46,11 @@
           data-course="{{course}}"
           data-org="{{org}}"
           data-certurl="{{shareurl}}"
-          data-socialmedia="{{network}}">
+          data-socialmedia="LinkedIn"
+        >
           {{aibuttonlabel}}
         </button>
+
 
         <!-- Contenido (oculto hasta abrir) -->
         <div class="ai-bar__panel" aria-hidden="true">
@@ -90,7 +96,7 @@
                 </button>
               </section>
 
-              <section class="bd-media__actions">
+              <!--<section class="bd-media__actions">
                 <button type="button" class="bd-media__action" aria-label="Download image" title="Download image">
                   <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"
                       fill="currentColor"
@@ -99,24 +105,51 @@
                     <path d="M12 3v10.17l3.59-3.58L17 11l-5 5-5-5 1.41-1.41L11 13.17V3h1zM5 19h14v2H5z"/>
                   </svg>
                 </button>
-              </section>
+              </section>-->
 
-              <figure class="bd-media" aria-label="Attached image">
+              <!--<figure class="bd-media" aria-label="Attached image">
                 <img class="bd-media__img" src="{{imageurl}}" alt="{{image_alt}}"
                     loading="lazy" width="{{image_width}}" height="{{image_height}}">
                 <figcaption class="bd-visually-hidden">{{image_caption}}</figcaption>
-              </figure>
+              </figure>-->
             </main>
           </div>
         </div>
       </div>
-
-      
     </div> <!-- /bd-post -->
-
   </div>
 </div>
 
+<script>
+  // Activa el estado de "pensando"
+  function startAIThinking(btn) {
+    btn.classList.add('is-loading');
+    btn.setAttribute('aria-busy', 'true');
+    btn.dataset.loading = 'true';
+    btn.disabled = true;       // opcional: bloquea clicks repetidos
+  }
+
+  // Finaliza el estado de "pensando"
+  function stopAIThinking(btn) {
+    btn.classList.remove('is-loading');
+    btn.removeAttribute('aria-busy');
+    delete btn.dataset.loading;
+    btn.disabled = false;
+  }
+
+  // Ejemplo de uso con tu data-action:
+  document.addEventListener('click', function (e) {
+    const btn = e.target.closest('.ai-bar__button[data-action="run-ai"]');
+    if (!btn) return;
+
+    // Empieza animación mientras tu IA procesa:
+    startAIThinking(btn);
+
+    // ... aquí invocas tu lógica de IA (fetch, etc.) ...
+    // Cuando termines, llama a stopAIThinking(btn);
+    // stopAIThinking(btn); // <- llámalo al resolver tu promesa
+  });
+</script>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".local-socialcert").forEach(scope => {

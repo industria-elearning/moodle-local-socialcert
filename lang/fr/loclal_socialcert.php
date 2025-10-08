@@ -58,4 +58,4 @@ $string['ai_field_heading']  = 'Texte de la publication';
 
 $string['certificate_url']   = 'Lien';
 
-$string['ai_actioncall']   = '✨ Créez en un clic un message professionnel pour votre publication LinkedIn';
+$string['ai_actioncall']   = 'Créez en un clic un message professionnel pour votre publication LinkedIn';

@@ -336,7 +336,6 @@ export function runAiHandler(ev, btn) {
   const course = btn.dataset.course || '';
   const org = btn.dataset.org || '';
   const socialmedia = btn.dataset.socialmedia || '';
-  const certurl = btn.dataset.cerurl || '';
   const original = btn.textContent;
   btn.disabled = true;
   btn.textContent = 'Generating';
@@ -344,13 +343,12 @@ export function runAiHandler(ev, btn) {
   target.setAttribute('role', 'status');
 
   const loader = document.getElementById('ai-card');
-  
+
   ai_response(certname, course, org, socialmedia).then((fulltext) => {
 
     loader.classList.add('hidden');
     loader.setAttribute('aria-busy', 'false');
-    const certurltext =  " " + getString('local_socialcert', 'certificate_url') + ': ' + certurl;
-    const stream = typewriter(target, fulltext + certurltext , mode, speed);
+    const stream = typewriter(target, fulltext , mode, speed);
     stream.done.then(() => {
       btn.disabled = false;
       btn.textContent = original;

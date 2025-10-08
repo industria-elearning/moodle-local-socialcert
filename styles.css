@@ -130,6 +130,13 @@
   backdrop-filter: saturate(140%) blur(8px);
   -webkit-backdrop-filter: saturate(140%) blur(8px);
 }
+.local-socialcert .logo-datacurso {
+    width: 120px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    margin-right: 10px;
+}
 .local-socialcert .ai-bar__text{
   margin: 0;
   color: var(--ai-text);
@@ -143,7 +150,7 @@
   text-overflow: ellipsis;
 }
 .local-socialcert .ai-bar__button{
-  --btn-px: 14px;
+  /* --btn-px: 14px;
   --btn-py: 10px;
   appearance: none;
   border: 0;
@@ -156,15 +163,14 @@
   cursor: pointer;
   white-space: nowrap;
   box-shadow: 0 6px 16px -4px rgba(10, 102, 194, 0.45),
-              0 1px 0 0 rgba(255, 255, 255, 0.35) inset;
+              0 1px 0 0 rgba(255, 255, 255, 0.35) inset; */
   transition: transform .08s ease, box-shadow .2s ease, background-color .2s ease;
 }
-.local-socialcert .ai-bar__button::before{
-  content: "✨";
+/* .local-socialcert .ai-bar__button::before{
   margin-right: .5rem;
   display: inline-block;
   transform: translateY(-1px);
-}
+} */
 
 /* Panel colapsable dentro de la barra */
 .local-socialcert .ai-bar__panel{
@@ -429,3 +435,130 @@
 /* Estado cargado (opcional si usas solo CSS) */
 .card.loaded .skeleton { display: none; }
 .card.loaded .content { display: block; }
+
+
+/* ==== AI Round Button – DataCurso ==== */
+.ai-bar__button {
+  /* Personaliza fácilmente desde aquí */
+  --ai-size: 50px;                         /* tamaño del botón */
+  --ai-accent: #FF7052;                    /* color del logo (coral) */
+  --ai-accent-rgb: 232, 104, 88;           /* mismo color en formato rgb */
+  --ai-logo: url("https://datacurso.com/wp-content/uploads/2024/10/logo-Data-Cursox4.png");
+  --ai-spinner-thickness: 3px;
+
+  -webkit-appearance: none;
+  appearance: none;
+  position: relative;
+  inline-size: var(--ai-size);
+  block-size: var(--ai-size);
+  padding: 0;
+  border: 2px solid var(--ai-accent);
+  border-radius: 9999px;
+  background:
+    #fff
+    var(--ai-logo) center / 58% no-repeat; /* logo centrado */
+  box-shadow:
+    0 8px 22px rgba(var(--ai-accent-rgb), .22),
+    0 0 0 0 rgba(var(--ai-accent-rgb), 0); /* usada por el "halo" */
+  cursor: pointer;
+  transition:
+    transform .15s ease,
+    box-shadow .35s ease,
+    filter .35s ease,
+    background-size .25s ease;
+  /* Ocultar el texto visible pero mantener accesibilidad */
+  color: transparent;
+  text-indent: 150%;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+/* Hover: halo suave + ligera expansión del logo */
+.ai-bar__button:hover {
+  background-size: 60%;
+  box-shadow:
+    0 10px 28px rgba(var(--ai-accent-rgb), .28),
+    0 0 0 .5rem rgba(var(--ai-accent-rgb), .08);
+}
+
+/* Halo respirando (suave) */
+.ai-bar__button::before {
+  content: "";
+  position: absolute;
+  inset: -6px;                 /* un poco más grande que el botón */
+  border-radius: inherit;
+  background: radial-gradient(closest-side,
+              rgba(var(--ai-accent-rgb), .15),
+              transparent 65%);
+  opacity: 0;
+  transform: scale(.9);
+  transition: opacity .35s ease, transform .45s ease;
+  pointer-events: none;
+}
+.ai-bar__button:hover::before {
+  opacity: 1;
+  transform: scale(1);
+  animation: ai-breathe 2.4s ease-in-out infinite;
+}
+@keyframes ai-breathe {
+  0%, 100% { filter: blur(0); }
+  50%      { filter: blur(1px); }
+}
+
+/* Interacción */
+.ai-bar__button:active { transform: scale(.97); }
+.ai-bar__button:focus-visible {
+  outline: 3px solid rgba(var(--ai-accent-rgb), .45);
+  outline-offset: 3px;
+}
+
+/* ===== Spinner de "pensando" =====
+   Se activa con .is-loading, [data-loading="true"] o [aria-busy="true"] */
+.ai-bar__button::after {
+  content: "";
+  position: absolute;
+  inset: calc(var(--ai-size) * 0.12); /* grosor del anillo */
+  border-radius: inherit;
+  border: var(--ai-spinner-thickness) solid rgba(var(--ai-accent-rgb), .25);
+  border-top-color: var(--ai-accent);
+  border-right-color: var(--ai-accent);
+  transform: rotate(0deg);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Estado cargando: muestra spinner + sutil pulso */
+.ai-bar__button.is-loading::after,
+.ai-bar__button[data-loading="true"]::after,
+.ai-bar__button[aria-busy="true"]::after {
+  opacity: 1;
+  animation: ai-spin .9s linear infinite;
+}
+.ai-bar__button.is-loading,
+.ai-bar__button[data-loading="true"],
+.ai-bar__button[aria-busy="true"] {
+  background-size: 46%; /* deja espacio visual al spinner */
+  box-shadow:
+    0 8px 22px rgba(var(--ai-accent-rgb), .22),
+    0 0 0 .45rem rgba(var(--ai-accent-rgb), .06);
+  filter: saturate(.9);
+  pointer-events: none; /* evita dobles clics mientras carga */
+}
+@keyframes ai-spin { to { transform: rotate(360deg); } }
+
+/* Deshabilitado */
+.ai-bar__button:disabled {
+  opacity: .55;
+  cursor: not-allowed;
+  filter: grayscale(.15);
+}
+
+/* Respeta accesibilidad de movimiento reducido */
+@media (prefers-reduced-motion: reduce) {
+  .ai-bar__button,
+  .ai-bar__button::before,
+  .ai-bar__button::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
