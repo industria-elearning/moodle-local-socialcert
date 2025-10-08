@@ -343,8 +343,12 @@ export function runAiHandler(ev, btn) {
   target.setAttribute('aria-busy', 'true');
   target.setAttribute('role', 'status');
 
-  // Mock de respuesta (sustituye luego por tu fetch real)
+  const loader = document.getElementById('ai-card');
+  
   ai_response(certname, course, org, socialmedia).then((fulltext) => {
+
+    loader.classList.add('hidden');
+    loader.setAttribute('aria-busy', 'false');
     const certurltext =  " " + getString('local_socialcert', 'certificate_url') + ': ' + certurl;
     const stream = typewriter(target, fulltext + certurltext , mode, speed);
     stream.done.then(() => {

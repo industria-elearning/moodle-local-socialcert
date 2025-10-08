@@ -70,6 +70,13 @@
             <main class="bd-post__main" role="main">
               <section class="bd-message" aria-labelledby="bd-message-title">
                 <p class="bd-message__text">{{{message}}}</p>
+                <div id="ai-card" class="skeleton-card" aria-busy="true" aria-live="polite">
+                  <div class="skeleton" aria-hidden="true">
+                    <div class="sk-row w-90"></div>
+                    <div class="sk-row w-40"></div>
+                    <div class="sk-row w-80"></div>
+                  </div>
+                </div>
                 <div id="{{responseid}}" class="bd-message__text" aria-live="polite"></div>
                 <button type="button"
                         class="bd-message__copy"
