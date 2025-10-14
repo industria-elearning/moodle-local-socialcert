@@ -47,6 +47,7 @@
           data-org="{{org}}"
           data-certurl="{{shareurl}}"
           data-socialmedia="LinkedIn"
+          data-id_servicio="{{id_servicio}}"
         >
           {{aibuttonlabel}}
         </button>
@@ -120,7 +121,7 @@
   </div>
 </div>
 
-<script>
+{{! <script>
   // Activa el estado de "pensando"
   function startAIThinking(btn) {
     btn.classList.add('is-loading');
@@ -149,7 +150,7 @@
     // Cuando termines, llama a stopAIThinking(btn);
     // stopAIThinking(btn); // <- llámalo al resolver tu promesa
   });
-</script>
+</script> }}
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".local-socialcert").forEach(scope => {

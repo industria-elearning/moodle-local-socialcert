@@ -259,7 +259,8 @@ export function typewriter(el, text, mode, speedMs) {
  * @param {string} certname - Nombre del certificado (o del estudiante) a incluir en el prompt.
  * @param {string} course - Nombre del certificado (o del estudiante) a incluir en el prompt.
  * @param {string} org - Nombre de la organización o institución emisora.
- * @param {string|string[]} socialmedia - Red social objetivo (p. ej., "LinkedIn") o lista de redes.
+ * @param {string} socialmedia - Red social objetivo (p. ej., "LinkedIn") o lista de redes.
+ * @param {string} id_servicio - Red social objetivo (p. ej., "LinkedIn") o lista de redes.
  * @returns {Promise<string>} Promesa que se resuelve con el contenido textual de la respuesta de IA.
  * @throws {SyntaxError} Si el JSON devuelto por el backend no es válido.
  * @throws {Error} Si la llamada AJAX falla por cualquier motivo (se notificará con `Notification.exception`).
@@ -273,7 +274,7 @@ export function typewriter(el, text, mode, speedMs) {
  *     console.error("Error obteniendo la respuesta de IA:", err);
  *   });
  */
-function ai_response (certname, course, org, socialmedia) {
+function ai_response (certname, course, org, socialmedia, id_servicio) {
   return new Promise((resolve, reject) => {
     Ajax.call([{
       methodname: 'local_socialcert_get_ai_response',
@@ -282,7 +283,8 @@ function ai_response (certname, course, org, socialmedia) {
           certname: certname,
           course: course,
           org: org,
-          socialmedia: socialmedia
+          socialmedia: socialmedia,
+          id_servicio: id_servicio
         }
       },
     }])[0].then((response) => {
@@ -336,6 +338,7 @@ export function runAiHandler(ev, btn) {
   const course = btn.dataset.course || '';
   const org = btn.dataset.org || '';
   const socialmedia = btn.dataset.socialmedia || '';
+  const id_servicio = btn.dataset.id_servicio || '';
   const original = btn.textContent;
   btn.disabled = true;
   btn.textContent = 'Generating';
@@ -344,7 +347,7 @@ export function runAiHandler(ev, btn) {
 
   const loader = document.getElementById('ai-card');
 
-  ai_response(certname, course, org, socialmedia).then((fulltext) => {
+  ai_response(certname, course, org, socialmedia, id_servicio).then((fulltext) => {
 
     loader.classList.add('hidden');
     loader.setAttribute('aria-busy', 'false');

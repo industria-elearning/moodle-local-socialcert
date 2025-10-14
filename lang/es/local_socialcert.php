@@ -43,4 +43,4 @@ $string['ai_field_heading'] = 'Texto del Post';
 
 $string['certificate_url']   = 'Enlace';
 
-$string['ai_actioncall']   = 'Create a professional message for your LinkedIn post in one click';
+$string['ai_actioncall']   = 'Crea un mensaje profesional para tu publicación de LinkedIn con un solo clic';

@@ -1,6 +1,6 @@
 /* === Barra IA (oscura, translúcida) === */
 .local-socialcert {
-  --ai-bg: rgba(229, 231, 235, 0.5);
+  --ai-bg: rgba(235, 231, 229, 0.60);
   --ai-text: rgba(0, 0, 0, .9);
   --ai-black: rgba(0, 0, 0, .9);
   --ai-border: rgba(148, 163, 184, 0.22);
