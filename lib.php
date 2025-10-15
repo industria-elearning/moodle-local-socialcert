@@ -1,5 +1,5 @@
 <?php
-defined('MOODLE_INTERNAL') || die();
+defined(constant_name: 'MOODLE_INTERNAL') || die();
 
 function local_socialcert_extend_settings_navigation(settings_navigation $settingsnav, context $context): void {
     global $DB, $USER;

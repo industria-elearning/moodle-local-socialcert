@@ -30,58 +30,6 @@ function on(root, selector, type, handler) {
 }
 
 /**
- * Muestra/oculta nodos según el estado actual de red en `root.dataset.network`.
- * Cada bloque sensible debe declarar `data-visible-on="linkedin twitter ..."`
- * @param {HTMLElement} root  Contenedor raíz con data-network
- * @returns {void}
- */
-function updateVisibility(root) {
-  const current = root.dataset.network || '';
-  root.querySelectorAll('[data-visible-on]').forEach(el => {
-    const allowed = (el.getAttribute('data-visible-on') || '').split(/\s+/);
-    if (allowed.includes(current)) {
-      el.classList.remove('d-none');
-    } else {
-      el.classList.add('d-none');
-    }
-  });
-}
-
-/**
- * Selecciona pestaña/red (data-network), actualiza aria-selected y visibilidad.
- * @param {MouseEvent} ev
- * @param {HTMLElement} el  Botón con data-network="..."
- * @returns {void}
- */
-export function handleSelectNetwork(ev, el) {
-  ev.preventDefault();
-  const root = el.closest('.local-socialcert');
-  if (!root) {
-    return;
-  }
-
-  const next = el.dataset.network;
-  if (!next) {
-    return;
-  }
-
-  // Estado
-  root.dataset.network = next;
-
-  // Toggle visual en el grupo
-  const group = el.closest('.lsc-social-tabs');
-  if (group) {
-    group.querySelectorAll('[data-action="select-network"]').forEach(b => {
-      b.classList.toggle('active', b === el);
-      b.setAttribute('aria-selected', b === el ? 'true' : 'false');
-    });
-  }
-
-  // Mostrar/ocultar secciones
-  updateVisibility(root);
-}
-
-/**
  * Abre un enlace en nueva pestaña. Usa href o data-url.
  * Marca aria-busy brevemente como feedback.
  * @param {MouseEvent} ev
@@ -134,33 +82,18 @@ async function handleCopyHtml(_ev, el) {
   navigator.clipboard.writeText(content)
     .then(() => {
       // feedback opcional: cambiar el texto del botón brevemente
-      const original = el.textContent;
-      el.textContent = 'Copiado ✔';
-      setTimeout(() => { el.textContent = original; }, 1200);
+      const btn = el.querySelector('[data-action="copy-html"]');
+      if (!btn) {return;}
+
+      const originalHTML = btn.innerHTML;
+      btn.textContent = '✔';
+      setTimeout(() => { btn.textContent = originalHTML; }, 1200);
     })
     .catch(() => {
       // fallback opcional (silencioso)
     });
 }
 
-/**
- * Copia la URL src de la imagen indicada en data-target.
- * @param {MouseEvent} _ev
- * @param {HTMLElement} el
- * @returns {void}
- */
-function handleCopyImage(_ev, el) {
-  const sel = el.dataset.target || '';
-  const img = sel ? document.querySelector(sel) : null;
-  if (!img) {
-    return;
-  }
-  // Copiar URL de imagen (sencillo y compatible)
-  const src = img.getAttribute('src');
-  if (src) {
-    navigator.clipboard.writeText(src);
-  }
-}
 
 
 // --- STREAM MOCK + TYPEWRITER -----------------------------------------------
@@ -233,19 +166,6 @@ export function typewriter(el, text, mode, speedMs) {
   return { stop() { const s = streams.get(el); if (s) { s.stop(); streams.delete(el); } }, done };
 }
 
-/** MOCK: sustituye luego por tu fetch real */
-// function fetchAiMock() {
-//   const demo = "Lorem ipsum dolor sit amet consectetur adipiscing elit vel curae id, mauris vivamus vulputate " +
-//   "condimentum erat arcu ligula tristique tincidunt iaculis, ac tempor tortor suspendisse torquent nisl " +
-//   "commodo eget mus. Nulla penatibus nostra inceptos tortor congue quam mollis ornare class, dui nunc " +
-//   "iaculis bibendum nascetur himenaeos facilisi rhoncus, morbi nibh arcu ullamcorper faucibus dictumst " +
-//   "facilisis tristique. Taciti lacus maecenas vulputate vel nostra ante interdum vivamus enim, est " +
-//   "malesuada volutpat semper quisque etiam rhoncus lectus proin, quis sem vitae leo consequat euismod " +
-//   "vestibulum facilisi. 🙂.";
-//   return Promise.resolve(demo);
-// }
-
-
 /**
  * Obtiene una respuesta generada por IA para un certificado/curso y red social dada,
  * utilizando la llamada AJAX `local_socialcert_get_ai_response`.
@@ -260,7 +180,6 @@ export function typewriter(el, text, mode, speedMs) {
  * @param {string} course - Nombre del certificado (o del estudiante) a incluir en el prompt.
  * @param {string} org - Nombre de la organización o institución emisora.
  * @param {string} socialmedia - Red social objetivo (p. ej., "LinkedIn") o lista de redes.
- * @param {string} id_servicio - Red social objetivo (p. ej., "LinkedIn") o lista de redes.
  * @returns {Promise<string>} Promesa que se resuelve con el contenido textual de la respuesta de IA.
  * @throws {SyntaxError} Si el JSON devuelto por el backend no es válido.
  * @throws {Error} Si la llamada AJAX falla por cualquier motivo (se notificará con `Notification.exception`).
@@ -274,7 +193,7 @@ export function typewriter(el, text, mode, speedMs) {
  *     console.error("Error obteniendo la respuesta de IA:", err);
  *   });
  */
-function ai_response (certname, course, org, socialmedia, id_servicio) {
+function ai_response (certname, course, org, socialmedia) {
   return new Promise((resolve, reject) => {
     Ajax.call([{
       methodname: 'local_socialcert_get_ai_response',
@@ -283,8 +202,7 @@ function ai_response (certname, course, org, socialmedia, id_servicio) {
           certname: certname,
           course: course,
           org: org,
-          socialmedia: socialmedia,
-          id_servicio: id_servicio
+          socialmedia: socialmedia
         }
       },
     }])[0].then((response) => {
@@ -346,9 +264,9 @@ export function runAiHandler(ev, btn) {
   target.setAttribute('role', 'status');
 
   const loader = document.getElementById('ai-card');
+  const copyBtn = document.getElementById('copyBtn');
 
   ai_response(certname, course, org, socialmedia, id_servicio).then((fulltext) => {
-
     loader.classList.add('hidden');
     loader.setAttribute('aria-busy', 'false');
     const stream = typewriter(target, fulltext , mode, speed);
@@ -357,6 +275,9 @@ export function runAiHandler(ev, btn) {
       btn.textContent = original;
       target.removeAttribute('aria-busy');
       streams.delete(target);
+    })
+    .finally(() => {
+      copyBtn.hidden=false;
     });
   }).catch(() => {
     btn.disabled = false;
@@ -365,42 +286,6 @@ export function runAiHandler(ev, btn) {
   });
 }
 
-/**
- * Copia al portapapeles:
- *  - el valor explícito en data-copy-value, o
- *  - si no está, el texto visible del elemento.
- * Muestra feedback breve en el chip de copiar si existe.
- * @param {MouseEvent|KeyboardEvent} ev
- * @param {HTMLElement} el
- */
-export function handleCopyText(ev, el) {
-  // Soporta acticonst con Enter/Espacio si llega por teclado
-  if (ev.type === 'keydown') {
-    const code = ev.key || ev.code;
-    if (code !== 'Enter' && code !== ' ' && code !== 'Spacebar') { return; }
-    ev.preventDefault();
-  }
-
-  let value = el.getAttribute('data-copy-value');
-  if (!value) {
-    // Toma el texto visible; ignora el icono de copiar
-    const clone = el.cloneNode(true);
-    const btn = clone.querySelector('.lsc-copybtn');
-    if (btn) { btn.remove(); }
-    value = clone.innerText || clone.textContent || '';
-  }
-
-  navigator.clipboard.writeText(value).then(function () {
-    // Feedback: swap temporal en el chip si está
-    let badge = el.querySelector('.lsc-copybtn');
-    if (!badge) { return; }
-    const original = badge.textContent;
-    badge.textContent = '✔';
-    setTimeout(function () { badge.textContent = original; }, 900);
-  }).catch(function () {
-    // Silencioso; podrías mostrar \core\notification desde PHP si lo prefieres
-  });
-}
 
 /**
  * Registra una acción para usar con data-action="name".
@@ -410,75 +295,6 @@ export function handleCopyText(ev, el) {
  */
 export function register(name, fn) { registry.set(name, fn); }
 
-/**
- * Descarga la imagen indicada por data-url o por el src de data-target.
- * Añade forcedownload=1 para pluginfile.php (Moodle) para forzar la descarga.
- * @param {MouseEvent} _ev
- * @param {HTMLElement} el
- */
-function handleDownloadImage(_ev, el) {
-  // 1) Resolver URL
-  let url = el.getAttribute('data-url') || '';
-
-  // eslint-disable-next-line no-console
-  console.log('URL1:', url);
-
-  if (!url) {
-    const sel = el.getAttribute('data-target') || '';
-    const img = sel ? document.querySelector(sel) : null;
-    if (img) { url = img.getAttribute('src') || ''; }
-  }
-  if (!url) { return; }
-
-  // 2) Si es pluginfile.php, añade forcedownload=1
-  try {
-    const u = new URL(url, window.location.origin);
-    if (u.pathname.indexOf('/pluginfile.php') !== -1 && !u.searchParams.has('forcedownload')) {
-      u.searchParams.set('forcedownload', '1');
-      url = u.toString();
-      // eslint-disable-next-line no-console
-      console.log('URL: ', url);
-    }
-  } catch (_e) { /* usa url tal cual */ }
-
-  // 3) Nombre de archivo
-  const filename = el.getAttribute('data-filename') || (function () {
-    try {
-      const u2 = new URL(url, window.location.origin);
-      const base = u2.pathname.split('/').pop() || 'certificado';
-      return base.indexOf('.') === -1 ? (base + '.png') : base;
-    } catch (_e) { return 'certificado.png'; }
-  })();
-
-  // 4) Intento principal: descargar como blob (mejor UX)
-  fetch(url, { credentials: 'same-origin' })
-    .then(function (res) {
-      if (!res.ok) { throw new Error('HTTP ' + res.status); }
-      return res.blob();
-    })
-    .then(function (blob) {
-      const blobUrl = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = blobUrl;
-      a.download = filename;           // fuerza descarga con nombre
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      setTimeout(function () { URL.revokeObjectURL(blobUrl); }, 500);
-    })
-    .catch(function () {
-      // 5) Fallback: abrir en nueva pestaña (usuario guarda manualmente)
-      const a = document.createElement('a');
-      a.href = url;
-      a.target = '_blank';
-      a.rel = 'noopener';
-      // Si es misma-origen, download también podría funcionar sin blob:
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-    });
-}
 
 /**
  * Punto de entrada: registra handlers base y activa la delegación de clicks.
@@ -490,17 +306,10 @@ export function init() {
     return;
   }
 
-  // ⬇️ FALTABA registrar el selector de red
-  register('select-network', handleSelectNetwork);
-  updateVisibility(root);
-
   // Registra acciones base
   register('open-link', handleOpenLink);
   register('copy-html', handleCopyHtml);
-  register('copy-image', handleCopyImage);
   register('run-ai', runAiHandler);
-  register('copy-text', handleCopyText);
-  register('download-image', handleDownloadImage);
 
   // Delegación única para todos los clicks con data-action
   on(root, '[data-action]', 'click', (ev, el) => {
@@ -511,8 +320,4 @@ export function init() {
     }
   });
 
-  on(root, '[data-action="copy-text"]', 'keydown', (ev, el) => handleCopyText(ev, el));
-
-  // ⬇️ Calcula visibilidad inicial según data-network del root
-  updateVisibility(root);
 }

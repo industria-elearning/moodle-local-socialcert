@@ -1,4 +1,4 @@
-# SocialCert (local_socialcert)
+# Share Certificate AI (local_socialcert)
 
 MVP plugin that adds an **“Add Cert to Social Networks”** link to **Custom certificate** activities without modifying `mod_customcert`.
 
@@ -9,7 +9,7 @@ MVP plugin that adds an **“Add Cert to Social Networks”** link to **Custom c
 ## Installation
 1. Copy this plugin into `local/socialcert`.
 2. Visit **Site administration → Notifications** to complete the installation.
-3. Go to **Site administration → Plugins → Local plugins → SocialCert** and configure:
+3. Go to **Site administration → Plugins → Local plugins → Share Certificate AI** and configure:
    - **LinkedIn organization ID** (`organizationid`).
 
 > If `organizationid` is empty, the button will not be displayed.

@@ -1,13 +1,11 @@
 <?php
-defined('MOODLE_INTERNAL') || die();
+defined(constant_name: 'MOODLE_INTERNAL') || die();
 
 if ($hassiteconfig) {
-    // 1) Crea la página y añádela al árbol de admin.
     $settings = new admin_settingpage('local_socialcert',
         get_string('pluginname', 'local_socialcert'));
     $ADMIN->add('localplugins', $settings);
 
-    // 2) Añade el ajuste (dentro/independiente de fulltree; ambas formas valen).
     $settings->add(new admin_setting_configtext(
         'local_socialcert/organizationid',
         get_string('organizationid', 'local_socialcert'),
@@ -22,5 +20,12 @@ if ($hassiteconfig) {
         get_string('organizationname_desc', 'local_socialcert'),
         '',
         PARAM_RAW_TRIMMED
+    ));
+
+    $settings->add(new admin_setting_configcheckbox(
+        'local_socialcert/enableai',
+        get_string('enableai', 'local_socialcert'),
+        get_string('enableai_desc', 'local_socialcert'),
+        1 
     ));
 }

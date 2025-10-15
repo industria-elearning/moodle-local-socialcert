@@ -18,7 +18,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['pluginname'] = 'SocialCert';
+$string['pluginname'] = 'Share Certificate AI';
 $string['description'] = 'Memungkinkan pengguna untuk membagikan sertifikat mereka langsung di LinkedIn.';
 
 // Pengaturan.
@@ -27,7 +27,7 @@ $string['organizationid_desc'] = 'ID numerik perusahaan/organisasi yang digunaka
 $string['organizationname'] = 'Nama organisasi LinkedIn';
 $string['organizationname_desc'] = 'Nama organisasi yang akan ditampilkan di LinkedIn. Harus sama persis seperti yang terdaftar di LinkedIn. Biarkan kosong untuk menonaktifkan hingga dikonfigurasi.';
 
-$string['privacy:metadata'] = 'Plugin SocialCert tidak menyimpan data pribadi apa pun.';
+$string['privacy:metadata'] = 'Plugin Share Certificate AI tidak menyimpan data pribadi apa pun.';
 
 $string['noissue'] = 'Anda belum memiliki sertifikat yang diterbitkan untuk kursus ini.';
 
@@ -44,7 +44,7 @@ $string['generating'] = 'Sedang membuat…';
 
 $string['certificateimage'] = 'certificate.png';
 
-// SocialCert – Bagikan (Langkah 1)
+// Share Certificate AI – Bagikan (Langkah 1)
 $string['sharetitle']        = 'Bagikan pencapaian Anda di LinkedIn';
 $string['sharesubtitle']     = 'Kami akan memposting tautan yang dapat diverifikasi ke sertifikat Anda.';
 $string['buttonlabelshare']  = 'Bagikan di LinkedIn';
@@ -58,4 +58,6 @@ $string['ai_field_heading']  = 'Teks unggahan';
 
 $string['certificate_url']   = 'Tautan';
 
-$string['ai_actioncall']   = 'Buat pesan profesional untuk unggahan LinkedIn Anda hanya dengan satu klik';
+$string['enableai'] = 'Aktifkan AI untuk menyarankan teks posting';
+
+$string['enableai_desc'] = 'Jika dinonaktifkan, plugin tidak akan memanggil Provider AI dan tidak akan membuat saran untuk postingan LinkedIn.';

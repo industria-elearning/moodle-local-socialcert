@@ -18,7 +18,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['pluginname'] = 'SocialCert';
+$string['pluginname'] = 'Share Certificate AI';
 $string['description'] = 'Allows the user to share their certificate directly on LinkedIn.';
 
 // Settings.
@@ -27,7 +27,7 @@ $string['organizationid_desc'] = 'Numeric company/organization ID used by Linked
 $string['organizationname'] = 'LinkedIn organization name';
 $string['organizationname_desc'] = 'Name of the organization to display in LinkedIn. Must match exactly as it appears on LinkedIn. Leave empty to disable until configured.';
 
-$string['privacy:metadata'] = 'The SocialCert plugin does not store any personal data.';
+$string['privacy:metadata'] = 'The Share Certificate AI plugin does not store any personal data.';
 
 $string['noissue'] = 'Aún no tienes un certificado emitido para este curso.';
 
@@ -44,7 +44,7 @@ $string['generating'] = 'Generating…';
 
 $string['certificateimage'] = 'certificate.png';
 
-// SocialCert – Share hero (Step 1)
+// Share Certificate AI – Share hero (Step 1)
 $string['sharetitle']        = 'Share your achievement on LinkedIn';
 $string['sharesubtitle']     = 'We’ll post a verifiable link to your certificate.';
 $string['buttonlabelshare']  = 'Share on LinkedIn';
@@ -61,3 +61,7 @@ $string['certificate_url']   = 'Link';
 $string['ai_actioncall']   = 'Create a professional message for your LinkedIn post in one click';
 
 $string['linktext']   = 'Certificate link';
+
+$string['enableai'] = 'Enable AI to suggest post text';
+
+$string['enableai_desc'] = 'If unchecked, the plugin will not call Provider AI or generate LinkedIn post suggestions.';

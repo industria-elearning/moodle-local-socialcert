@@ -18,7 +18,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['pluginname'] = 'SocialCert';
+$string['pluginname'] = 'Share Certificate AI';
 $string['description'] = 'Ermöglicht es dem Benutzer, sein Zertifikat direkt auf LinkedIn zu teilen.';
 
 // Einstellungen.
@@ -27,7 +27,7 @@ $string['organizationid_desc'] = 'Numerische ID der Firma/Organisation, die von 
 $string['organizationname'] = 'Name der LinkedIn-Organisation';
 $string['organizationname_desc'] = 'Name der Organisation, wie sie auf LinkedIn angezeigt wird. Muss exakt übereinstimmen. Leer lassen, um die Funktion zu deaktivieren, bis sie konfiguriert ist.';
 
-$string['privacy:metadata'] = 'Das SocialCert-Plugin speichert keine personenbezogenen Daten.';
+$string['privacy:metadata'] = 'Das Share Certificate AI-Plugin speichert keine personenbezogenen Daten.';
 
 $string['noissue'] = 'Du hast noch kein Zertifikat für diesen Kurs erhalten.';
 
@@ -44,7 +44,7 @@ $string['generating'] = 'Wird erstellt…';
 
 $string['certificateimage'] = 'certificate.png';
 
-// SocialCert – Teilen (Schritt 1)
+// Share Certificate AI – Teilen (Schritt 1)
 $string['sharetitle']        = 'Teile deinen Erfolg auf LinkedIn';
 $string['sharesubtitle']     = 'Wir veröffentlichen einen verifizierbaren Link zu deinem Zertifikat.';
 $string['buttonlabelshare']  = 'Auf LinkedIn teilen';
@@ -59,3 +59,7 @@ $string['ai_field_heading']  = 'Beitragstext';
 $string['certificate_url']   = 'Link';
 
 $string['ai_actioncall']   = 'Erstelle mit einem Klick einen professionellen Text für deinen LinkedIn-Beitrag';
+
+$string['enableai'] = 'KI aktivieren, um vorgeschlagenen Beitragstext zu erzeugen';
+
+$string['enableai_desc'] = 'Wenn diese Option deaktiviert ist, ruft das Plugin Provider AI nicht auf und generiert keine Vorschläge für LinkedIn-Beiträge.';

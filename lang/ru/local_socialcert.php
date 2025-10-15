@@ -18,7 +18,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['pluginname'] = 'SocialCert';
+$string['pluginname'] = 'Share Certificate AI';
 $string['description'] = 'Позволяет пользователю поделиться своим сертификатом напрямую в LinkedIn.';
 
 // Настройки.
@@ -27,7 +27,7 @@ $string['organizationid_desc'] = 'Числовой идентификатор к
 $string['organizationname'] = 'Название организации в LinkedIn';
 $string['organizationname_desc'] = 'Название организации, отображаемое в LinkedIn. Должно точно соответствовать тому, как оно указано на LinkedIn. Оставьте поле пустым, чтобы отключить до настройки.';
 
-$string['privacy:metadata'] = 'Плагин SocialCert не хранит никаких персональных данных.';
+$string['privacy:metadata'] = 'Плагин Share Certificate AI не хранит никаких персональных данных.';
 
 $string['noissue'] = 'У вас пока нет выданного сертификата для этого курса.';
 
@@ -44,7 +44,7 @@ $string['generating'] = 'Генерация…';
 
 $string['certificateimage'] = 'certificate.png';
 
-// SocialCert – Поделиться (Шаг 1)
+// Share Certificate AI – Поделиться (Шаг 1)
 $string['sharetitle']        = 'Поделитесь своим достижением в LinkedIn';
 $string['sharesubtitle']     = 'Мы опубликуем проверяемую ссылку на ваш сертификат.';
 $string['buttonlabelshare']  = 'Поделиться в LinkedIn';

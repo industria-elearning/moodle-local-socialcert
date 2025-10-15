@@ -18,7 +18,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['pluginname'] = 'SocialCert';
+$string['pluginname'] = 'Share Certificate AI';
 $string['description'] = 'Permet à l’utilisateur de partager son certificat directement sur LinkedIn.';
 
 // Paramètres.
@@ -27,7 +27,7 @@ $string['organizationid_desc'] = 'Identifiant numérique de l’entreprise/organ
 $string['organizationname'] = 'Nom de l’organisation LinkedIn';
 $string['organizationname_desc'] = 'Nom de l’organisation à afficher sur LinkedIn. Doit correspondre exactement à celui utilisé sur LinkedIn. Laissez vide pour désactiver jusqu’à la configuration.';
 
-$string['privacy:metadata'] = 'Le plugin SocialCert ne stocke aucune donnée personnelle.';
+$string['privacy:metadata'] = 'Le plugin Share Certificate AI ne stocke aucune donnée personnelle.';
 
 $string['noissue'] = 'Vous n’avez pas encore reçu de certificat pour ce cours.';
 
@@ -44,7 +44,7 @@ $string['generating'] = 'Génération en cours…';
 
 $string['certificateimage'] = 'certificate.png';
 
-// SocialCert – Partage (Étape 1)
+// Share Certificate AI – Partage (Étape 1)
 $string['sharetitle']        = 'Partagez votre réussite sur LinkedIn';
 $string['sharesubtitle']     = 'Nous publierons un lien vérifiable vers votre certificat.';
 $string['buttonlabelshare']  = 'Partager sur LinkedIn';
@@ -59,3 +59,7 @@ $string['ai_field_heading']  = 'Texte de la publication';
 $string['certificate_url']   = 'Lien';
 
 $string['ai_actioncall']   = 'Créez en un clic un message professionnel pour votre publication LinkedIn';
+
+$string['enableai'] = 'Activer l’IA pour suggérer le texte de la publication';
+
+$string['enableai_desc'] = 'Si cette option est désactivée, le plug-in n’appellera pas Provider AI et ne générera aucune suggestion pour les publications LinkedIn.';

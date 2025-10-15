@@ -1,6 +1,5 @@
 <div class="local-socialcert my-4 social-scope" data-network="linkedin" data-cmid="{{cmid}}">
 
-  <!-- Hero -->
   <section class="lsc-hero" aria-labelledby="lsc-hero-title">
     <h2 id="lsc-hero-title" class="lsc-hero__title">{{sharetitle}}</h2>
     <p class="lsc-hero__support">{{sharesubtitle}}</p>
@@ -22,40 +21,39 @@
     </div>
     <div class="lsc-live" aria-live="polite" aria-atomic="true"></div>
   </section>
-
+  {{#enableai}}
   <div class="lsc-response-wrap">
 
     <div class="bd-post" data-ai-composer>
-      <!-- Barra IA (visible siempre) -->
       <div class="ai-bar" role="region" aria-label="Asistente de IA para redactar tu post">
         <img 
         src="{{imageurl}}" 
         alt="Logo Data Curso" 
         class="logo-datacurso">
         <p class="ai-bar__text" id="ai-bar-text-{{cmid}}">{{ai_actioncall}}</p>
-        <button
-          type="button"
-          class="ai-bar__button"
-          aria-describedby="ai-bar-text-{{cmid}}"
-          id="{{aibuttonid}}"
-          data-action="run-ai"
-          data-target="#{{responseid}}"
-          data-mode="word"
-          data-speed="40"
-          data-certname="{{certname}}"
-          data-course="{{course}}"
-          data-org="{{org}}"
-          data-certurl="{{shareurl}}"
-          data-socialmedia="LinkedIn"
-          data-id_servicio="{{id_servicio}}"
-        >
-          {{aibuttonlabel}}
-        </button>
+        <div class="ai-bar__btn-container">
+          <button
+            type="button"
+            class="ai-bar__button"
+            aria-describedby="ai-bar-text-{{cmid}}"
+            id="{{aibuttonid}}"
+            data-action="run-ai"
+            data-target="#{{responseid}}"
+            data-mode="word"
+            data-speed="40"
+            data-certname="{{certname}}"
+            data-course="{{course}}"
+            data-org="{{org}}"
+            data-certurl="{{shareurl}}"
+            data-socialmedia="LinkedIn"
+          >
+            {{aibuttonlabel}}
+          </button>
+        </div>
 
-
-        <!-- Contenido (oculto hasta abrir) -->
         <div class="ai-bar__panel" aria-hidden="true">
           <div class="bd-post__content" aria-hidden="true">
+            
             <header class="bd-post__header" role="banner" aria-label="Composer header">
               <div class="bd-avatar" aria-label="{{author_name}} avatar" role="img">
                 {{#author_avatar_url}}
@@ -85,72 +83,27 @@
                   </div>
                 </div>
                 <div id="{{responseid}}" class="bd-message__text" aria-live="polite"></div>
-                <button type="button"
-                        class="bd-message__copy"
-                        aria-label="{{copytextlabel}}"
-                        title="{{copytextlabel}}"
-                        data-action="copy-html"
-                        data-target="#{{responseid}}">
-                  <svg class="bd-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                    <path d="M16 1H4a2 2 0 0 0-2 2v12h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/>
-                  </svg>
-                </button>
+                <div id="copyBtn" class="bd-message__cn-copy" hidden>
+                  <button type="button"
+                          class="bd-message__btn-copy"
+                          aria-label="{{copytextlabel}}"
+                          title="{{copytextlabel}}"
+                          data-action="copy-html"
+                          data-target="#{{responseid}}">
+                    <svg class="bd-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                      <path d="M16 1H4a2 2 0 0 0-2 2v12h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/>
+                    </svg>
+                  </button>
+                <div>
               </section>
-
-              <!--<section class="bd-media__actions">
-                <button type="button" class="bd-media__action" aria-label="Download image" title="Download image">
-                  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"
-                      fill="currentColor"
-                      stroke="currentColor" stroke-width="1.5"
-                      stroke-linejoin="round" paint-order="stroke fill">
-                    <path d="M12 3v10.17l3.59-3.58L17 11l-5 5-5-5 1.41-1.41L11 13.17V3h1zM5 19h14v2H5z"/>
-                  </svg>
-                </button>
-              </section>-->
-
-              <!--<figure class="bd-media" aria-label="Attached image">
-                <img class="bd-media__img" src="{{imageurl}}" alt="{{image_alt}}"
-                    loading="lazy" width="{{image_width}}" height="{{image_height}}">
-                <figcaption class="bd-visually-hidden">{{image_caption}}</figcaption>
-              </figure>-->
             </main>
           </div>
         </div>
       </div>
-    </div> <!-- /bd-post -->
+    </div>
   </div>
+  {{/enableai}}
 </div>
-
-{{! <script>
-  // Activa el estado de "pensando"
-  function startAIThinking(btn) {
-    btn.classList.add('is-loading');
-    btn.setAttribute('aria-busy', 'true');
-    btn.dataset.loading = 'true';
-    btn.disabled = true;       // opcional: bloquea clicks repetidos
-  }
-
-  // Finaliza el estado de "pensando"
-  function stopAIThinking(btn) {
-    btn.classList.remove('is-loading');
-    btn.removeAttribute('aria-busy');
-    delete btn.dataset.loading;
-    btn.disabled = false;
-  }
-
-  // Ejemplo de uso con tu data-action:
-  document.addEventListener('click', function (e) {
-    const btn = e.target.closest('.ai-bar__button[data-action="run-ai"]');
-    if (!btn) return;
-
-    // Empieza animación mientras tu IA procesa:
-    startAIThinking(btn);
-
-    // ... aquí invocas tu lógica de IA (fetch, etc.) ...
-    // Cuando termines, llama a stopAIThinking(btn);
-    // stopAIThinking(btn); // <- llámalo al resolver tu promesa
-  });
-</script> }}
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".local-socialcert").forEach(scope => {
@@ -161,18 +114,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let opened = false;
     runBtn.addEventListener("click", () => {
-      console.log('OPEN?', opened)
-      if (opened) return;               // no toggle: solo abre
+      if (opened) return;
       opened = true;
-
-      bar.classList.add("is-open");     // agrega el margen superior del panel
+      bar.classList.add("is-open"); 
       panel.style.height = panel.scrollHeight + "px";
       panel.addEventListener("transitionend", () => {
         panel.style.height = "auto";
         panel.removeAttribute("aria-hidden");
       }, { once: true });
 
-      // (opcional) scroll suave a la barra
       bar.scrollIntoView({ behavior: "smooth", block: "start" });
     });
   });
