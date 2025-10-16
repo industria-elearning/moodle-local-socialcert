@@ -1,6 +1,6 @@
 <?php
 
-defined('MOODLE_INTERNAL') || die();
+defined(constant_name: 'MOODLE_INTERNAL') || die();
 
 $functions = [
     'local_socialcert_get_ai_response' => [

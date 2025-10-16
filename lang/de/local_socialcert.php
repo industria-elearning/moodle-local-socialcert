@@ -63,3 +63,5 @@ $string['ai_actioncall']   = 'Erstelle mit einem Klick einen professionellen Tex
 $string['enableai'] = 'KI aktivieren, um vorgeschlagenen Beitragstext zu erzeugen';
 
 $string['enableai_desc'] = 'Wenn diese Option deaktiviert ist, ruft das Plugin Provider AI nicht auf und generiert keine Vorschläge für LinkedIn-Beiträge.';
+
+$string['certerror'] = "Sie benötigen ein ausgestelltes Zertifikat, bevor Sie es auf LinkedIn teilen können.";

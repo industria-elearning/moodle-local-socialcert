@@ -61,3 +61,6 @@ $string['certificate_url']   = 'Tautan';
 $string['enableai'] = 'Aktifkan AI untuk menyarankan teks posting';
 
 $string['enableai_desc'] = 'Jika dinonaktifkan, plugin tidak akan memanggil Provider AI dan tidak akan membuat saran untuk postingan LinkedIn.';
+
+$string['certerror'] = "Anda perlu memiliki sertifikat yang diterbitkan sebelum dapat membagikannya di LinkedIn.";
+

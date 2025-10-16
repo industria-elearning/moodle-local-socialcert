@@ -65,3 +65,6 @@ $string['linktext']   = 'Certificate link';
 $string['enableai'] = 'Enable AI to suggest post text';
 
 $string['enableai_desc'] = 'If unchecked, the plugin will not call Provider AI or generate LinkedIn post suggestions.';
+
+$string['certerror'] = "You’ll need to have an issued certificate before you can share it on LinkedIn.";
+

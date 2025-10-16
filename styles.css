@@ -26,6 +26,11 @@
   --li-650: #0956a1;
   --li-700: #004182;
 
+  
+  --lsc-300: #fdecea;
+  --lsc-400: #f5c2c7;
+  --lsc-500: #b71c1c;
+
   /* Escalas de espaciado y radios */
   --space-0: 0px;
   --space-1: 4px;
@@ -156,12 +161,25 @@
   font-weight: 600;
   text-decoration: none;
 }
+.local-socialcert .lsc-cta.disabled {
+  pointer-events: none;   
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.local-socialcert .lsc-error-message {
+  color: var(--lsc-500);
+  background-color: var(--lsc-300);
+  border: 1px solid var(--lsc-400);
+  padding: 10px 14px;
+  border-radius: 6px;
+  margin-top: 10px;
+  font-size: 0.95rem;
+}
 .local-socialcert .lsc-cta__icon{ display: inline-flex; }
 .local-socialcert .lsc-cta svg{ fill: currentColor; }
 
-/* Botón social usando tokens de la red (heredados del wrapper .social-scope) */
 .local-socialcert .btn.btn-social{
-  background-color: var(--li-500);
+  background-color: var(--social-bg);
   border-color: var(--social-border);
   color: var(--c-white);
 }

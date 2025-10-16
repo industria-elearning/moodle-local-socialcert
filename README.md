@@ -16,7 +16,7 @@ A Moodle plugin that adds an **“Add certificate to LinkedIn”** button to **C
 
 ---
 
-## Requirements
+## Pre-requisites
 
 * **Moodle 4.5** (recommended minimum: **2025100201**) or later.
 * **`mod_customcert`** (recommended minimum: **2024042212**).
@@ -24,15 +24,13 @@ A Moodle plugin that adds an **“Add certificate to LinkedIn”** button to **C
 
 ---
 
-## Installation
-
-### Via ZIP upload
+## Installing via ZIP upload
 
 1. Log in as **administrator** and go to **Site administration → Plugins → Install plugins**.
 2. Upload the plugin **ZIP**.
 3. Review the validation report and **complete the installation**.
 
-### Manual copy (dirroot)
+## Installing manually
 
 1. Copy this directory to:
 
@@ -49,26 +47,46 @@ A Moodle plugin that adds an **“Add certificate to LinkedIn”** button to **C
 
 ---
 
-## Configuration (LinkedIn Organization ID)
+## Plugin Configuration
 
-Go to **Site administration → Plugins → Local plugins → Share Certificate AI** and set:
+Go to **Site administration → Plugins → Local plugins → Share Certificate AI** and fill in:
 
-* **LinkedIn organization ID** (`organizationid`) — *required*.
-* **Organization name** (`organizationname`) — *optional*.
+* **LinkedIn Organization ID** (`organizationid`) — **optional**.
 
-> If `organizationid` is empty, the button **will not be shown** to users.
+  * If you **don’t** provide it, the plugin will use LinkedIn’s **default ID**.
+* **Organization name** (`organizationname`) — **optional but recommended** if you leave it   
+  empty, the **default ID** will be used.
 
-### How to find your Organization ID
+  * For best results, write the **exact name as it appears on LinkedIn** (same spacing, capitalization, and accents).
+* **Enable AI** (`local_socialcert/enableai`) — **global toggle**.
 
-You must be an **administrator** of your institution’s LinkedIn Page. Open the Page and copy the **numeric ID** from the URL. Example:
+  * Checking this box **enables** AI features for the entire account; unchecking it **disables** them globally.
+  * Default: **enabled**.
+
+---
+
+### How to find your LinkedIn Organization ID
+
+You must be an **administrator** of your institution’s LinkedIn Page.
+
+1. Open your organization’s LinkedIn Page in admin view.
+2. Copy the **numeric ID** from the URL.
+
+Example:
 
 ```
 https://www.linkedin.com/company/64664132/admin/...
-                                   ^^^^^^^^ ID
 ```
 
-* **Organization ID**: required for *Add-to-profile*.
-* **Organization name (optional)**: exactly as shown on LinkedIn. If left empty, LinkedIn uses the name associated with the ID.
+In this example, the **Organization ID** is `64664132`.
+
+---
+
+## Organization name recommendations
+
+* Use the **exact public name** of the LinkedIn Page (match capitalization, accents, and spaces).
+* This helps ensure consistent behavior across the plugin.
+
 
 **Screenshots**
 
@@ -99,7 +117,7 @@ On click, it opens the official **LinkedIn Add-to-profile** URL with these param
 * `certUrl`: public verification link `verify.php?code=...`
 * `certId`: the certificate `code`
 
-> Ensure the verification page is **public (no login required)** so LinkedIn can validate it.
+>LinkedIn will prompt you to sign in if you’re not already logged in in your browser.
 
 ---
 
@@ -115,35 +133,12 @@ You can freely **edit or replace** the suggested text before publishing.
 
 ---
 
-## Privacy
-
-This plugin implements Moodle’s Privacy API in `classes/privacy/provider.php` and **does not store additional personal data**. It only builds the LinkedIn URL using information already available on the certificate.
-
----
-
-## Troubleshooting
-
-* **The button doesn’t show**
-
-  * Confirm there’s an entry in `customcert_issues` for the user.
-  * Verify `organizationid` is configured correctly.
-  * Make sure `verify.php?code=...` is **publicly accessible**.
-
-* **LinkedIn doesn’t recognize the organization**
-
-  * Confirm the **numeric ID** copied from the LinkedIn Page URL is correct.
-  * Ensure you are an **admin** of that Page.
-
----
-
-## Roadmap (ideas)
-
-* Support for **expiration dates** (`expirationYear` / `expirationMonth`).
-* Event observers/metrics for posting.
-* **Moodle App** compatibility (`db/mobile.php`).
-
----
-
 ## License
 
-**GPLv3**. See `LICENSE.md`.
+**2025 Data Curso LLC** — [https://datacurso.com](https://datacurso.com)
+
+This program is free software: you can redistribute it and/or modify it under the terms of the **GNU General Public License** as published by the Free Software Foundation, either **version 3** of the License, or (at your option) **any later version**.
+
+This program is distributed in the hope that it will be useful, but **WITHOUT ANY WARRANTY**; without even the implied warranty of **MERCHANTABILITY** or **FITNESS FOR A PARTICULAR PURPOSE**. See the **GNU General Public License** for more details.
+
+You should have received a copy of the **GNU General Public License** along with this program. If not, see [https://www.gnu.org/licenses/](https://www.gnu.org/licenses/).

@@ -17,9 +17,6 @@ function local_socialcert_extend_settings_navigation(settings_navigation $settin
         'customcertid' => $cm->instance,
         'userid'       => $USER->id
     ], '*', IGNORE_MISSING);
-    if (!$issue) {
-        return;
-    }
 
     // URL INTERNA a la página que muestra el botón.
     $content = new moodle_url('/local/socialcert/add.php', ['cmid' => $cm->id]);

@@ -24,9 +24,9 @@ $issue = $DB->get_record('customcert_issues', [
 $active = true;
 
 if (!$issue) {
-    $active = false;
+    $issued = false;
 } else {
-    $active = $issue->active;
+    $issued = true;
 }
 
 $customcert = $DB->get_record('customcert', ['id' => $cm->instance], '*', IGNORE_MISSING);
@@ -45,8 +45,8 @@ if ($customcert) {
     $linkedinurl = \local_socialcert\linkedin_helper::build_linkedin_url(
         certname: $certname,
         issueunixtime: $issued,
-        certurl: $verifyurl,
-        certid: $certid
+        certurl: $verifyurl || '',
+        certid: $certid || ''
     );
 }
 
@@ -63,15 +63,11 @@ $displayname = format_string(fullname($USER), true, ['context' => $context]);
 $img = new moodle_url('/local/socialcert/assets/logo_title.png');
 $imgurl = $img->out(false);
 
-
+$datanetwork = $issued ? 'linkedin' : '';
 
 $contextdata = [
     'aibuttonid'        => 'btn-ai',
-    'aibuttonlabel'     => 'Activate AI',
     'buttonid'          => 'btn-normal',
-    'copyimagelabel'    => 'Copiar imagen',
-    'copytextlabel'     => 'Copiar respuesta',
-    'imagealt'          => 'Resultado IA',
     'imageid'           => 'ai-image',
     'responseid'        => 'ai-response',
     'socialmedia'       => 'LinkedIn',
@@ -80,8 +76,10 @@ $contextdata = [
     'certname'          => $certname,
     'cmid'              => $cm->id,
     'course'            => $course,
+    'datanetwork'       => $datanetwork,
     'enableai'          => $enableai,
     'imageurl'          => $imgurl,
+    'issued'            => !$issued,
     'org'               => $orgname,
     'shareurl'          => $linkedinurl,
     'verifyurl'         => $verifyurl,
@@ -95,6 +93,7 @@ $contextdata = [
     'sharesubtitle'     => get_string('sharesubtitle', 'local_socialcert'),
     'sharetitle'        => get_string('sharetitle', 'local_socialcert'),
     'whatsharelabel'    => get_string('whatsharelabel', 'local_socialcert'),
+    'certerror'         => get_string('certerror', 'local_socialcert')
 ];
 
 $PAGE->set_url(new moodle_url('/local/socialcert/add.php', ['cmid' => $cmid]));

@@ -63,3 +63,5 @@ $string['ai_actioncall']   = 'Créez en un clic un message professionnel pour vo
 $string['enableai'] = 'Ativar IA para sugerir o texto da publicação';
 
 $string['enableai_desc'] = 'Se desativado, o plugin não chamará o Provider AI e não gerará sugestões para publicações no LinkedIn.';
+
+$string['certerror'] = "Você precisa ter um certificado emitido antes de poder compartilhá-lo no LinkedIn.";

@@ -2,8 +2,9 @@
 
 namespace local_socialcert\external;
 
-defined('MOODLE_INTERNAL') || die();
+defined(constant_name: 'MOODLE_INTERNAL') || die();
 
+global $CFG;
 require_once("$CFG->libdir/externallib.php");
 
 use external_api;
@@ -14,7 +15,7 @@ use aiprovider_datacurso\httpclient\ai_services_api;
 
 class ai_helper extends external_api {
 
-  public static function execute_parameters() {
+  public static function execute_parameters(): external_function_parameters {
     return new external_function_parameters([
       'body' => new external_single_structure([
         'certname'    => new external_value(PARAM_TEXT, 'Nombre del certificado'),
@@ -33,16 +34,16 @@ class ai_helper extends external_api {
     $client   = new ai_services_api();
     $response = $client->request('POST', '/certificate/answer', $body);
 
-    if (is_array($response) || is_object($response)) {
-      $json = json_encode($response, JSON_UNESCAPED_UNICODE);
+    if (is_array(value: $response) || is_object(value: $response)) {
+      $json = json_encode(value: $response, flags: JSON_UNESCAPED_UNICODE);
     } else {
-      $json = json_encode(['text' => (string)$response], JSON_UNESCAPED_UNICODE);
+      $json = json_encode(value: ['text' => (string)$response], flags: JSON_UNESCAPED_UNICODE);
     }
 
     return ['json' => $json];
   }
 
-  public static function execute_returns() {
+  public static function execute_returns(): external_single_structure {
     return new external_single_structure([
       'json' => new external_value(PARAM_RAW, 'Respuesta JSON de la API externa'),
     ]);
