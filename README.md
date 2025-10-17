@@ -127,41 +127,52 @@ In this example, the **Organization ID** is `61803398`.
 ## Add to LinkedIn (one-click)
 
 1. On the certificate page, click **Share on LinkedIn**.
+ 
    ![Share on LinkedIn button](./_docs/images/local_socialcert_linkedin_button.png)
 
-2. A LinkedIn window opens with your certificate details **already filled in** (title, issuer, issue date, credential ID, and verification URL). Review and click **Save/Add**.
+3. A LinkedIn window opens with your certificate details **already filled in** (title, issuer, issue date, credential ID, and verification URL). Review and click **Save/Add**.
+ 
    ![LinkedIn add-to-profile dialog prefilled](./_docs/images/local_socialcert_linkedin_form.png)
 
 > If you’re not signed in to LinkedIn, you’ll be asked to **log in** first.
 > If the button doesn’t appear, make sure your certificate has been **issued** and your site admin has set the **organization name/ID**.
 
 ![Page Administration](./_docs/images/local_socialcert_linkedin_button.png)
+
 ![Page Administration](./_docs/images/local_socialcert_linkedin_form.png)
 
 ---
 ## Generate a LinkedIn post suggestion (AI)
 
 1. On the certificate page, find the **SocialCert** card and the **AI button** (brain icon).
+ 
    ![AI button](./_docs/images/local_socialcert_button_ai.png)
 
-2. **Click the AI button.** The component will **expand** and show a preview with the **suggested LinkedIn message**.
+3. **Click the AI button.** The component will **expand** and show a preview with the **suggested LinkedIn message**.
    ![AI panel expanded](./_docs/images/local_socialcert_main_panel_ai.png)
 
-3. Review the suggested text. You can **adjust it** if you want (the plugin does not publish for you).
+4. Review the suggested text. You can **adjust it** if you want (the plugin does not publish for you).
 
-4. Click **Copy** (clipboard icon) in the panel’s corner to copy the text.
+5. Click **Copy** (clipboard icon) in the panel’s corner to copy the text.
+ 
    ![Copy button](./_docs/images/local_socialcert_copy_button.png)
 
-5. Open LinkedIn, **paste** the copied message into your post, and publish.
+6. Open LinkedIn, **paste** the copied message into your post, and publish.
 
 ---
 
 ## License
 
-**2025 Data Curso LLC** — [https://datacurso.com](https://datacurso.com)
+2025 Data Curso LLC <https://datacurso.com>
 
-This program is free software: you can redistribute it and/or modify it under the terms of the **GNU General Public License** as published by the Free Software Foundation, either **version 3** of the License, or (at your option) **any later version**.
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version.
 
-This program is distributed in the hope that it will be useful, but **WITHOUT ANY WARRANTY**; without even the implied warranty of **MERCHANTABILITY** or **FITNESS FOR A PARTICULAR PURPOSE**. See the **GNU General Public License** for more details.
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 
-You should have received a copy of the **GNU General Public License** along with this program. If not, see [https://www.gnu.org/licenses/](https://www.gnu.org/licenses/).
+You should have received a copy of the GNU General Public License along with
+this program.  If not, see <https://www.gnu.org/licenses/>.
