@@ -1,7 +1,18 @@
 <?php
-// This file is part of Moodle - https://moodle.org/.
+// This file is part of Moodle - http://moodle.org/
 //
-// See the GNU General Public License for more details: https://www.gnu.org/licenses/.
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace local_socialcert;
 
@@ -66,41 +77,3 @@ class linkedin_helper {
     return 'https://www.linkedin.com/profile/add?' . $query;
   }
 }
-
-//   /**
-//    * Devuelve la URL pluginfile de la primera imagen asociada al certificado
-//    * en fileareas comunes de mod_customcert, o null si no hay.
-//    *
-//    * @param context_module $context
-//    * @return string|null
-//    */
-//   public static function local_socialcert_get_first_customcert_image_url(\context_module $context): ?string {
-//     $fs = get_file_storage();
-
-//     // Fileareas donde suelen vivir las imágenes de customcert
-//     // (elementos tipo "image" y fondos de página/plantilla).
-//     $fileareas = ['image', 'background', 'pagebackground', 'element'];
-
-//     foreach ($fileareas as $filearea) {
-//       // itemid = 0 devuelve todos los itemid de ese filearea en el contexto.
-//       $files = $fs->get_area_files(
-//         $context->id, 'mod_customcert', $filearea,
-//         0, 'itemid, filepath, filename', false // sin directorios
-//       );
-
-//       foreach ($files as $f) {
-//         if (strpos($f->get_mimetype(), 'image/') === 0) {
-//           return \moodle_url::make_pluginfile_url(
-//             $f->get_contextid(),
-//             $f->get_component(),
-//             $f->get_filearea(),
-//             $f->get_itemid(),
-//             $f->get_filepath(),
-//             $f->get_filename()
-//           )->out(false);
-//         }
-//       }
-//     }
-//     return null;
-//   }
-// }

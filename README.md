@@ -137,10 +137,6 @@ In this example, the **Organization ID** is `61803398`.
 > If you’re not signed in to LinkedIn, you’ll be asked to **log in** first.
 > If the button doesn’t appear, make sure your certificate has been **issued** and your site admin has set the **organization name/ID**.
 
-![Page Administration](./_docs/images/local_socialcert_linkedin_button.png)
-
-![Page Administration](./_docs/images/local_socialcert_linkedin_form.png)
-
 ---
 ## Generate a LinkedIn post suggestion (AI)
 
