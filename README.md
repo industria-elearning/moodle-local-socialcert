@@ -102,7 +102,7 @@ In this example, the **Organization ID** is `61803398`.
 
 ---
 
-![Page Administration](./_docs/images/local_socialcert-main_panel.png)
+![Page Administration](./_docs/images/local_socialcert_main_panel.png)
 
 ---
 
@@ -120,37 +120,37 @@ In this example, the **Organization ID** is `61803398`.
 > * If **no certificate has been issued**, the action is blocked and an **error is shown**.
 > * In that case, the plugin **will not take the user to LinkedIn** and the share flow is not available until the certificate is issued.
 
-![Page Administration](./_docs/images/local_socialcert-main_panel_error.png)
+![Page Administration](./_docs/images/local_socialcert_main_panel_error.png)
 
 ---
 
 ## Add to LinkedIn (one-click)
 
 1. On the certificate page, click **Share on LinkedIn**.
-   ![Share on LinkedIn button](./_docs/images/linkedin_button.png)
+   ![Share on LinkedIn button](./_docs/images/local_socialcert_linkedin_button.png)
 
 2. A LinkedIn window opens with your certificate details **already filled in** (title, issuer, issue date, credential ID, and verification URL). Review and click **Save/Add**.
-   ![LinkedIn add-to-profile dialog prefilled](./_docs/images/linkedin_form.png)
+   ![LinkedIn add-to-profile dialog prefilled](./_docs/images/local_socialcert_linkedin_form.png)
 
 > If you’re not signed in to LinkedIn, you’ll be asked to **log in** first.
 > If the button doesn’t appear, make sure your certificate has been **issued** and your site admin has set the **organization name/ID**.
 
-![Page Administration](./_docs/images/local_socialcert-linkedin_button.png)
-![Page Administration](./_docs/images/local_socialcert-linkedin_form.png)
+![Page Administration](./_docs/images/local_socialcert_linkedin_button.png)
+![Page Administration](./_docs/images/local_socialcert_linkedin_form.png)
 
 ---
 ## Generate a LinkedIn post suggestion (AI)
 
 1. On the certificate page, find the **SocialCert** card and the **AI button** (brain icon).
-   ![AI button](./_docs/images/local_socialcert-button_ai.png)
+   ![AI button](./_docs/images/local_socialcert_button_ai.png)
 
 2. **Click the AI button.** The component will **expand** and show a preview with the **suggested LinkedIn message**.
-   ![AI panel expanded](./_docs/images/local_socialcert-main_panel_ai.png)
+   ![AI panel expanded](./_docs/images/local_socialcert_main_panel_ai.png)
 
 3. Review the suggested text. You can **adjust it** if you want (the plugin does not publish for you).
 
 4. Click **Copy** (clipboard icon) in the panel’s corner to copy the text.
-   ![Copy button](./_docs/images/local_socialcert-copy_button.png)
+   ![Copy button](./_docs/images/local_socialcert_copy_button.png)
 
 5. Open LinkedIn, **paste** the copied message into your post, and publish.
 
