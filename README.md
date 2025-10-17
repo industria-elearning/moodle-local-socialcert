@@ -16,6 +16,17 @@ A Moodle plugin that adds an **“Add certificate to LinkedIn”** button to **C
 
 ---
 
+# Prerequisites
+
+- **Moodle 4.5**
+- Install the Moodle AI provider **“DataCurso AI Provider.”**  
+  Download it for free from [https://moodle.org/plugins/aiprovider_datacurso/versions](https://moodle.org/plugins/aiprovider_datacurso/versions).
+- In the DataCurso AI Provider settings, configure a valid license key as documented at  
+  [https://docs.datacurso.com/index.php?title=Datacurso_AI_Provider#Getting_license_keys](https://docs.datacurso.com/index.php?title=Datacurso_AI_Provider#Getting_license_keys).
+- **"Custom certificate"** (https://moodle.org/plugins/mod_customcert) (recommended minimum: **2024042212**).
+
+> **IMPORTANT:** This plugin will not function unless the DataCurso AI Provider plugin is installed **and** licensed.
+
 ## Pre-requisites
 
 * **Moodle 4.5** (recommended minimum: **2025100201**) or later.
@@ -49,18 +60,25 @@ A Moodle plugin that adds an **“Add certificate to LinkedIn”** button to **C
 
 ## Plugin Configuration
 
-Go to **Site administration → Plugins → Local plugins → Share Certificate AI** and fill in:
+Once installed, configure the plugin as follows:
 
-* **LinkedIn Organization ID** (`organizationid`) — **optional**.
+1. **Sign in as a site administrator.**
+2. Navigate to **Site administration → Plugins → Local plugins → Share Certificate AI**.
+3. In **General settings**, review and complete:
 
-  * If you **don’t** provide it, the plugin will use LinkedIn’s **default ID**.
-* **Organization name** (`organizationname`) — **optional but recommended** if you leave it   
-  empty, the **default ID** will be used.
+   * **Organization name** (`organizationname`) — *recommended*.
 
-  * For best results, write the **exact name as it appears on LinkedIn** (same spacing, capitalization, and accents).
-* **Enable AI** (`enableai`) — **global toggle**.
+     * Used in the suggested LinkedIn text and as the certificate issuer name.
+     * For best results, enter the **exact name as it appears on LinkedIn** (same casing, spacing, and accents).
+   * **LinkedIn Organization ID** (`organizationid`) — *optional*.
 
----
+     * Use only if you post on behalf of a **LinkedIn Company Page**.
+     * If left empty, LinkedIn’s **default behavior** applies (user profile or default context).
+   * **Enable AI** (`enableai`) — *global toggle*.
+
+     * Turn on to show the **Generate text for LinkedIn** button on the certificate page. If off, the panel won’t offer the suggested text.
+4. Click **Save changes**.
+5. *(Recommended)* Go to **Site administration → Development → Purge all caches** to ensure the frontend reflects the new settings.
 
 ### How to find your LinkedIn Organization ID
 
@@ -77,57 +95,66 @@ https://www.linkedin.com/company/61803398/admin/...
 
 In this example, the **Organization ID** is `61803398`.
 
----
-
-## Organization name recommendations
+### Organization name recommendations
 
 * Use the **exact public name** of the LinkedIn Page (match capitalization, accents, and spaces).
 * This helps ensure consistent behavior across the plugin.
 
+---
 
-**Screenshots**
-
-![Activity menu with LinkedIn action](./socialcert-menu.png)
-![Plugin settings screen](./socialcert-settings.png)
+![Page Administration](./_docs/images/local_socialcert-main_panel.png)
 
 ---
 
 ## Using it in a course
 
-1. Create a **Custom certificate** activity in your course.
-2. Ensure the user **has an issued certificate** (`customcert_issues`).
-3. The **“Add to LinkedIn profile”** action appears on the activity menu **only if**:
+1. **Add a Custom certificate** activity to your course.
+2. Make sure the learner **already has an issued certificate** (entry exists in `customcert_issues`).
+3. The **Add to LinkedIn profile** action will appear in the activity menu **only when**:
 
-   * There is a certificate issue for the current user, **and**
-   * A valid **`organizationid`** is configured.
+   * An **issue** exists for the current user, **and**
+   * A valid **`organizationid`** is configured in the plugin settings.
 
----
+> **Important**
+>
+> * If **no certificate has been issued**, the action is blocked and an **error is shown**.
+> * In that case, the plugin **will not take the user to LinkedIn** and the share flow is not available until the certificate is issued.
 
-## How it works
-
-The plugin adds an action via the callback `local_socialcert_extend_settings_navigation()` (see `lib.php`).
-On click, it opens the official **LinkedIn Add-to-profile** URL with these parameters:
-
-* `name`: certificate name
-* `organizationId`: the ID configured in the plugin
-* `issueYear` / `issueMonth`: derived from the issue’s `timecreated`
-* `certUrl`: public verification link `verify.php?code=...`
-* `certId`: the certificate `code`
-
->LinkedIn will prompt you to sign in if you’re not already logged in in your browser.
+![Page Administration](./_docs/images/local_socialcert-main_panel_error.png)
 
 ---
 
-## AI with **Provider AI** (optional)
+## Add to LinkedIn (one-click)
 
-When **Provider AI** is installed and connected, the plugin **suggests post text** for LinkedIn as you compose your post. The suggestion uses:
+1. On the certificate page, click **Share on LinkedIn**.
+   ![Share on LinkedIn button](./_docs/images/linkedin_button.png)
 
-* **Certificate name**
-* **Course name**
-* **Organization** (ID/name)
+2. A LinkedIn window opens with your certificate details **already filled in** (title, issuer, issue date, credential ID, and verification URL). Review and click **Save/Add**.
+   ![LinkedIn add-to-profile dialog prefilled](./_docs/images/linkedin_form.png)
 
-You can freely **edit or replace** the suggested text before publishing.
+> If you’re not signed in to LinkedIn, you’ll be asked to **log in** first.
+> If the button doesn’t appear, make sure your certificate has been **issued** and your site admin has set the **organization name/ID**.
 
+![Page Administration](./_docs/images/local_socialcert-linkedin_button.png)
+![Page Administration](./_docs/images/local_socialcert-linkedin_form.png)
+
+---
+## Generate a LinkedIn post suggestion (AI)
+
+1. On the certificate page, find the **SocialCert** card and the **AI button** (brain icon).
+   ![AI button](./_docs/images/local_socialcert-button_ai.png)
+
+2. **Click the AI button.** The component will **expand** and show a preview with the **suggested LinkedIn message**.
+   ![AI panel expanded](./_docs/images/local_socialcert-main_panel_ai.png)
+
+3. Review the suggested text. You can **adjust it** if you want (the plugin does not publish for you).
+
+4. Click **Copy** (clipboard icon) in the panel’s corner to copy the text.
+   ![Copy button](./_docs/images/local_socialcert-copy_button.png)
+
+5. Open LinkedIn, **paste** the copied message into your post, and publish.
+
+---
 
 ## License
 
