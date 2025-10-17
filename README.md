@@ -58,10 +58,7 @@ Go to **Site administration → Plugins → Local plugins → Share Certificate 
   empty, the **default ID** will be used.
 
   * For best results, write the **exact name as it appears on LinkedIn** (same spacing, capitalization, and accents).
-* **Enable AI** (`local_socialcert/enableai`) — **global toggle**.
-
-  * Checking this box **enables** AI features for the entire account; unchecking it **disables** them globally.
-  * Default: **enabled**.
+* **Enable AI** (`enableai`) — **global toggle**.
 
 ---
 
@@ -75,10 +72,10 @@ You must be an **administrator** of your institution’s LinkedIn Page.
 Example:
 
 ```
-https://www.linkedin.com/company/64664132/admin/...
+https://www.linkedin.com/company/61803398/admin/...
 ```
 
-In this example, the **Organization ID** is `64664132`.
+In this example, the **Organization ID** is `61803398`.
 
 ---
 
@@ -131,7 +128,6 @@ When **Provider AI** is installed and connected, the plugin **suggests post text
 
 You can freely **edit or replace** the suggested text before publishing.
 
----
 
 ## License
 

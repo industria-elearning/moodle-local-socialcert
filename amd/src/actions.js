@@ -2,6 +2,7 @@
 import {get_string as getString} from 'core/str';
 import Ajax from 'core/ajax';
 import Notification from 'core/notification';
+// import {ready as domReady} from 'core/ready';
 
 /**
  * Mapa de acciones: nombre -> handler(ev, el)
@@ -227,6 +228,7 @@ function ai_response (certname, course, org, socialmedia) {
  * @param {HTMLElement} btn
  */
 export function runAiHandler(ev, btn) {
+
   ev.preventDefault();
 
   // Localiza el destino

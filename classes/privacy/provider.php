@@ -5,7 +5,7 @@
 
 namespace local_socialcert\privacy;
 
-defined(constant_name: 'MOODLE_INTERNAL') || die();
+defined( 'MOODLE_INTERNAL') || die();
 
 use core_privacy\local\metadata\null_provider;
 

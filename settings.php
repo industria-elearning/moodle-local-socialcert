@@ -1,5 +1,5 @@
 <?php
-defined(constant_name: 'MOODLE_INTERNAL') || die();
+defined( 'MOODLE_INTERNAL') || die();
 
 if ($hassiteconfig) {
     $settings = new admin_settingpage('local_socialcert',

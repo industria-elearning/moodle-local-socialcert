@@ -2,7 +2,7 @@
 
 namespace local_socialcert\external;
 
-defined(constant_name: 'MOODLE_INTERNAL') || die();
+defined( 'MOODLE_INTERNAL') || die();
 
 global $CFG;
 require_once("$CFG->libdir/externallib.php");
