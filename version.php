@@ -31,5 +31,5 @@ $plugin->requires = 2024100700;
 $plugin->maturity = MATURITY_STABLE;
 $plugin->dependencies = [
     'mod_customcert' => 2024042212,
-    'aiprovider_datacurso' => 2025100201
+    'aiprovider_datacurso' => 2025100201,
 ];

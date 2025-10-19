@@ -15,58 +15,38 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * English strings for local_socialcert.
+ * Plugin version and other meta-data are defined here.
  *
- * @package   local_socialcert
- * @category  string
- * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package     local_socialcert
+ * @copyright   2025 Manuel Bojaca <manuel@buendata.com>
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['pluginname'] = 'Share Certificate AI';
+$string['ai_field_heading']  = 'Teks unggahan';
+$string['airesponsebtn'] = 'Aktifkan AI';
+$string['buttonlabelshare']  = 'Bagikan di LinkedIn';
+$string['certerror'] = "Anda perlu memiliki sertifikat yang diterbitkan sebelum dapat membagikannya di LinkedIn.";
+$string['certificate_url']   = 'Tautan';
+$string['certificateimage'] = 'certificate.png';
+$string['copyarticlebuttontext'] = 'Salin artikel LinkedIn';
+$string['copyconfirmation'] = 'Disalin ✔';
 $string['description'] = 'Memungkinkan pengguna untuk membagikan sertifikat mereka langsung di LinkedIn.';
-
-// Pengaturan.
+$string['enableai'] = 'Aktifkan AI untuk menyarankan teks posting';
+$string['enableai_desc'] = 'Jika dinonaktifkan, plugin tidak akan memanggil Provider AI dan tidak akan membuat saran untuk postingan LinkedIn.';
+$string['generating'] = 'Sedang membuat…';
+$string['linkcertbuttontext'] = 'Bagikan di LinkedIn';
+$string['noissue'] = 'Anda belum memiliki sertifikat yang diterbitkan untuk kursus ini.';
 $string['organizationid'] = 'ID organisasi LinkedIn';
 $string['organizationid_desc'] = 'ID numerik perusahaan/organisasi yang digunakan oleh LinkedIn Add-to-Profile. Biarkan kosong untuk menonaktifkan hingga dikonfigurasi.';
 $string['organizationname'] = 'Nama organisasi LinkedIn';
 $string['organizationname_desc'] = 'Nama organisasi yang akan ditampilkan di LinkedIn. Harus sama persis seperti yang terdaftar di LinkedIn. Biarkan kosong untuk menonaktifkan hingga dikonfigurasi.';
-
-$string['privacy:metadata'] = 'Plugin Share Certificate AI tidak menyimpan data pribadi apa pun.';
-
-$string['noissue'] = 'Anda belum memiliki sertifikat yang diterbitkan untuk kursus ini.';
-
-$string['linkcertbuttontext'] = 'Bagikan di LinkedIn';
-$string['copyarticlebuttontext'] = 'Salin artikel LinkedIn';
-
-$string['shareinstruction'] = 'Rayakan pencapaian Anda! Klik di bawah ini untuk menampilkan sertifikat Anda di LinkedIn dan beri tahu jaringan Anda tentang keberhasilan Anda:';
-
-$string['copyconfirmation'] = 'Disalin ✔';
-
-$string['airesponsebtn'] = 'Aktifkan AI';
-
-$string['generating'] = 'Sedang membuat…';
-
-$string['certificateimage'] = 'certificate.png';
-
-// Share Certificate AI – Bagikan (Langkah 1)
-$string['sharetitle']        = 'Bagikan pencapaian Anda di LinkedIn';
-$string['sharesubtitle']     = 'Kami akan memposting tautan yang dapat diverifikasi ke sertifikat Anda.';
-$string['buttonlabelshare']  = 'Bagikan di LinkedIn';
-$string['whatsharelabel']    = 'Apa yang kami bagikan?';
-
-// Umpan balik/status (opsional tetapi disarankan)
+$string['pluginname'] = 'Share Certificate AI';
 $string['popupblocked']      = 'Aktifkan pop-up untuk melanjutkan.';
+$string['privacy:metadata'] = 'Plugin Share Certificate AI tidak menyimpan data pribadi apa pun.';
 $string['sharecompleted']    = 'Berbagi di LinkedIn telah selesai.';
-
-$string['ai_field_heading']  = 'Teks unggahan';
-
-$string['certificate_url']   = 'Tautan';
-
-$string['enableai'] = 'Aktifkan AI untuk menyarankan teks posting';
-
-$string['enableai_desc'] = 'Jika dinonaktifkan, plugin tidak akan memanggil Provider AI dan tidak akan membuat saran untuk postingan LinkedIn.';
-
-$string['certerror'] = "Anda perlu memiliki sertifikat yang diterbitkan sebelum dapat membagikannya di LinkedIn.";
-
+$string['shareinstruction'] = 'Rayakan pencapaian Anda! Klik di bawah ini untuk menampilkan sertifikat Anda di LinkedIn dan beri tahu jaringan Anda tentang keberhasilan Anda:';
+$string['sharesubtitle']     = 'Kami akan memposting tautan yang dapat diverifikasi ke sertifikat Anda.';
+$string['sharetitle']        = 'Bagikan pencapaian Anda di LinkedIn';
+$string['whatsharelabel']    = 'Apa yang kami bagikan?';

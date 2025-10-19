@@ -14,6 +14,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * Plugin version and other meta-data are defined here.
+ *
+ * @package     local_socialcert
+ * @copyright   2025 Manuel Bojaca <manuel@buendata.com>
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 defined( 'MOODLE_INTERNAL') || die();
 
 if ($hassiteconfig) {
@@ -28,7 +36,7 @@ if ($hassiteconfig) {
         '',
         PARAM_RAW_TRIMMED
     ));
-    
+
     $settings->add(new admin_setting_configtext(
         'local_socialcert/organizationname',
         get_string('organizationname', 'local_socialcert'),
@@ -41,6 +49,6 @@ if ($hassiteconfig) {
         'local_socialcert/enableai',
         get_string('enableai', 'local_socialcert'),
         get_string('enableai_desc', 'local_socialcert'),
-        1 
+        1
     ));
 }

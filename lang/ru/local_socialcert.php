@@ -15,56 +15,37 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * English strings for local_socialcert.
+ * Plugin version and other meta-data are defined here.
  *
- * @package   local_socialcert
- * @category  string
- * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package     local_socialcert
+ * @copyright   2025 Manuel Bojaca <manuel@buendata.com>
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['pluginname'] = 'Share Certificate AI';
+$string['ai_actioncall']   = 'Создайте профессиональный текст для публикации в LinkedIn одним кликом';
+$string['ai_field_heading']  = 'Текст публикации';
+$string['airesponsebtn'] = 'Активировать ИИ';
+$string['buttonlabelshare']  = 'Поделиться в LinkedIn';
+$string['certerror'] = "Вам необходимо иметь выданный сертификат, прежде чем вы сможете поделиться им в LinkedIn.";
+$string['certificate_url']   = 'Ссылка';
+$string['certificateimage'] = 'certificate.png';
+$string['copyarticlebuttontext'] = 'Скопировать публикацию LinkedIn';
+$string['copyconfirmation'] = 'Скопировано ✔';
 $string['description'] = 'Позволяет пользователю поделиться своим сертификатом напрямую в LinkedIn.';
-
-// Настройки.
+$string['generating'] = 'Генерация…';
+$string['linkcertbuttontext'] = 'Поделиться в LinkedIn';
+$string['noissue'] = 'У вас пока нет выданного сертификата для этого курса.';
 $string['organizationid'] = 'ID организации LinkedIn';
 $string['organizationid_desc'] = 'Числовой идентификатор компании или организации, используемый функцией LinkedIn Add-to-Profile. Оставьте поле пустым, чтобы отключить до настройки.';
 $string['organizationname'] = 'Название организации в LinkedIn';
 $string['organizationname_desc'] = 'Название организации, отображаемое в LinkedIn. Должно точно соответствовать тому, как оно указано на LinkedIn. Оставьте поле пустым, чтобы отключить до настройки.';
-
-$string['privacy:metadata'] = 'Плагин Share Certificate AI не хранит никаких персональных данных.';
-
-$string['noissue'] = 'У вас пока нет выданного сертификата для этого курса.';
-
-$string['linkcertbuttontext'] = 'Поделиться в LinkedIn';
-$string['copyarticlebuttontext'] = 'Скопировать публикацию LinkedIn';
-
-$string['shareinstruction'] = 'Отпразднуйте своё достижение! Нажмите ниже, чтобы показать свой сертификат в LinkedIn и поделиться успехом с вашей сетью:';
-
-$string['copyconfirmation'] = 'Скопировано ✔';
-
-$string['airesponsebtn'] = 'Активировать ИИ';
-
-$string['generating'] = 'Генерация…';
-
-$string['certificateimage'] = 'certificate.png';
-
-// Share Certificate AI – Поделиться (Шаг 1)
-$string['sharetitle']        = 'Поделитесь своим достижением в LinkedIn';
-$string['sharesubtitle']     = 'Мы опубликуем проверяемую ссылку на ваш сертификат.';
-$string['buttonlabelshare']  = 'Поделиться в LinkedIn';
-$string['whatsharelabel']    = 'Что мы публикуем?';
-
-// Отзывы/статус (необязательно, но рекомендуется)
+$string['pluginname'] = 'Share Certificate AI';
 $string['popupblocked']      = 'Разрешите всплывающие окна, чтобы продолжить.';
+$string['privacy:metadata'] = 'Плагин Share Certificate AI не хранит никаких персональных данных.';
 $string['sharecompleted']    = 'Публикация в LinkedIn завершена.';
-
-$string['ai_field_heading']  = 'Текст публикации';
-
-$string['certificate_url']   = 'Ссылка';
-
-$string['ai_actioncall']   = 'Создайте профессиональный текст для публикации в LinkedIn одним кликом';
-
-$string['certerror'] = "Вам необходимо иметь выданный сертификат, прежде чем вы сможете поделиться им в LinkedIn.";
-
+$string['shareinstruction'] = 'Отпразднуйте своё достижение! Нажмите ниже, чтобы показать свой сертификат в LinkedIn и поделиться успехом с вашей сетью:';
+$string['sharesubtitle']     = 'Мы опубликуем проверяемую ссылку на ваш сертификат.';
+$string['sharetitle']        = 'Поделитесь своим достижением в LinkedIn';
+$string['whatsharelabel']    = 'Что мы публикуем?';

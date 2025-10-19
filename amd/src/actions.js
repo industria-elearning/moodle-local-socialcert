@@ -14,6 +14,14 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Plugin version and other meta-data are defined here.
+ *
+ * @package
+ * @copyright   2025 Manuel Bojaca <manuel@buendata.com>
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+/**
  * Local SocialCert — frontend helpers.
  *
  * Responsibilities:
@@ -80,7 +88,7 @@ function on(root, selector, type, handler) {
  * @returns {void}
  */
 function handleOpenLink(ev, el) {
-  
+
   ev.preventDefault();
 
   el.setAttribute('aria-busy', 'true');
@@ -90,7 +98,7 @@ function handleOpenLink(ev, el) {
   if (url) {
     window.open(url, '_blank', 'noopener');
   }
-  
+
   setTimeout(() => el.removeAttribute('aria-busy'), 300);
 }
 
@@ -374,5 +382,4 @@ export function init() {
       fn(ev, el);
     }
   });
-
 }
