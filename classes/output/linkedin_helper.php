@@ -37,7 +37,6 @@ namespace local_socialcert;
  * @category   output
  */
 class linkedin_helper {
-
     /**
      * Builds the LinkedIn "Add to profile" URL for a certificate.
      *

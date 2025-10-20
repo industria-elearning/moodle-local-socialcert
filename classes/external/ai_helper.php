@@ -24,7 +24,7 @@
 
 namespace local_socialcert\external;
 
-defined( 'MOODLE_INTERNAL') || die();
+defined('MOODLE_INTERNAL') || die();
 
 global $CFG;
 require_once("$CFG->libdir/externallib.php");
@@ -48,7 +48,6 @@ use aiprovider_datacurso\httpclient\ai_services_api;
  * @category   external
  */
 class ai_helper extends external_api {
-
     /**
      * Defines the parameters accepted by the external function.
      *

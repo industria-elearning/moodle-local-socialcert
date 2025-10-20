@@ -22,7 +22,7 @@
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined( 'MOODLE_INTERNAL') || die();
+defined('MOODLE_INTERNAL') || die();
 
 $functions = [
     'local_socialcert_get_ai_response' => [

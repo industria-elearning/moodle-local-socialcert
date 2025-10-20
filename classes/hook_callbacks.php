@@ -41,7 +41,6 @@ use core\hook\output\before_footer_html_generation;
  * @category   output
  */
 class hook_callbacks {
-
     /**
      * Adds custom CSS and JS requirements before the standard <head> section is generated.
      *
@@ -57,8 +56,12 @@ class hook_callbacks {
     ): void {
         global $PAGE;
 
-        if ($PAGE->pagetype !== 'mod-customcert-view' ||
-            empty($PAGE->cm->id) || !isloggedin() || isguestuser()) {
+        if (
+            $PAGE->pagetype !== 'mod-customcert-view' ||
+            empty($PAGE->cm->id) ||
+            !isloggedin() ||
+            isguestuser()
+        ) {
             return;
         }
 
@@ -80,8 +83,12 @@ class hook_callbacks {
     ): void {
         global $PAGE, $OUTPUT;
 
-        if ($PAGE->pagetype !== 'mod-customcert-view' ||
-            empty($PAGE->cm->id) || !isloggedin() || isguestuser()) {
+        if (
+            $PAGE->pagetype !== 'mod-customcert-view' ||
+            empty($PAGE->cm->id) ||
+            !isloggedin() ||
+            isguestuser()
+        ) {
             return;
         }
 

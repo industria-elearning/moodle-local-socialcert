@@ -32,7 +32,6 @@ use core_privacy\local\metadata\null_provider;
  * @package   local_socialcert
  */
 class provider implements null_provider {
-
     /**
      * Explain that we do not store any personal data.
      *
