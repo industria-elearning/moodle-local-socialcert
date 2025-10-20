@@ -22,7 +22,7 @@
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_socialcert;
+namespace local_socialcert\output;
 
 /**
  * Helper class for building LinkedIn profile URLs.

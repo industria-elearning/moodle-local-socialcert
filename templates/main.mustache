@@ -125,7 +125,7 @@
 
         <div class="ai-bar__panel" aria-hidden="true">
           <div class="bd-post__content" aria-hidden="true">
-            <header class="bd-post__header" role="banner" aria-label="Composer header">
+            <header class="bd-post__header">
               <div class="bd-avatar" aria-label="{{author_name}} avatar" role="img">
                 {{#author_avatar_url}}
                   <img class="bd-avatar__img" src="{{author_avatar_url}}" alt="" width="48" height="48" loading="lazy">
@@ -143,8 +143,8 @@
               </div>
             </header>
 
-            <main class="bd-post__main" role="main">
-              <section class="bd-message" aria-labelledby="bd-message-title">
+            <main class="bd-post__main">
+              <div class="bd-message">
                 <p class="bd-message__text">{{{message}}}</p>
 
                 <div id="ai-card" class="skeleton-card" aria-busy="true" aria-live="polite">
@@ -169,7 +169,7 @@
                     </svg>
                   </button>
                 </div>
-              </section>
+              </div>
             </main>
           </div>
         </div>
