@@ -1,4 +1,27 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * Renderable helper class for the main social certificate panel.
+ *
+ * @package     local_socialcert
+ * @copyright   2025 Manuel Bojaca <manuel@buendata.com>
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 namespace local_socialcert\output;
 
 use renderable;
@@ -8,14 +31,40 @@ use context_course;
 use context_module;
 use moodle_url;
 
+/**
+ * Main panel renderer helper.
+ *
+ * Provides data preparation and rendering context for the main panel
+ * of the social certificate feature. This class collects user, course,
+ * and certificate information for use in a Mustache template.
+ *
+ * Implements {@see renderable} and {@see templatable}.
+ *
+ * @package    local_socialcert
+ * @category   output
+ */
 class main_panel implements renderable, templatable {
     /** @var int */
     protected $cmid;
 
+    /**
+     * Class constructor.
+     *
+     * @param int $cmid The course module ID.
+     */
     public function __construct(int $cmid) {
         $this->cmid = $cmid;
     }
 
+    /**
+     * Exports data for use in a Mustache template.
+     *
+     * Retrieves contextual data about the current user, course, and certificate.
+     * Builds an associative array with all the variables needed by the renderer.
+     *
+     * @param renderer_base $output Renderer instance for template rendering.
+     * @return array Template-ready data for the mustache renderer.
+     */
     public function export_for_template(renderer_base $output): array {
         global $DB, $USER;
 
@@ -23,10 +72,9 @@ class main_panel implements renderable, templatable {
         $course = $DB->get_record('course', ['id' => $cm->course], '*', MUST_EXIST);
         $context = context_module::instance($cm->id);
 
-        // ¿Existe emisión?
         $issue = $DB->get_record('customcert_issues', [
             'customcertid' => $cm->instance,
-            'userid'       => $USER->id
+            'userid'       => $USER->id,
         ], '*', IGNORE_MISSING);
 
         $customcert = $DB->get_record('customcert', ['id' => $cm->instance], '*', IGNORE_MISSING);
@@ -44,8 +92,7 @@ class main_panel implements renderable, templatable {
             $certid    = $issue->code;
             $verifyurl = (new moodle_url('/mod/customcert/verify.php', ['code' => $issue->code]))->out(false);
 
-            // Helper tuyo (corrijo los “||” por operador ternario null-coalesce/Elvis):
-            $shareurl = \local_socialcert\linkedin_helper::build_linkedin_url(
+            $shareurl = \local_socialcert\output\linkedin_helper::build_linkedin_url(
                 certname: $certname,
                 issueunixtime: $issuedts,
                 certurl: $verifyurl ?: '',

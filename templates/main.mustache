@@ -1,17 +1,85 @@
-<div class="local-socialcert my-4 social-scope" data-network={{datanetwork}} data-cmid="{{cmid}}">
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template local_socialcert/main
+
+    Main panel for the Social Certificate plugin.
+
+    Displays a sharing panel to publish a course certificate (LinkedIn) and,
+    optionally, an AI assistant to compose the post content.
+
+    Example context (json):
+    {
+        "aibuttonid": "btn-ai",
+        "buttonid": "btn-normal",
+        "imageid": "ai-image",
+        "responseid": "ai-response",
+
+        "socialmedia": "LinkedIn",
+        "author_name": "Jane Doe",
+        "author_avatar_url": "https://example.com/u/jane.jpg",
+        "message": "Draft message preview...",
+        "copytextlabel": "Copy generated text",
+
+        "certid": "ABC123XYZ",
+        "certname": "AI Fundamentals",
+        "cmid": 42,
+        "course": "Machine Learning 101",
+        "datanetwork": "linkedin",
+
+        "enableai": true,
+        "imageurl": "https://example.com/local/socialcert/assets/logo_title.png",
+        "issued": false,
+        "org": "Buen Data",
+        "shareurl": "https://linkedin.com/profile/add?name=AI%20Fundamentals",
+        "verifyurl": "https://example.com/verify/ABC123XYZ",
+
+        "ai_actioncall": "Genera un texto con IA para tu publicación",
+        "aibuttonlabel": "Redactar con IA",
+        "buttonlabel": "Obtener enlace",
+        "buttonlabelshare": "Compartir en LinkedIn",
+        "intro": "Comparte tu certificado para destacar tu logro.",
+        "linktext": "Copiar enlace",
+        "popupblocked": "Ventana emergente bloqueada. Habilítalas para continuar.",
+        "sharecompleted": "¡Certificado compartido con éxito!",
+        "sharesubtitle": "Celebra tu logro de aprendizaje.",
+        "sharetitle": "Comparte tu certificado",
+        "whatsharelabel": "¿Qué deseas compartir?",
+        "certerror": "No encontramos datos del certificado."
+    }
+}}
+
+<div class="local-socialcert my-4 social-scope"
+     {{#datanetwork}}data-network="{{.}}"{{/datanetwork}}
+     {{#cmid}}data-cmid="{{.}}"{{/cmid}}>
 
   <section class="lsc-hero" aria-labelledby="lsc-hero-title">
-    <h2 id="lsc-hero-title" class="lsc-hero__title">{{sharetitle}}</h2>
+    <h2 id="lsc-hero-title" class="lsc-hero__title">
+      {{#sharetitle}}{{sharetitle}}{{/sharetitle}}
+      {{^sharetitle}}Share your certificate{{/sharetitle}}
+    </h2>
     <p class="lsc-hero__support">{{sharesubtitle}}</p>
 
     <div class="lsc-hero__actions">
-      <a id="{{buttonid}}"
-        disabled={{issued}}
-        class="btn btn-social lsc-cta {{#issued}}disabled{{/issued}}"
-        href="{{shareurl}}"
-        target="_blank"
-        rel="noopener"
-        data-action="open-link">
+      <a {{#buttonid}}id="{{.}}"{{/buttonid}}
+         class="btn btn-social lsc-cta {{#issued}}disabled{{/issued}}"
+         data-action="open-link"
+         {{^issued}}{{#shareurl}}href="{{.}}" target="_blank" rel="noopener noreferrer"{{/shareurl}}{{/issued}}
+         {{#issued}}aria-disabled="true" tabindex="-1"{{/issued}}>
         <span class="lsc-cta__icon" aria-hidden="true">
           <svg width="18" height="18" viewBox="0 0 24 24" focusable="false" aria-hidden="true">
             <path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5zM0 8h5v16H0V8zm7.5 0h4.8v2.2h.07c.67-1.2 2.32-2.46 4.78-2.46 5.11 0 6.05 3.36 6.05 7.73V24h-5V16.2c0-1.86-.03-4.24-2.58-4.24-2.58 0-2.97 2.02-2.97 4.11V24h-5V8z"/>
@@ -20,6 +88,7 @@
         <span class="lsc-cta__label">{{buttonlabel}}</span>
       </a>
     </div>
+
     {{#issued}}
       <div class="lsc-error-message">
         {{certerror}}
@@ -27,16 +96,14 @@
     {{/issued}}
     <div class="lsc-live" aria-live="polite" aria-atomic="true"></div>
   </section>
+
   {{#enableai}}
   <div class="lsc-response-wrap">
-
     <div class="bd-post" data-ai-composer>
       <div class="ai-bar" role="region" aria-label="Asistente de IA para redactar tu post">
-        <img 
-        src="{{imageurl}}" 
-        alt="Logo Data Curso" 
-        class="logo-datacurso">
+        <img src="{{imageurl}}" alt="Logo Data Curso" class="logo-datacurso">
         <p class="ai-bar__text" id="ai-bar-text-{{cmid}}">{{ai_actioncall}}</p>
+
         <div class="ai-bar__btn-container">
           <button
             type="button"
@@ -51,16 +118,14 @@
             data-course="{{course}}"
             data-org="{{org}}"
             data-certurl="{{shareurl}}"
-            data-socialmedia="LinkedIn"
-          >
+            data-socialmedia="LinkedIn">
             {{aibuttonlabel}}
           </button>
         </div>
 
         <div class="ai-bar__panel" aria-hidden="true">
           <div class="bd-post__content" aria-hidden="true">
-            
-            <header class="bd-post__header" role="banner" aria-label="Composer header">
+            <header class="bd-post__header">
               <div class="bd-avatar" aria-label="{{author_name}} avatar" role="img">
                 {{#author_avatar_url}}
                   <img class="bd-avatar__img" src="{{author_avatar_url}}" alt="" width="48" height="48" loading="lazy">
@@ -78,9 +143,10 @@
               </div>
             </header>
 
-            <main class="bd-post__main" role="main">
-              <section class="bd-message" aria-labelledby="bd-message-title">
+            <main class="bd-post__main">
+              <div class="bd-message">
                 <p class="bd-message__text">{{{message}}}</p>
+
                 <div id="ai-card" class="skeleton-card" aria-busy="true" aria-live="polite">
                   <div class="skeleton" aria-hidden="true">
                     <div class="sk-row w-90"></div>
@@ -88,7 +154,9 @@
                     <div class="sk-row w-80"></div>
                   </div>
                 </div>
+
                 <div id="{{responseid}}" class="bd-message__text" aria-live="polite"></div>
+
                 <div id="copyBtn" class="bd-message__cn-copy" hidden>
                   <button type="button"
                           class="bd-message__btn-copy"
@@ -100,8 +168,8 @@
                       <path d="M16 1H4a2 2 0 0 0-2 2v12h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/>
                     </svg>
                   </button>
-                <div>
-              </section>
+                </div>
+              </div>
             </main>
           </div>
         </div>
@@ -110,6 +178,7 @@
   </div>
   {{/enableai}}
 </div>
+
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".local-socialcert").forEach(scope => {
