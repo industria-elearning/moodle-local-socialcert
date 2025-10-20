@@ -14,28 +14,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-/**
- * Plugin version and other meta-data are defined here.
- *
- * @package     local_socialcert
- * @copyright   2025 Manuel Bojaca <manuel@buendata.com>
- * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
-
-namespace local_socialcert\privacy;
-
-use core_privacy\local\metadata\null_provider;
+namespace local_whatsapp\privacy;
 
 /**
- * Privacy API: this plugin stores no personal data.
+ * Class provider
  *
- * @package   local_socialcert
+ * @package    local_socialcert
+ * @copyright  2025 Manuel Bojaca <manuel@buendata.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class provider implements null_provider {
+class provider implements \core_privacy\local\metadata\null_provider {
+
     /**
-     * Explain that we do not store any personal data.
+     * Get the language string identifier with the component's language
+     * file to explain why this plugin stores no data.
      *
-     * @return string
+     * @return  string
      */
     public static function get_reason(): string {
         return 'privacy:metadata';
