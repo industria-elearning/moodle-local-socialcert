@@ -50,3 +50,7 @@ $string['shareinstruction'] = 'Rayakan pencapaian Anda! Klik di bawah ini untuk 
 $string['sharesubtitle']     = 'Kami akan memposting tautan yang dapat diverifikasi ke sertifikat Anda.';
 $string['sharetitle']        = 'Bagikan pencapaian Anda di LinkedIn';
 $string['whatsharelabel']    = 'Apa yang kami bagikan?';
+$string['errorgeneric'] = 'Terjadi kesalahan saat membuat konten. Silakan coba lagi nanti.';
+$string['errorcredits'] = 'Kredit AI tidak mencukupi. Silakan kunjungi <a href="https://shop.datacurso.com/index.php?m=tokens_manager" target="_blank">Kelola Kredit</a> di Toko Datacurso untuk mengalokasikan atau membeli kredit tambahan. Atau hubungi administrator Anda.';
+$string['errorlicense'] = 'Lisensi Anda tidak diizinkan untuk melakukan permintaan ini. Kelola lisensi dan kredit Anda di <a href="https://shop.datacurso.com/index.php?m=tokens_manager" target="_blank">Kelola Kredit</a> di Toko Datacurso.';
+

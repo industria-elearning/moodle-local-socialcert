@@ -51,3 +51,6 @@ $string['shareinstruction'] = '¡Celebra tu logro! Haz clic a continuación para
 $string['sharesubtitle']     = 'Publicaremos un enlace verificable de tu certificado.';
 $string['sharetitle']        = 'Comparte tu logro en LinkedIn';
 $string['whatsharelabel']    = '¿Qué compartimos?';
+$string['errorgeneric'] = 'Se produjo un error al generar el contenido. Por favor, inténtalo de nuevo más tarde.';
+$string['errorcredits'] = 'Créditos de IA insuficientes. Visita <a href="https://shop.datacurso.com/index.php?m=tokens_manager" target="_blank">Administrar créditos</a> en la tienda de Datacurso para asignar o comprar más créditos. O contacta a tu administrador.';
+$string['errorlicense'] = 'Tu licencia no está autorizada para realizar esta solicitud. Administra tus licencias y créditos en <a href="https://shop.datacurso.com/index.php?m=tokens_manager" target="_blank">Administrar créditos</a> en la tienda de Datacurso.';

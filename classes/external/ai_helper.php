@@ -85,16 +85,24 @@ class ai_helper extends external_api {
         $params = self::validate_parameters(self::execute_parameters(), ['body' => $body]);
         $body   = $params['body'];
 
-        $client   = new ai_services_api();
-        $response = $client->request('POST', '/certificate/answer', $body);
+        try {
+            $client   = new ai_services_api();
+            $response = $client->request('POST', '/certificate/answer', $body);
 
-        if (is_array(value: $response) || is_object(value: $response)) {
-            $json = json_encode(value: $response, flags: JSON_UNESCAPED_UNICODE);
-        } else {
-            $json = json_encode(value: ['text' => (string)$response], flags: JSON_UNESCAPED_UNICODE);
+            if (is_array(value: $response) || is_object(value: $response)) {
+                $json = json_encode(value: $response, flags: JSON_UNESCAPED_UNICODE);
+            } else {
+                $json = json_encode(value: ['text' => (string)$response], flags: JSON_UNESCAPED_UNICODE);
+            }
+
+            return ['json' => $json];
+        } catch (\Exception $e) {
+            debugging("Unexpected error while starting resource generation (stream): " . $e->getMessage());
+            return [
+                'ok' => false,
+                'message' => $e->getMessage(),
+            ];
         }
-
-        return ['json' => $json];
     }
 
     /**
@@ -107,7 +115,9 @@ class ai_helper extends external_api {
      */
     public static function execute_returns(): external_single_structure {
         return new external_single_structure([
-            'json' => new external_value(PARAM_RAW, 'Respuesta JSON de la API externa'),
+            'ok' => new external_value(PARAM_BOOL, 'Response status from server', VALUE_OPTIONAL),
+            'message' => new external_value(PARAM_RAW, 'Response message from server', VALUE_OPTIONAL),
+            'json' => new external_value(PARAM_RAW, 'Respuesta JSON de la API externa', VALUE_OPTIONAL),
         ]);
     }
 }

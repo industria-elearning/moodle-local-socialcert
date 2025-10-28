@@ -14,54 +14,6 @@
     You should have received a copy of the GNU General Public License
     along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 }}
-{{!
-    @template local_socialcert/main
-
-    Main panel for the Social Certificate plugin.
-
-    Displays a sharing panel to publish a course certificate (LinkedIn) and,
-    optionally, an AI assistant to compose the post content.
-
-    Example context (json):
-    {
-        "aibuttonid": "btn-ai",
-        "buttonid": "btn-normal",
-        "imageid": "ai-image",
-        "responseid": "ai-response",
-
-        "socialmedia": "LinkedIn",
-        "author_name": "Jane Doe",
-        "author_avatar_url": "https://example.com/u/jane.jpg",
-        "message": "Draft message preview...",
-        "copytextlabel": "Copy generated text",
-
-        "certid": "ABC123XYZ",
-        "certname": "AI Fundamentals",
-        "cmid": 42,
-        "course": "Machine Learning 101",
-        "datanetwork": "linkedin",
-
-        "enableai": true,
-        "imageurl": "https://example.com/local/socialcert/assets/logo_title.png",
-        "issued": false,
-        "org": "Buen Data",
-        "shareurl": "https://linkedin.com/profile/add?name=AI%20Fundamentals",
-        "verifyurl": "https://example.com/verify/ABC123XYZ",
-
-        "ai_actioncall": "Genera un texto con IA para tu publicación",
-        "aibuttonlabel": "Redactar con IA",
-        "buttonlabel": "Obtener enlace",
-        "buttonlabelshare": "Compartir en LinkedIn",
-        "intro": "Comparte tu certificado para destacar tu logro.",
-        "linktext": "Copiar enlace",
-        "popupblocked": "Ventana emergente bloqueada. Habilítalas para continuar.",
-        "sharecompleted": "¡Certificado compartido con éxito!",
-        "sharesubtitle": "Celebra tu logro de aprendizaje.",
-        "sharetitle": "Comparte tu certificado",
-        "whatsharelabel": "¿Qué deseas compartir?",
-        "certerror": "No encontramos datos del certificado."
-    }
-}}
 
 <div class="local-socialcert my-4 social-scope"
      {{#datanetwork}}data-network="{{.}}"{{/datanetwork}}
@@ -110,6 +62,7 @@
             class="ai-bar__button"
             aria-describedby="ai-bar-text-{{cmid}}"
             id="{{aibuttonid}}"
+            style="{{#imagelogo}}background-image: url('{{imagelogo}}');{{/imagelogo}}"
             data-action="run-ai"
             data-target="#{{responseid}}"
             data-mode="word"
@@ -118,7 +71,10 @@
             data-course="{{course}}"
             data-org="{{org}}"
             data-certurl="{{shareurl}}"
-            data-socialmedia="LinkedIn">
+            data-socialmedia="LinkedIn"
+            data-errorlicense="{{errorlicense}}"
+            data-errorcredits="{{errorcredits}}"
+            data-errorgeneric="{{errorgeneric}}">
             {{aibuttonlabel}}
           </button>
         </div>
@@ -145,7 +101,6 @@
 
             <main class="bd-post__main">
               <div class="bd-message">
-                <p class="bd-message__text">{{{message}}}</p>
 
                 <div id="ai-card" class="skeleton-card" aria-busy="true" aria-live="polite">
                   <div class="skeleton" aria-hidden="true">
@@ -159,11 +114,11 @@
 
                 <div id="copyBtn" class="bd-message__cn-copy" hidden>
                   <button type="button"
-                          class="bd-message__btn-copy"
-                          aria-label="{{copytextlabel}}"
-                          title="{{copytextlabel}}"
-                          data-action="copy-html"
-                          data-target="#{{responseid}}">
+                    class="bd-message__btn-copy"
+                    aria-label="{{copytextlabel}}"
+                    title="{{copytextlabel}}"
+                    data-action="copy-html"
+                    data-target="#{{responseid}}">
                     <svg class="bd-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                       <path d="M16 1H4a2 2 0 0 0-2 2v12h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/>
                     </svg>
