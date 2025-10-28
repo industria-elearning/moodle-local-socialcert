@@ -36,6 +36,9 @@ $string['copyconfirmation'] = 'Copié ✔';
 $string['description'] = 'Permet à l’utilisateur de partager son certificat directement sur LinkedIn.';
 $string['enableai'] = 'Activer l’IA pour suggérer le texte de la publication';
 $string['enableai_desc'] = 'Si cette option est désactivée, le plug-in n’appellera pas Provider AI et ne générera aucune suggestion pour les publications LinkedIn.';
+$string['errorcredits'] = 'Crédits d’IA insuffisants. Veuillez visiter <a href="https://shop.datacurso.com/index.php?m=tokens_manager" target="_blank">Gérer les crédits</a> dans la boutique Datacurso pour allouer ou acheter davantage de crédits. Ou contactez votre administrateur.';
+$string['errorgeneric'] = 'Une erreur est survenue lors de la génération du contenu. Veuillez réessayer plus tard.';
+$string['errorlicense'] = 'Votre licence n’est pas autorisée à effectuer cette requête. Veuillez gérer vos licences et crédits dans <a href="https://shop.datacurso.com/index.php?m=tokens_manager" target="_blank">Gérer les crédits</a> dans la boutique Datacurso.';
 $string['generating'] = 'Génération en cours…';
 $string['linkcertbuttontext'] = 'Partager sur LinkedIn';
 $string['noissue'] = 'Vous n’avez pas encore reçu de certificat pour ce cours.';
@@ -51,6 +54,3 @@ $string['shareinstruction'] = 'Félicitez-vous ! Cliquez ci-dessous pour mettre 
 $string['sharesubtitle'] = 'Nous publierons un lien vérifiable vers votre certificat.';
 $string['sharetitle'] = 'Partagez votre réussite sur LinkedIn';
 $string['whatsharelabel'] = 'Que partageons-nous ?';
-$string['errorgeneric'] = 'Une erreur est survenue lors de la génération du contenu. Veuillez réessayer plus tard.';
-$string['errorcredits'] = 'Crédits d’IA insuffisants. Veuillez visiter <a href="https://shop.datacurso.com/index.php?m=tokens_manager" target="_blank">Gérer les crédits</a> dans la boutique Datacurso pour allouer ou acheter davantage de crédits. Ou contactez votre administrateur.';
-$string['errorlicense'] = 'Votre licence n’est pas autorisée à effectuer cette requête. Veuillez gérer vos licences et crédits dans <a href="https://shop.datacurso.com/index.php?m=tokens_manager" target="_blank">Gérer les crédits</a> dans la boutique Datacurso.';

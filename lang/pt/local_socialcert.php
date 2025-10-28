@@ -36,6 +36,9 @@ $string['copyconfirmation'] = 'Copié ✔';
 $string['description'] = 'Permet à l’utilisateur de partager son certificat directement sur LinkedIn.';
 $string['enableai'] = 'Ativar IA para sugerir o texto da publicação';
 $string['enableai_desc'] = 'Se desativado, o plugin não chamará o Provider AI e não gerará sugestões para publicações no LinkedIn.';
+$string['errorcredits'] = 'Créditos de IA insuficientes. Visite <a href="https://shop.datacurso.com/index.php?m=tokens_manager" target="_blank">Gerenciar créditos</a> na loja Datacurso para alocar ou comprar mais créditos. Ou entre em contato com seu administrador.';
+$string['errorgeneric'] = 'Une erreur est survenue lors de la génération du contenu. Veuillez réessayer plus tard.';
+$string['errorlicense'] = 'Sua licença não tem permissão para realizar esta solicitação. Gerencie suas licenças e créditos em <a href="https://shop.datacurso.com/index.php?m=tokens_manager" target="_blank">Gerenciar créditos</a> na loja Datacurso.';
 $string['generating'] = 'Génération en cours…';
 $string['linkcertbuttontext'] = 'Partager sur LinkedIn';
 $string['noissue'] = 'Vous n’avez pas encore reçu de certificat pour ce cours.';
@@ -51,6 +54,3 @@ $string['shareinstruction'] = 'Félicitez-vous ! Cliquez ci-dessous pour mettre 
 $string['sharesubtitle']     = 'Nous publierons un lien vérifiable vers votre certificat.';
 $string['sharetitle']        = 'Partagez votre réussite sur LinkedIn';
 $string['whatsharelabel']    = 'Que partageons-nous ?';
-$string['errorgeneric'] = 'Une erreur est survenue lors de la génération du contenu. Veuillez réessayer plus tard.';
-$string['errorcredits'] = 'Créditos de IA insuficientes. Visite <a href="https://shop.datacurso.com/index.php?m=tokens_manager" target="_blank">Gerenciar créditos</a> na loja Datacurso para alocar ou comprar mais créditos. Ou entre em contato com seu administrador.';
-$string['errorlicense'] = 'Sua licença não tem permissão para realizar esta solicitação. Gerencie suas licenças e créditos em <a href="https://shop.datacurso.com/index.php?m=tokens_manager" target="_blank">Gerenciar créditos</a> na loja Datacurso.';

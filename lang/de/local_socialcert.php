@@ -36,6 +36,9 @@ $string['copyconfirmation'] = 'Kopiert ✔';
 $string['description'] = 'Ermöglicht es dem Benutzer, sein Zertifikat direkt auf LinkedIn zu teilen.';
 $string['enableai'] = 'KI aktivieren, um vorgeschlagenen Beitragstext zu erzeugen';
 $string['enableai_desc'] = 'Wenn diese Option deaktiviert ist, ruft das Plugin Provider AI nicht auf und generiert keine Vorschläge für LinkedIn-Beiträge.';
+$string['errorcredits'] = 'Unzureichende KI-Guthaben. Bitte besuchen Sie <a href="https://shop.datacurso.com/index.php?m=tokens_manager" target="_blank">Guthaben verwalten</a> im Datacurso Shop, um weitere Guthaben zuzuweisen oder zu kaufen. Oder kontaktieren Sie Ihre Administratorin/Ihren Administrator.';
+$string['errorgeneric'] = 'Beim Generieren des Inhalts ist ein Fehler aufgetreten. Bitte versuche es später erneut.';
+$string['errorlicense'] = 'Ihre Lizenz ist nicht berechtigt, diese Anfrage auszuführen. Bitte verwalten Sie Ihre Lizenzen und Guthaben unter <a href="https://shop.datacurso.com/index.php?m=tokens_manager" target="_blank">Guthaben verwalten</a> im Datacurso Shop.';
 $string['generating'] = 'Wird erstellt…';
 $string['linkcertbuttontext'] = 'Auf LinkedIn teilen';
 $string['noissue'] = 'Du hast noch kein Zertifikat für diesen Kurs erhalten.';
@@ -51,6 +54,3 @@ $string['shareinstruction'] = 'Feiere deinen Erfolg! Klicke unten, um dein Zerti
 $string['sharesubtitle'] = 'Wir veröffentlichen einen verifizierbaren Link zu deinem Zertifikat.';
 $string['sharetitle'] = 'Teile deinen Erfolg auf LinkedIn';
 $string['whatsharelabel'] = 'Was wird geteilt?';
-$string['errorgeneric'] = 'Beim Generieren des Inhalts ist ein Fehler aufgetreten. Bitte versuche es später erneut.';
-$string['errorcredits'] = 'Unzureichende KI-Guthaben. Bitte besuchen Sie <a href="https://shop.datacurso.com/index.php?m=tokens_manager" target="_blank">Guthaben verwalten</a> im Datacurso Shop, um weitere Guthaben zuzuweisen oder zu kaufen. Oder kontaktieren Sie Ihre Administratorin/Ihren Administrator.';
-$string['errorlicense'] = 'Ihre Lizenz ist nicht berechtigt, diese Anfrage auszuführen. Bitte verwalten Sie Ihre Lizenzen und Guthaben unter <a href="https://shop.datacurso.com/index.php?m=tokens_manager" target="_blank">Guthaben verwalten</a> im Datacurso Shop.';

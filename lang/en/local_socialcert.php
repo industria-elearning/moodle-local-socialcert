@@ -36,6 +36,9 @@ $string['copyconfirmation'] = 'Copied ✔';
 $string['description'] = 'Allows the user to share their certificate directly on LinkedIn.';
 $string['enableai'] = 'Enable AI to suggest post text';
 $string['enableai_desc'] = 'If unchecked, the plugin will not call Provider AI or generate LinkedIn post suggestions.';
+$string['errorcredits'] = 'Insufficient AI credits. Please visit <a href="https://shop.datacurso.com/index.php?m=tokens_manager" target="_blank">Manage Credits</a> in the Datacurso Shop to allocate or purchase more credits. Or contact your administrator.';
+$string['errorgeneric'] = 'An error occurred while generating the content. Please try again later.';
+$string['errorlicense'] = 'Your license is not allowed to perform this request. Please manage your licenses and credits in <a href="https://shop.datacurso.com/index.php?m=tokens_manager" target="_blank">Manage Credits</a> in the Datacurso Shop.';
 $string['generating'] = 'Generating…';
 $string['linkcertbuttontext'] = 'Share on LinkedIn';
 $string['linktext'] = 'Certificate link';
@@ -52,6 +55,3 @@ $string['shareinstruction'] = 'Celebrate your achievement! Click below to showca
 $string['sharesubtitle'] = 'We’ll post a verifiable link to your certificate.';
 $string['sharetitle'] = 'Share your achievement on LinkedIn';
 $string['whatsharelabel'] = 'What do we share?';
-$string['errorgeneric'] = 'An error occurred while generating the content. Please try again later.';
-$string['errorcredits'] = 'Insufficient AI credits. Please visit <a href="https://shop.datacurso.com/index.php?m=tokens_manager" target="_blank">Manage Credits</a> in the Datacurso Shop to allocate or purchase more credits. Or contact your administrator.';
-$string['errorlicense'] = 'Your license is not allowed to perform this request. Please manage your licenses and credits in <a href="https://shop.datacurso.com/index.php?m=tokens_manager" target="_blank">Manage Credits</a> in the Datacurso Shop.';

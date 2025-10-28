@@ -35,6 +35,9 @@ $string['copyconfirmation'] = 'Copiado ✔';
 $string['description'] = 'Permite al usuario compartir su certificado directamente en LinkedIn.';
 $string['enableai'] = 'Habilitar IA para sugerir texto del post';
 $string['enableai_desc'] = 'Si se desmarca, el plugin no llamará a Provider AI ni generará sugerencias de texto para LinkedIn.';
+$string['errorcredits'] = 'Créditos de IA insuficientes. Visita <a href="https://shop.datacurso.com/index.php?m=tokens_manager" target="_blank">Administrar créditos</a> en la tienda de Datacurso para asignar o comprar más créditos. O contacta a tu administrador.';
+$string['errorgeneric'] = 'Se produjo un error al generar el contenido. Por favor, inténtalo de nuevo más tarde.';
+$string['errorlicense'] = 'Tu licencia no está autorizada para realizar esta solicitud. Administra tus licencias y créditos en <a href="https://shop.datacurso.com/index.php?m=tokens_manager" target="_blank">Administrar créditos</a> en la tienda de Datacurso.';
 $string['generating'] = 'Generando…';
 $string['linkcertbuttontext'] = 'Compartir en LinkedIn';
 $string['noissue'] = 'Aún no tienes un certificado emitido para este curso.';
@@ -51,6 +54,3 @@ $string['shareinstruction'] = '¡Celebra tu logro! Haz clic a continuación para
 $string['sharesubtitle']     = 'Publicaremos un enlace verificable de tu certificado.';
 $string['sharetitle']        = 'Comparte tu logro en LinkedIn';
 $string['whatsharelabel']    = '¿Qué compartimos?';
-$string['errorgeneric'] = 'Se produjo un error al generar el contenido. Por favor, inténtalo de nuevo más tarde.';
-$string['errorcredits'] = 'Créditos de IA insuficientes. Visita <a href="https://shop.datacurso.com/index.php?m=tokens_manager" target="_blank">Administrar créditos</a> en la tienda de Datacurso para asignar o comprar más créditos. O contacta a tu administrador.';
-$string['errorlicense'] = 'Tu licencia no está autorizada para realizar esta solicitud. Administra tus licencias y créditos en <a href="https://shop.datacurso.com/index.php?m=tokens_manager" target="_blank">Administrar créditos</a> en la tienda de Datacurso.';

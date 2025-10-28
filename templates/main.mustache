@@ -14,6 +14,54 @@
     You should have received a copy of the GNU General Public License
     along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 }}
+{{!
+    @template local_socialcert/main
+
+    Main panel for the Social Certificate plugin.
+
+    Displays a sharing panel to publish a course certificate (LinkedIn) and,
+    optionally, an AI assistant to compose the post content.
+
+    Example context (json):
+    {
+        "aibuttonid": "btn-ai",
+        "buttonid": "btn-normal",
+        "imageid": "ai-image",
+        "responseid": "ai-response",
+
+        "socialmedia": "LinkedIn",
+        "author_name": "Jane Doe",
+        "author_avatar_url": "https://example.com/u/jane.jpg",
+        "message": "Draft message preview...",
+        "copytextlabel": "Copy generated text",
+
+        "certid": "ABC123XYZ",
+        "certname": "AI Fundamentals",
+        "cmid": 42,
+        "course": "Machine Learning 101",
+        "datanetwork": "linkedin",
+
+        "enableai": true,
+        "imageurl": "https://example.com/local/socialcert/assets/logo_title.png",
+        "issued": false,
+        "org": "Buen Data",
+        "shareurl": "https://linkedin.com/profile/add?name=AI%20Fundamentals",
+        "verifyurl": "https://example.com/verify/ABC123XYZ",
+
+        "ai_actioncall": "Genera un texto con IA para tu publicación",
+        "aibuttonlabel": "Redactar con IA",
+        "buttonlabel": "Obtener enlace",
+        "buttonlabelshare": "Compartir en LinkedIn",
+        "intro": "Comparte tu certificado para destacar tu logro.",
+        "linktext": "Copiar enlace",
+        "popupblocked": "Ventana emergente bloqueada. Habilítalas para continuar.",
+        "sharecompleted": "¡Certificado compartido con éxito!",
+        "sharesubtitle": "Celebra tu logro de aprendizaje.",
+        "sharetitle": "Comparte tu certificado",
+        "whatsharelabel": "¿Qué deseas compartir?",
+        "certerror": "No encontramos datos del certificado."
+    }
+}}
 
 <div class="local-socialcert my-4 social-scope"
      {{#datanetwork}}data-network="{{.}}"{{/datanetwork}}
