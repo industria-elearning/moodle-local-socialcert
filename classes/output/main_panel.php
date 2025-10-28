@@ -112,6 +112,12 @@ class main_panel implements renderable, templatable {
 
         $imgurl = (new moodle_url('/local/socialcert/assets/logo_title.png'))->out(false);
 
+        $imglogo = (new moodle_url('/local/socialcert/assets/logo.png'))->out(false);
+
+        $errorgeneric = get_string('errorgeneric', 'local_socialcert');
+        $errorlicense = get_string('errorlicense', 'local_socialcert');
+        $errorcredits = get_string('errorcredits', 'local_socialcert');
+
         return [
             'aibuttonid'        => 'btn-ai',
             'buttonid'          => 'btn-normal',
@@ -125,6 +131,10 @@ class main_panel implements renderable, templatable {
             'course'            => $coursefullname,
             'datanetwork'       => $datanetwork,
             'enableai'          => $enableai,
+            'errorcredits'      => $errorcredits,
+            'errorgeneric'      => $errorgeneric,
+            'errorlicense'      => $errorlicense,
+            'imagelogo'         => $imglogo,
             'imageurl'          => $imgurl,
             'issued'            => $issued,
             'org'               => $orgname,

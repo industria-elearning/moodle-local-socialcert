@@ -110,6 +110,7 @@
             class="ai-bar__button"
             aria-describedby="ai-bar-text-{{cmid}}"
             id="{{aibuttonid}}"
+            style="{{#imagelogo}}background-image: url('{{imagelogo}}');{{/imagelogo}}"
             data-action="run-ai"
             data-target="#{{responseid}}"
             data-mode="word"
@@ -118,7 +119,10 @@
             data-course="{{course}}"
             data-org="{{org}}"
             data-certurl="{{shareurl}}"
-            data-socialmedia="LinkedIn">
+            data-socialmedia="LinkedIn"
+            data-errorlicense="{{errorlicense}}"
+            data-errorcredits="{{errorcredits}}"
+            data-errorgeneric="{{errorgeneric}}">
             {{aibuttonlabel}}
           </button>
         </div>
@@ -145,7 +149,6 @@
 
             <main class="bd-post__main">
               <div class="bd-message">
-                <p class="bd-message__text">{{{message}}}</p>
 
                 <div id="ai-card" class="skeleton-card" aria-busy="true" aria-live="polite">
                   <div class="skeleton" aria-hidden="true">
@@ -159,11 +162,11 @@
 
                 <div id="copyBtn" class="bd-message__cn-copy" hidden>
                   <button type="button"
-                          class="bd-message__btn-copy"
-                          aria-label="{{copytextlabel}}"
-                          title="{{copytextlabel}}"
-                          data-action="copy-html"
-                          data-target="#{{responseid}}">
+                    class="bd-message__btn-copy"
+                    aria-label="{{copytextlabel}}"
+                    title="{{copytextlabel}}"
+                    data-action="copy-html"
+                    data-target="#{{responseid}}">
                     <svg class="bd-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                       <path d="M16 1H4a2 2 0 0 0-2 2v12h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/>
                     </svg>

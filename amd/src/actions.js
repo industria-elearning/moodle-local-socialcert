@@ -37,7 +37,6 @@
 
 import {get_string as getString} from 'core/str';
 import Ajax from 'core/ajax';
-import Notification from 'core/notification';
 
 /* ============================================================================
  * Action registry
@@ -174,6 +173,39 @@ function removeCaret(el) {
   if (caret) { caret.remove(); }
 }
 
+
+/**
+ * Maps an error message returned by the backend to a plugin lang key.
+ *
+ * Detection is case-insensitive and based on simple text matches:
+ * - Contains "insufficient ai credits"  -> returns `errors[0]` (e.g., "tokenserror")
+ * - Contains "your license is not allowed" or "manage credits" -> returns `errors[1]` (e.g., "licenseerror")
+ * - Otherwise -> returns `errors[2]` (e.g., "genericerror")
+ *
+ * @param {string} message - Error text returned by the service (may include HTML).
+ * @param {string[]} errors - Array of lang keys in the order:
+ *   [0] = key for insufficient credits (e.g., "tokenserror"),
+ *   [1] = key for not-allowed license (e.g., "licenseerror"),
+ *   [2] = generic key (e.g., "genericerror").
+ * @returns {string} The corresponding lang key based on the message content.
+ */
+function mapErrorToLangKey(message, errors) {
+  const msg = String(message || '').toLowerCase();
+
+  if (msg.includes('insufficient ai credits')) {
+    return errors[0];
+  }
+
+  if (
+    msg.includes('your license is not allowed') ||
+    msg.includes('manage credits')
+  ) {
+    return errors[1];
+  }
+
+  return errors[2];
+}
+
 /**
  * Tracks active streams per target so we can stop/replace them.
  * @type {WeakMap<HTMLElement, {stop: Function}>}
@@ -190,6 +222,18 @@ const streams = new WeakMap();
  * @returns {{stop: Function, done: Promise<void>}} Control handle with a stop() method and a completion promise.
  */
 export function typewriter(el, text, mode, speedMs) {
+  const isHTML = /<[^>]+>/.test(text); // ← detección simple
+
+  // Rama HTML: render directo para que <a> sea clickeable
+  if (isHTML) {
+    el.innerHTML = text;
+    return {
+      stop() { /* nada que parar */ },
+      done: Promise.resolve()
+    };
+  }
+
+  // Rama TEXTO: tu implementación original
   const caret = addCaret(el);
   const units = mode === 'char' ? text.split('') : text.split(/\s+/);
   let i = 0;
@@ -234,6 +278,7 @@ export function typewriter(el, text, mode, speedMs) {
  * @param {string} course     Course name used in the prompt.
  * @param {string} org        Issuing organization name.
  * @param {string} socialmedia Target social network (e.g., "LinkedIn").
+ * @param {string[]} errorarray - Array of lang keys in the order:
  * @returns {Promise<string>} Resolves to the AI textual reply.
  * @throws {SyntaxError} If the backend JSON is invalid.
  * @throws {Error} If the AJAX call fails (also reported via Notification.exception).
@@ -243,8 +288,9 @@ export function typewriter(el, text, mode, speedMs) {
  *   .then(reply => console.log("AI reply:", reply))
  *   .catch(err => console.error("AI error:", err));
  */
-function ai_response (certname, course, org, socialmedia) {
-  return new Promise((resolve, reject) => {
+function ai_response (certname, course, org, socialmedia, errorarray) {
+
+  return new Promise((resolve) => {
     Ajax.call([{
       methodname: 'local_socialcert_get_ai_response',
       args: {
@@ -256,19 +302,18 @@ function ai_response (certname, course, org, socialmedia) {
         }
       },
     }])[0].then((response) => {
-      try {
+      if (response.json) {
         const parsed = JSON.parse(response.json);
-        return resolve(parsed.reply);
-      } catch (e) {
-        reject(e);
+        return resolve({fulltext: parsed.reply, done: true});
+      } else {
+        const errormsg = mapErrorToLangKey(response.message, errorarray);
+        return resolve({fulltext: errormsg, done: false});
       }
-    }).catch((err) => {
-      Notification.exception(err);
-      reject(err);
+    }).catch(() => {
+      return resolve({ fulltext: errorarray[2], done: false });
     });
   });
 }
-
 
 /* ============================================================================
  * Action: run AI
@@ -315,7 +360,7 @@ export function runAiHandler(ev, btn) {
   const course = btn.dataset.course || '';
   const org = btn.dataset.org || '';
   const socialmedia = btn.dataset.socialmedia || '';
-  const id_servicio = btn.dataset.id_servicio || '';
+  // const id_servicio = btn.dataset.id_servicio || '';
   const original = btn.textContent;
   btn.disabled = true;
   btn.textContent = 'Generating';
@@ -324,24 +369,33 @@ export function runAiHandler(ev, btn) {
 
   const loader = document.getElementById('ai-card');
   const copyBtn = document.getElementById('copyBtn');
+  const errorLicense = btn.dataset.errorlicense;
+  const errorCredits = btn.dataset.errorcredits;
+  const errorGeneric = btn.dataset.errorgeneric;
+  const errorarray = [
+    errorCredits,
+    errorLicense,
+    errorGeneric
+  ];
+  let streamtext = '';
 
-  ai_response(certname, course, org, socialmedia, id_servicio).then((fulltext) => {
+  copyBtn.hidden=true;
+
+  ai_response(certname, course, org, socialmedia, errorarray).then((response) => {
+    streamtext = response.fulltext;
+    if(response.done) { copyBtn.hidden=false; }
+  }).catch(() => {
+    streamtext = errorGeneric;
+  }).finally(() => {
     loader.classList.add('hidden');
     loader.setAttribute('aria-busy', 'false');
-    const stream = typewriter(target, fulltext , mode, speed);
+    const stream = typewriter(target, streamtext, mode, speed);
     stream.done.then(() => {
       btn.disabled = false;
       btn.textContent = original;
       target.removeAttribute('aria-busy');
       streams.delete(target);
-    })
-    .finally(() => {
-      copyBtn.hidden=false;
     });
-  }).catch(() => {
-    btn.disabled = false;
-    btn.textContent = original;
-    target.removeAttribute('aria-busy');
   });
 }
 
