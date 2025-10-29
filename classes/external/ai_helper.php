@@ -85,10 +85,8 @@ class ai_helper extends external_api {
     public static function execute($body, $cmid) {
         $params = self::validate_parameters(self::execute_parameters(), ['body' => $body, 'cmid' => $cmid]);
 
-        
-
         try {
-            if($params['cmid'] <= 0){
+            if ($params['cmid'] <= 0) {
                 throw new \moodle_exception('invalidcmid', 'local_socialcert');
             }
             $context = \context_module::instance($params['cmid']);
