@@ -26,12 +26,17 @@ class hook_callbacks {
     ): void {
         global $PAGE, $OUTPUT;
 
-        if ($PAGE->pagetype !== 'mod-customcert-view' ||
-            empty($PAGE->cm->id) || !isloggedin() || isguestuser()) {
+        $cmid  = $PAGE->cm->id;
+
+        if (
+            $PAGE->pagetype !== 'mod-customcert-view' ||
+            empty($cmid) ||
+            !isloggedin() ||
+            isguestuser()
+        ) {
             return;
         }
 
-        $cmid  = $PAGE->cm->id;
         $panel = new \local_socialcert\output\main_panel(cmid: $cmid);
         $context = $panel->export_for_template(output: $OUTPUT);
         $html  = $OUTPUT->render_from_template(
@@ -41,6 +46,8 @@ class hook_callbacks {
 
         $hook->add_html($html);
 
-        $PAGE->requires->js_call_amd('local_socialcert/actions', 'init');
+        $PAGE->requires->js_call_amd('local_socialcert/actions', 'init', [
+            'cmid' => $cmid,
+        ]);
     }
 }

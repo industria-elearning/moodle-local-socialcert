@@ -177,13 +177,15 @@ export function typewriter(el, text, mode, speedMs) {
  *
  * @function ai_response
  * @async
- * @param {string} certname - Nombre del certificado (o del estudiante) a incluir en el prompt.
- * @param {string} course - Nombre del certificado (o del estudiante) a incluir en el prompt.
- * @param {string} org - Nombre de la organización o institución emisora.
- * @param {string} socialmedia - Red social objetivo (p. ej., "LinkedIn") o lista de redes.
- * @returns {Promise<string>} Promesa que se resuelve con el contenido textual de la respuesta de IA.
- * @throws {SyntaxError} Si el JSON devuelto por el backend no es válido.
- * @throws {Error} Si la llamada AJAX falla por cualquier motivo (se notificará con `Notification.exception`).
+ * @param {string} certname   Certificate (or student) name used in the prompt.
+ * @param {string} course     Course name used in the prompt.
+ * @param {string} org        Issuing organization name.
+ * @param {string} socialmedia Target social network (e.g., "LinkedIn").
+ * @param {string[]} errorarray - Array of lang keys in the order:
+ * @param {number} cmid - Course module ID.
+ * @returns {Promise<string>} Resolves to the AI textual reply.
+ * @throws {SyntaxError} If the backend JSON is invalid.
+ * @throws {Error} If the AJAX call fails (also reported via Notification.exception).
  *
  * @example
  * ai_response("Certificado de Analítica", "BUEN DATA", "LinkedIn")
@@ -194,8 +196,9 @@ export function typewriter(el, text, mode, speedMs) {
  *     console.error("Error obteniendo la respuesta de IA:", err);
  *   });
  */
-function ai_response (certname, course, org, socialmedia) {
-  return new Promise((resolve, reject) => {
+function ai_response (certname, course, org, socialmedia, errorarray, cmid) {
+
+  return new Promise((resolve) => {
     Ajax.call([{
       methodname: 'local_socialcert_get_ai_response',
       args: {
@@ -203,8 +206,9 @@ function ai_response (certname, course, org, socialmedia) {
           certname: certname,
           course: course,
           org: org,
-          socialmedia: socialmedia
-        }
+          socialmedia: socialmedia,
+        },
+        cmid: cmid,
       },
     }])[0].then((response) => {
       try {
@@ -222,70 +226,82 @@ function ai_response (certname, course, org, socialmedia) {
 
 
 /**
- * Ejecuta/Detiene la “IA” (streaming).
- * Lee data-target, data-mode ("char"|"word"), data-speed (ms).
- * @param {MouseEvent} ev
- * @param {HTMLElement} btn
+ * Starts/stops the “AI” streaming flow.
+ * Reads data attributes from the trigger button:
+ *  - data-target: CSS selector for the output node.
+ *  - data-mode: "char" | "word" (streaming unit).
+ *  - data-speed: interval in ms.
+ *
+ * Also manages a loader, ARIA states, and reveals the Copy button when done.
+ *
+* @param {number} cmid
+ * @returns {(ev: MouseEvent, btn: HTMLElement) => void}
  */
-export function runAiHandler(ev, btn) {
+export function runAiHandler(cmid) {
+  return function(ev, btn) {
+    ev.preventDefault();
+    const sel = btn.dataset.target;
+    let target = null;
+    if (sel) {
+      target = document.querySelector(sel);
+    } else {
+      const wrap = btn.closest('.lsc-response-wrap');
+      target = wrap ? wrap.querySelector('.lsc-response') : null;
+    }
+    if (!target) { return; }
 
-  ev.preventDefault();
-
-  // Localiza el destino
-  const sel = btn.dataset.target;
-  let target = null;
-  if (sel) {
-    target = document.querySelector(sel);
-  } else {
-    const wrap = btn.closest('.lsc-response-wrap');
-    target = wrap ? wrap.querySelector('.lsc-response') : null;
-  }
-  if (!target) { return; }
-
-  // Si ya hay stream en ese destino: detener y restaurar
-  if (streams.has(target)) {
-    const s = streams.get(target);
-    if (s && s.stop) { s.stop(); }
-    btn.disabled = false;
-    btn.textContent = getString('airesponsebtn', 'local_socialcert');
-    return;
-  }
-
-  // Preparar UI
-  const mode = (btn.dataset.mode === 'char') ? 'char' : 'word';
-  const speed = parseInt(btn.dataset.speed || '40', 10);
-  const certname = btn.dataset.certname || '';
-  const course = btn.dataset.course || '';
-  const org = btn.dataset.org || '';
-  const socialmedia = btn.dataset.socialmedia || '';
-  const id_servicio = btn.dataset.id_servicio || '';
-  const original = btn.textContent;
-  btn.disabled = true;
-  btn.textContent = 'Generating';
-  target.setAttribute('aria-busy', 'true');
-  target.setAttribute('role', 'status');
-
-  const loader = document.getElementById('ai-card');
-  const copyBtn = document.getElementById('copyBtn');
-
-  ai_response(certname, course, org, socialmedia, id_servicio).then((fulltext) => {
-    loader.classList.add('hidden');
-    loader.setAttribute('aria-busy', 'false');
-    const stream = typewriter(target, fulltext , mode, speed);
-    stream.done.then(() => {
+    if (streams.has(target)) {
+      const s = streams.get(target);
+      if (s && s.stop) { s.stop(); }
       btn.disabled = false;
-      btn.textContent = original;
-      target.removeAttribute('aria-busy');
-      streams.delete(target);
-    })
-    .finally(() => {
-      copyBtn.hidden=false;
+      btn.textContent = getString('airesponsebtn', 'local_socialcert');
+      return;
+    }
+
+    const mode = (btn.dataset.mode === 'char') ? 'char' : 'word';
+    const speed = parseInt(btn.dataset.speed || '40', 10);
+    const certname = btn.dataset.certname || '';
+    const course = btn.dataset.course || '';
+    const org = btn.dataset.org || '';
+    const socialmedia = btn.dataset.socialmedia || '';
+    // const id_servicio = btn.dataset.id_servicio || '';
+    const original = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'Generating';
+    target.setAttribute('aria-busy', 'true');
+    target.setAttribute('role', 'status');
+
+    const loader = document.getElementById('ai-card');
+    const copyBtn = document.getElementById('copyBtn');
+    const errorLicense = btn.dataset.errorlicense;
+    const errorCredits = btn.dataset.errorcredits;
+    const errorGeneric = btn.dataset.errorgeneric;
+    const errorarray = [
+      errorCredits,
+      errorLicense,
+      errorGeneric
+    ];
+    let streamtext = '';
+
+    copyBtn.hidden=true;
+
+    ai_response(certname, course, org, socialmedia, errorarray, cmid).then((response) => {
+      streamtext = response.fulltext;
+      if(response.done) { copyBtn.hidden=false; }
+    }).catch(() => {
+      streamtext = errorGeneric;
+    }).finally(() => {
+      loader.classList.add('hidden');
+      loader.setAttribute('aria-busy', 'false');
+      const stream = typewriter(target, streamtext, mode, speed);
+      stream.done.then(() => {
+        btn.disabled = false;
+        btn.textContent = original;
+        target.removeAttribute('aria-busy');
+        streams.delete(target);
+      });
     });
-  }).catch(() => {
-    btn.disabled = false;
-    btn.textContent = original;
-    target.removeAttribute('aria-busy');
-  });
+  };
 }
 
 
@@ -299,10 +315,12 @@ export function register(name, fn) { registry.set(name, fn); }
 
 
 /**
- * Punto de entrada: registra handlers base y activa la delegación de clicks.
+ * Entry point: registers base actions and sets up click delegation.
+ * Called once when the AMD module is loaded.
+ * @param {Object} cmid Initialization options.
  * @returns {void}
  */
-export function init() {
+export function init(cmid) {
   const root = document.querySelector('.local-socialcert');
   if (!root) {
     return;
@@ -311,7 +329,7 @@ export function init() {
   // Registra acciones base
   register('open-link', handleOpenLink);
   register('copy-html', handleCopyHtml);
-  register('run-ai', runAiHandler);
+  register('run-ai', runAiHandler(cmid));
 
   // Delegación única para todos los clicks con data-action
   on(root, '[data-action]', 'click', (ev, el) => {
