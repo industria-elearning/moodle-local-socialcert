@@ -279,6 +279,7 @@ export function typewriter(el, text, mode, speedMs) {
  * @param {string} org        Issuing organization name.
  * @param {string} socialmedia Target social network (e.g., "LinkedIn").
  * @param {string[]} errorarray - Array of lang keys in the order:
+ * @param {number} cmid - Course module ID.
  * @returns {Promise<string>} Resolves to the AI textual reply.
  * @throws {SyntaxError} If the backend JSON is invalid.
  * @throws {Error} If the AJAX call fails (also reported via Notification.exception).
@@ -288,7 +289,7 @@ export function typewriter(el, text, mode, speedMs) {
  *   .then(reply => console.log("AI reply:", reply))
  *   .catch(err => console.error("AI error:", err));
  */
-function ai_response (certname, course, org, socialmedia, errorarray) {
+function ai_response (certname, course, org, socialmedia, errorarray, cmid) {
 
   return new Promise((resolve) => {
     Ajax.call([{
@@ -298,8 +299,9 @@ function ai_response (certname, course, org, socialmedia, errorarray) {
           certname: certname,
           course: course,
           org: org,
-          socialmedia: socialmedia
-        }
+          socialmedia: socialmedia,
+        },
+        cmid: cmid,
       },
     }])[0].then((response) => {
       if (response.json) {
@@ -328,75 +330,74 @@ function ai_response (certname, course, org, socialmedia, errorarray) {
  *
  * Also manages a loader, ARIA states, and reveals the Copy button when done.
  *
- * @param {MouseEvent} ev
- * @param {HTMLElement} btn Triggering button element.
- * @returns {void}
+* @param {number} cmid
+ * @returns {(ev: MouseEvent, btn: HTMLElement) => void}
  */
-export function runAiHandler(ev, btn) {
+export function runAiHandler(cmid) {
+  return function(ev, btn) {
+    ev.preventDefault();
+    const sel = btn.dataset.target;
+    let target = null;
+    if (sel) {
+      target = document.querySelector(sel);
+    } else {
+      const wrap = btn.closest('.lsc-response-wrap');
+      target = wrap ? wrap.querySelector('.lsc-response') : null;
+    }
+    if (!target) { return; }
 
-  ev.preventDefault();
-
-  const sel = btn.dataset.target;
-  let target = null;
-  if (sel) {
-    target = document.querySelector(sel);
-  } else {
-    const wrap = btn.closest('.lsc-response-wrap');
-    target = wrap ? wrap.querySelector('.lsc-response') : null;
-  }
-  if (!target) { return; }
-
-  if (streams.has(target)) {
-    const s = streams.get(target);
-    if (s && s.stop) { s.stop(); }
-    btn.disabled = false;
-    btn.textContent = getString('airesponsebtn', 'local_socialcert');
-    return;
-  }
-
-  const mode = (btn.dataset.mode === 'char') ? 'char' : 'word';
-  const speed = parseInt(btn.dataset.speed || '40', 10);
-  const certname = btn.dataset.certname || '';
-  const course = btn.dataset.course || '';
-  const org = btn.dataset.org || '';
-  const socialmedia = btn.dataset.socialmedia || '';
-  // const id_servicio = btn.dataset.id_servicio || '';
-  const original = btn.textContent;
-  btn.disabled = true;
-  btn.textContent = 'Generating';
-  target.setAttribute('aria-busy', 'true');
-  target.setAttribute('role', 'status');
-
-  const loader = document.getElementById('ai-card');
-  const copyBtn = document.getElementById('copyBtn');
-  const errorLicense = btn.dataset.errorlicense;
-  const errorCredits = btn.dataset.errorcredits;
-  const errorGeneric = btn.dataset.errorgeneric;
-  const errorarray = [
-    errorCredits,
-    errorLicense,
-    errorGeneric
-  ];
-  let streamtext = '';
-
-  copyBtn.hidden=true;
-
-  ai_response(certname, course, org, socialmedia, errorarray).then((response) => {
-    streamtext = response.fulltext;
-    if(response.done) { copyBtn.hidden=false; }
-  }).catch(() => {
-    streamtext = errorGeneric;
-  }).finally(() => {
-    loader.classList.add('hidden');
-    loader.setAttribute('aria-busy', 'false');
-    const stream = typewriter(target, streamtext, mode, speed);
-    stream.done.then(() => {
+    if (streams.has(target)) {
+      const s = streams.get(target);
+      if (s && s.stop) { s.stop(); }
       btn.disabled = false;
-      btn.textContent = original;
-      target.removeAttribute('aria-busy');
-      streams.delete(target);
+      btn.textContent = getString('airesponsebtn', 'local_socialcert');
+      return;
+    }
+
+    const mode = (btn.dataset.mode === 'char') ? 'char' : 'word';
+    const speed = parseInt(btn.dataset.speed || '40', 10);
+    const certname = btn.dataset.certname || '';
+    const course = btn.dataset.course || '';
+    const org = btn.dataset.org || '';
+    const socialmedia = btn.dataset.socialmedia || '';
+    // const id_servicio = btn.dataset.id_servicio || '';
+    const original = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'Generating';
+    target.setAttribute('aria-busy', 'true');
+    target.setAttribute('role', 'status');
+
+    const loader = document.getElementById('ai-card');
+    const copyBtn = document.getElementById('copyBtn');
+    const errorLicense = btn.dataset.errorlicense;
+    const errorCredits = btn.dataset.errorcredits;
+    const errorGeneric = btn.dataset.errorgeneric;
+    const errorarray = [
+      errorCredits,
+      errorLicense,
+      errorGeneric
+    ];
+    let streamtext = '';
+
+    copyBtn.hidden=true;
+
+    ai_response(certname, course, org, socialmedia, errorarray, cmid).then((response) => {
+      streamtext = response.fulltext;
+      if(response.done) { copyBtn.hidden=false; }
+    }).catch(() => {
+      streamtext = errorGeneric;
+    }).finally(() => {
+      loader.classList.add('hidden');
+      loader.setAttribute('aria-busy', 'false');
+      const stream = typewriter(target, streamtext, mode, speed);
+      stream.done.then(() => {
+        btn.disabled = false;
+        btn.textContent = original;
+        target.removeAttribute('aria-busy');
+        streams.delete(target);
+      });
     });
-  });
+  };
 }
 
 
@@ -416,10 +417,10 @@ export function register(name, fn) { registry.set(name, fn); }
 /**
  * Entry point: registers base actions and sets up click delegation.
  * Called once when the AMD module is loaded.
- *
+ * @param {Object} cmid Initialization options.
  * @returns {void}
  */
-export function init() {
+export function init(cmid) {
   const root = document.querySelector('.local-socialcert');
   if (!root) {
     return;
@@ -427,7 +428,7 @@ export function init() {
 
   register('open-link', handleOpenLink);
   register('copy-html', handleCopyHtml);
-  register('run-ai', runAiHandler);
+  register('run-ai', runAiHandler(cmid));
 
   on(root, '[data-action]', 'click', (ev, el) => {
     const action = el.dataset.action;

@@ -61,12 +61,13 @@ class ai_helper extends external_api {
      */
     public static function execute_parameters(): external_function_parameters {
         return new external_function_parameters([
-        'body' => new external_single_structure([
-            'certname'    => new external_value(PARAM_TEXT, 'Nombre del certificado'),
-            'course'      => new external_value(PARAM_TEXT, 'Nombre del curso'),
-            'org'         => new external_value(PARAM_TEXT, 'Nombre de la organización que emite el certificado'),
-            'socialmedia' => new external_value(PARAM_TEXT, 'Red social donde se va a publicar el certificado'),
-        ]),
+            'body' => new external_single_structure([
+                'certname'    => new external_value(PARAM_TEXT, 'Certificate name'),
+                'course'      => new external_value(PARAM_TEXT, 'Course name'),
+                'org'         => new external_value(PARAM_TEXT, 'Name of the issuing organization'),
+                'socialmedia' => new external_value(PARAM_TEXT, 'Social network where the certificate will be published'),
+            ]),
+            'cmid' => new external_value(PARAM_INT, 'Course module ID'),
         ]);
     }
 
@@ -78,17 +79,24 @@ class ai_helper extends external_api {
      * or object, it is wrapped into a JSON object with a "text" key.
      *
      * @param array $body The body data containing certificate information.
+     * @param array $cmid The body data containing certificate information.
      * @return array An associative array with a 'json' key holding the API response.
      */
-    public static function execute($body) {
-
-        $params = self::validate_parameters(self::execute_parameters(), ['body' => $body]);
-        $body   = $params['body'];
+    public static function execute($body, $cmid) {
+        $params = self::validate_parameters(self::execute_parameters(), ['body' => $body, 'cmid' => $cmid]);
 
         try {
+            if ($params['cmid'] <= 0) {
+                throw new \moodle_exception('invalidcmid', 'local_socialcert');
+            }
+            $context = \context_module::instance($params['cmid']);
+            self::validate_context($context);
+            require_capability('mod/customcert:view', $context);
+
+            $body   = $params['body'];
+
             $client   = new ai_services_api();
             $response = $client->request('POST', '/certificate/answer', $body);
-
             if (is_array(value: $response) || is_object(value: $response)) {
                 $json = json_encode(value: $response, flags: JSON_UNESCAPED_UNICODE);
             } else {
