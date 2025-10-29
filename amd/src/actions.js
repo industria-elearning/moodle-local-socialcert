@@ -1,22 +1,67 @@
-// amd/src/actions.js
-import {get_string as getString} from 'core/str';
-import Ajax from 'core/ajax';
-import Notification from 'core/notification';
-// import {ready as domReady} from 'core/ready';
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Mapa de acciones: nombre -> handler(ev, el)
+ * Plugin version and other meta-data are defined here.
+ *
+ * @package
+ * @copyright   2025 Manuel Bojaca <manuel@buendata.com>
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+/**
+ * Local SocialCert — frontend helpers.
+ *
+ * Responsibilities:
+ * - Lightweight event delegation utility for click actions.
+ * - Handlers for: opening external links, copying generated text, and AI “typewriter” effect.
+ * - Triggering the AI request and streaming the response into the DOM.
+ * - Public API: { init, register, runAiHandler, typewriter }.
+ *
+ * Notes:
+ * - This module is loaded via $PAGE->requires->js_call_amd('local_socialcert/actions', 'init').
+ * - The HTML is rendered by the Mustache template and provides the data-* hooks.
+ */
+
+import {get_string as getString} from 'core/str';
+import Ajax from 'core/ajax';
+
+/* ============================================================================
+ * Action registry
+ * ==========================================================================*/
+
+/**
+ * Action registry mapping: actionName -> handler(event, element).
+ * Handlers are registered once in {@link init} and invoked via delegation.
  * @type {Map<string, Function>}
  */
 const registry = new Map();
 
+/* ============================================================================
+ * Event delegation
+ * ==========================================================================*/
+
 /**
- * Delegación de eventos: escucha en `root` y, si el objetivo o un ancestro
- * coincide con `selector`, ejecuta `handler(ev, targetMatch)`.
- * @param {HTMLElement} root     Contenedor raíz donde delegar
- * @param {string} selector      Selector a matchear (con closest)
- * @param {string} type          Tipo de evento (p.ej., 'click')
- * @param {(ev:Event, el:HTMLElement)=>void} handler  Manejador
+ * Simple event delegation helper.
+ * Listens on a root element and, when the event target or an ancestor matches
+ * the selector, calls the provided handler with the matched element.
+ *
+ * @param {HTMLElement} root   Root container where the listener is attached.
+ * @param {string} selector    CSS selector to match using Element.closest().
+ * @param {string} type        Event type (e.g., "click").
+ * @param {(ev: Event, el: HTMLElement) => void} handler  Callback invoked with the event and the matched element.
  * @returns {void}
  */
 function on(root, selector, type, handler) {
@@ -30,37 +75,40 @@ function on(root, selector, type, handler) {
   });
 }
 
+/* ============================================================================
+ * Handlers: open link / copy to clipboard
+ * ==========================================================================*/
+
 /**
- * Abre un enlace en nueva pestaña. Usa href o data-url.
- * Marca aria-busy brevemente como feedback.
+ * Opens a link in a new tab (using element href or data-url) and briefly sets aria-busy for feedback.
+ *
  * @param {MouseEvent} ev
- * @param {HTMLElement} el
+ * @param {HTMLElement} el Element with an href or data-url attribute.
  * @returns {void}
  */
 function handleOpenLink(ev, el) {
-  // Si es <a> con href, dejamos que el browser lo haga,
-  // pero añadimos un pequeño “busy”/tracking si quieres.
-  // Si NO quieres prevenir, comenta la línea de preventDefault.
+
   ev.preventDefault();
 
   el.setAttribute('aria-busy', 'true');
-  // Si el elemento no tiene href (ej. <button>), abrimos data-url:
+
   const url = el.getAttribute('href') || el.dataset.url;
+
   if (url) {
     window.open(url, '_blank', 'noopener');
   }
-  // Quita busy luego de un tick
+
   setTimeout(() => el.removeAttribute('aria-busy'), 300);
 }
 
 /**
- * Copia el contenido del cuadro de respuesta al portapapeles.
- * - data-target: selector del contenedor (ej. "#ai-response")
- * - data-copy: "text" (por defecto) o "html"
- *   - En ambos modos se eliminan spans .lsc-caret antes de copiar.
+ * Copies the content of a target node to the clipboard.
+ * - data-target: selector pointing to the container (e.g., "#ai-response").
+ * - data-copy: "text" (default) or "html".
+ *   - In both modes, temporary caret spans (.lsc-caret) are removed before copying.
  *
  * @param {MouseEvent} _ev
- * @param {HTMLElement} el
+ * @param {HTMLElement} el Button element with data-target (and optional data-copy).
  * @returns {void}
  */
 async function handleCopyHtml(_ev, el) {
@@ -70,7 +118,6 @@ async function handleCopyHtml(_ev, el) {
     return;
   }
 
-  // Clonamos para poder limpiar elementos auxiliares (caret, etc.)
   const clone = node.cloneNode(true);
   const carets = clone.querySelectorAll('.lsc-caret');
   carets.forEach(c => c.remove());
@@ -82,8 +129,9 @@ async function handleCopyHtml(_ev, el) {
 
   navigator.clipboard.writeText(content)
     .then(() => {
-      // feedback opcional: cambiar el texto del botón brevemente
+
       const btn = el.querySelector('[data-action="copy-html"]');
+
       if (!btn) {return;}
 
       const originalHTML = btn.innerHTML;
@@ -91,20 +139,20 @@ async function handleCopyHtml(_ev, el) {
       setTimeout(() => { btn.textContent = originalHTML; }, 1200);
     })
     .catch(() => {
-      // fallback opcional (silencioso)
+
     });
 }
 
-
-
-// --- STREAM MOCK + TYPEWRITER -----------------------------------------------
+/* ============================================================================
+ * Typewriter (stream mock) utilities
+ * ==========================================================================*/
 
 /**
- * Inserta y devuelve un cursor visual (caret) al final del elemento destino.
- * Se usa para simular escritura en vivo.
+ * Inserts a visual caret at the end of the target element and returns it.
+ * Used to simulate live typing.
  *
- * @param {HTMLElement} el - Contenedor donde se añadirá el caret.
- * @returns {HTMLSpanElement} caret - El nodo <span> insertado con la clase "lsc-caret".
+ * @param {HTMLElement} el Target container where the caret is appended.
+ * @returns {HTMLSpanElement} The inserted <span> with class "lsc-caret".
  */
 function addCaret(el) {
   const caret = document.createElement('span');
@@ -115,9 +163,9 @@ function addCaret(el) {
 }
 
 /**
- * Elimina, si existe, el cursor visual (caret) dentro del elemento destino.
+ * Removes the visual caret (if present) from a given element.
  *
- * @param {HTMLElement} el - Contenedor desde el que se eliminará el caret.
+ * @param {HTMLElement} el Container to clean up.
  * @returns {void}
  */
 function removeCaret(el) {
@@ -125,18 +173,67 @@ function removeCaret(el) {
   if (caret) { caret.remove(); }
 }
 
-// Control de streams por destino (para detener si se pulsa de nuevo)
+
+/**
+ * Maps an error message returned by the backend to a plugin lang key.
+ *
+ * Detection is case-insensitive and based on simple text matches:
+ * - Contains "insufficient ai credits"  -> returns `errors[0]` (e.g., "tokenserror")
+ * - Contains "your license is not allowed" or "manage credits" -> returns `errors[1]` (e.g., "licenseerror")
+ * - Otherwise -> returns `errors[2]` (e.g., "genericerror")
+ *
+ * @param {string} message - Error text returned by the service (may include HTML).
+ * @param {string[]} errors - Array of lang keys in the order:
+ *   [0] = key for insufficient credits (e.g., "tokenserror"),
+ *   [1] = key for not-allowed license (e.g., "licenseerror"),
+ *   [2] = generic key (e.g., "genericerror").
+ * @returns {string} The corresponding lang key based on the message content.
+ */
+function mapErrorToLangKey(message, errors) {
+  const msg = String(message || '').toLowerCase();
+
+  if (msg.includes('insufficient ai credits')) {
+    return errors[0];
+  }
+
+  if (
+    msg.includes('your license is not allowed') ||
+    msg.includes('manage credits')
+  ) {
+    return errors[1];
+  }
+
+  return errors[2];
+}
+
+/**
+ * Tracks active streams per target so we can stop/replace them.
+ * @type {WeakMap<HTMLElement, {stop: Function}>}
+ */
 const streams = new WeakMap();
 
 /**
- * Escribe texto en unidades (char|word) con un intervalo.
- * @param {HTMLElement} el
- * @param {string} text
- * @param {'char'|'word'} mode
- * @param {number} speedMs
- * @returns {{stop:Function, done:Promise<void>}}
+ * Streams text into an element in "char" or "word" units with a configurable delay.
+ *
+ * @param {HTMLElement} el   Target element to receive the text.
+ * @param {string} text      Full text to stream.
+ * @param {'char'|'word'} mode Unit size used while streaming.
+ * @param {number} speedMs   Interval between units (ms).
+ * @returns {{stop: Function, done: Promise<void>}} Control handle with a stop() method and a completion promise.
  */
 export function typewriter(el, text, mode, speedMs) {
+  const isHTML = /<[^>]+>/.test(text); // ← detección simple
+
+  // Rama HTML: render directo para que <a> sea clickeable
+  if (isHTML) {
+    el.innerHTML = text;
+    return {
+      stop() { /* nada que parar */ },
+      done: Promise.resolve()
+    };
+  }
+
+  // Rama TEXTO: tu implementación original
   const caret = addCaret(el);
   const units = mode === 'char' ? text.split('') : text.split(/\s+/);
   let i = 0;
@@ -167,13 +264,13 @@ export function typewriter(el, text, mode, speedMs) {
   return { stop() { const s = streams.get(el); if (s) { s.stop(); streams.delete(el); } }, done };
 }
 
+/* ============================================================================
+ * AI request
+ * ==========================================================================*/
+
 /**
- * Obtiene una respuesta generada por IA para un certificado/curso y red social dada,
- * utilizando la llamada AJAX `local_socialcert_get_ai_response`.
- *
- * La función envía un payload con `certname`, el curso fijo "Curso de Python",
- * la organización y la red social, y resuelve con el texto de la respuesta (`reply`)
- * devuelta por el backend.
+ * Fetches an AI-generated response for the given context using the
+ * `local_socialcert_get_ai_response` web service.
  *
  * @function ai_response
  * @async
@@ -188,13 +285,9 @@ export function typewriter(el, text, mode, speedMs) {
  * @throws {Error} If the AJAX call fails (also reported via Notification.exception).
  *
  * @example
- * ai_response("Certificado de Analítica", "BUEN DATA", "LinkedIn")
- *   .then((reply) => {
- *     console.log("Respuesta IA:", reply);
- *   })
- *   .catch((err) => {
- *     console.error("Error obteniendo la respuesta de IA:", err);
- *   });
+ * ai_response("Analytics Certificate", "BUEN DATA", "LinkedIn")
+ *   .then(reply => console.log("AI reply:", reply))
+ *   .catch(err => console.error("AI error:", err));
  */
 function ai_response (certname, course, org, socialmedia, errorarray, cmid) {
 
@@ -211,19 +304,22 @@ function ai_response (certname, course, org, socialmedia, errorarray, cmid) {
         cmid: cmid,
       },
     }])[0].then((response) => {
-      try {
+      if (response.json) {
         const parsed = JSON.parse(response.json);
-        return resolve(parsed.reply);
-      } catch (e) {
-        reject(e);
+        return resolve({fulltext: parsed.reply, done: true});
+      } else {
+        const errormsg = mapErrorToLangKey(response.message, errorarray);
+        return resolve({fulltext: errormsg, done: false});
       }
-    }).catch((err) => {
-      Notification.exception(err);
-      reject(err);
+    }).catch(() => {
+      return resolve({ fulltext: errorarray[2], done: false });
     });
   });
 }
 
+/* ============================================================================
+ * Action: run AI
+ * ==========================================================================*/
 
 /**
  * Starts/stops the “AI” streaming flow.
@@ -305,14 +401,18 @@ export function runAiHandler(cmid) {
 }
 
 
+/* ============================================================================
+ * Public API
+ * ==========================================================================*/
+
 /**
- * Registra una acción para usar con data-action="name".
+ * Registers an action handler that can be invoked via data-action="name".
+ *
  * @param {string} name
- * @param {(ev:Event, el:HTMLElement)=>void} fn
+ * @param {(ev: Event, el: HTMLElement) => void} fn
  * @returns {void}
  */
 export function register(name, fn) { registry.set(name, fn); }
-
 
 /**
  * Entry point: registers base actions and sets up click delegation.
@@ -326,12 +426,10 @@ export function init(cmid) {
     return;
   }
 
-  // Registra acciones base
   register('open-link', handleOpenLink);
   register('copy-html', handleCopyHtml);
   register('run-ai', runAiHandler(cmid));
 
-  // Delegación única para todos los clicks con data-action
   on(root, '[data-action]', 'click', (ev, el) => {
     const action = el.dataset.action;
     const fn = registry.get(action);
@@ -339,5 +437,4 @@ export function init(cmid) {
       fn(ev, el);
     }
   });
-
 }
